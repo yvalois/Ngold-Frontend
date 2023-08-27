@@ -15,6 +15,11 @@ const menus = [
         links: '/swap'
     },
     {
+        id: 4,
+        name: 'Pools',
+        links: '/Pool'
+    },
+    {
         id: 5,
         name: 'Coleccion',
         links: '/coleccion',

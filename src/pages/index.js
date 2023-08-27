@@ -42,6 +42,8 @@ import Ranking from "./Ranking";
 import SignUp from "./SignUp";
 import Wallet from "./Wallet";
 import AdminProduct from "./Admin";
+import Pool from "./Pool";
+
 
 
 
@@ -62,6 +64,8 @@ const routes = [
   { path: '/ordenes', component: <Orders />},
   { path: '/admin', component: <AdminProduct />},
   { path: '/retiro', component: <Pagos />},
+  { path: '/Pool', component: <Pool />},
+
 
 
 
