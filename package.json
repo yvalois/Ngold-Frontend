@@ -2,6 +2,11 @@
   "name": "ngold",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "8.12.1",
+    "node": "16.15.1",
+    "react": "17.0.2"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -30,7 +35,7 @@
     "ethereum-provider": "^0.7.7",
     "faker": "^5.5.3",
     "moment": "^2.29.4",
-    "react": "^18.0.0",
+    "react": "^18.2.0",
     "react-bootstrap": "^2.3.0",
     "react-bootstrap-accordion": "^1.0.0",
     "react-chartjs-2": "^4.3.1",
