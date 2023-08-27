@@ -27,7 +27,7 @@ export const contract = () => {
                 COBRO_ADDRESS: "0x2Fb9Fb5999667C474c032a966a07Fb94184A3439",
                 TIENDA_ADDRESS: "0x559D6cb329A0Ff70F5b4bdE297fa979386172C0d",
                 ELFOS_ADDRESS: "0x93902711d15f671a9A3aDaF308E97C0A560b9Bb3",
-                RPC_URL: 'https://rpc-mainnet.maticvigil.com',
+                RPC_URL: 'https://rpc-mainnet.maticvigil.com0.',
 
             }
 
