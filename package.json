@@ -2,11 +2,12 @@
   "name": "ngold",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "16.13.1"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
- 
-  
   "dependencies": {
     "@bootstrap-styled/provider": "^2.0.3",
     "@bootstrap-styled/v4": "^3.4.0",
@@ -26,6 +27,7 @@
     "chart.js": "^3.9.1",
     "dotenv": "^16.3.1",
     "ethereum-provider": "^0.7.7",
+    "ethers": "^6.7.1",
     "faker": "^5.5.3",
     "moment": "^2.29.4",
     "react": "^18.0.0",
@@ -51,13 +53,6 @@
     "web-vitals": "^2.1.4",
     "web3modal": "^1.9.12"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-
   "eslintConfig": {
     "extends": [
       "react-app",
