@@ -13,11 +13,11 @@ import '../src/assets/font-awesome.css';
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { mainnet, hardhat } from 'wagmi/chains'
+import { mainnet, hardhat,polygon } from 'wagmi/chains'
 function App() {
 
 
-    const chains = [hardhat]
+    const chains = [polygon ]
 
     const projectId = '022ab2b4b6b684c47db3d9b652065c92'
     const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])

@@ -112,7 +112,7 @@ function Banner05(props) {
         try {
             if (cant > 0) {
                 const tx = await elfosContract.buyToken(cant, ngoldContract.address);
-                dispatch(updateBalances)
+                dispatch(updateBalances())
                 await tx.wait()
                 Swal.fire({
                     title: 'Success',

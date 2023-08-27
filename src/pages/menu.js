@@ -38,18 +38,7 @@ const menus = [
                 id: 1,
                 sub: 'Sign In / SignUp',
                 links: '/sesion'
-            },
-
-            {
-                id: 2,
-                sub: 'Orders',
-                links: '/ordenes'
-            },
-            {
-                id: 3,
-                sub: 'Pagos',
-                links: '/explore-v3'
-            },
+            }
 
         ]
      },
@@ -78,13 +67,13 @@ const menus = [
             sub: 'Pagos',
             links: '/retiro'
         },
+        {
+            id: 5,
+            sub: 'Admin',
+            links: '/admin',
+        }
 
        ]
-    },
-    {
-        id: 9,
-        name: 'Admin',
-        links: '/admin',
     },
     
 ]

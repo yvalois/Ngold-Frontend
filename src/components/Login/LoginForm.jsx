@@ -72,9 +72,9 @@ function LoginForm() {
 
 const handleSubmit = () => {
   if (code.length > 0) {
+
       try {
           setLoading(true);
-
           setSuccess(false);
           dispatch(verifyEmail(code.toString()));
           setSuccess(false);
@@ -101,6 +101,8 @@ const handleSubmit = () => {
 
 useEffect(() => {
     if (error) {
+  alert(code)
+
         console.log(errorMsg);
         setLoading(false);
         Swal.fire({

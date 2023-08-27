@@ -41,7 +41,7 @@ const Header = () => {
     const store = useSelector(state => state.store);
     const history = useNavigate();
 
-  
+
     // console.log({user})
     const { storeName, discount, StoreLoaded } = store;
     const { products, cartLoaded } = cart;
@@ -168,7 +168,7 @@ const Header = () => {
         dispatch(logOut());
         history('tienda');
     }
-    
+
     return (
         <header className={`header ${scroll ? 'is-fixed' : ''}`}>
             <div className="tf-container">
@@ -189,7 +189,7 @@ const Header = () => {
                                     <ul id="menu-primary-menu" className="menu">
                                         {
                                             menus.map((data, idx) => (
-                                                (loginSuccess && data.id !== 7) || (loginSuccess && userDetails.role === "admin" && data.id === 9) ?
+                                                (loginSuccess && data.id !== 7) ?
                                                     (<li key={idx} onClick={() => handleDropdown(idx)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}>
                                                         <Link to={data.links}>{data.name}</Link>
                                                         {
@@ -198,7 +198,9 @@ const Header = () => {
                                                                 {
                                                                     data.namesub.map((submenu) => (
                                                                         submenu.sub !== "LogOut" ?
-                                                                            <li key={submenu.id} className="menu-item"><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
+                                                                            (userDetails.role === "admin" && submenu.id === 5) || ( submenu.id !== 5) ?
+                                                                                <li key={submenu.id} className="menu-item"><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
+                                                                                : null
                                                                             :
                                                                             <li key={submenu.id} className="menu-item" onClick={_handleLogout}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
                                                                     ))
@@ -206,8 +208,8 @@ const Header = () => {
                                                             </ul>
                                                         }
                                                     </li>)
-                                                    : (!loginSuccess && data.id !== 8) &&  (!loginSuccess && userDetails.role !== "admin" && data.id !== 9) ?
-                                                    (<li key={idx} onClick={() => handleDropdown(idx)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}
+                                                    : (!loginSuccess && data.id !== 8) ?
+                                                        (<li key={idx} onClick={() => handleDropdown(idx)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}
                                                         >
                                                             <div className='navbar'>
 
@@ -240,9 +242,9 @@ const Header = () => {
 
                                                                 </ul>
                                                             }
-                                                    </li>) 
-                                                    :
-                                                    null
+                                                        </li>)
+                                                        :
+                                                        null
                                             ))
                                         }
                                     </ul>

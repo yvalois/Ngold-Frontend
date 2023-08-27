@@ -20,14 +20,14 @@ export const contract = () => {
     if (process.env.REACT_APP_PRODUCTION === "production") {
         return (
             {
-                BUSD_ADDRESS: "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
-                NGOLD_ADDRESS: "0x4bb18aEf2cb6F01703031137eFAaD56b3B99F035",
-                EXCHANGE_ADDRESS: "0xf8769b8C4D345b3333958a54f69a32D655eA522A",
-                STAKING_ADDRESS: "0x58aeD71a7235D986F2858960F84849a7632B4f5B",
+                BUSD_ADDRESS: "0x633DFd65865a887A5077a1Fc188B71f97Bb20C6F",
+                NGOLD_ADDRESS: "0xa1B8Ccb6F39F498138637145E4d5992352851f77",
+                EXCHANGE_ADDRESS: "0x222b0a57d0d2F37Ac8787219A7Cd88E8765B4e83",
+                STAKING_ADDRESS: "0x929Db50600A8B24DfB7977DD546123cbc0321a31",
                 COBRO_ADDRESS: "0x2Fb9Fb5999667C474c032a966a07Fb94184A3439",
-                TIENDA_ADDRESS: "0xFE6d8A839466845a2eC3b1199C925D226b1F398e",
-                ELFOS_ADDRESS: "0xFE6d8A839466845a2eC3b1199C925D226b1F398e",
-                RPC_URL: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+                TIENDA_ADDRESS: "0x559D6cb329A0Ff70F5b4bdE297fa979386172C0d",
+                ELFOS_ADDRESS: "0x93902711d15f671a9A3aDaF308E97C0A560b9Bb3",
+                RPC_URL: 'https://rpc-mainnet.maticvigil.com',
 
             }
 

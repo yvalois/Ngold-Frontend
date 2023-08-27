@@ -74,7 +74,7 @@ function Contractos() {
             }
             if (option === 2) {
                 const amount = ethers.utils.parseEther(busdAmount.toString());
-                const tx = await exchangeContract.retireTokenBalance(busdContract.address, amount);
+                const tx = await exchangeContract.retireTokenBalance(busdContract.address);
                 await tx.wait();
                 exchangeBalanace();
                 setTokenAmount(0);
@@ -94,7 +94,6 @@ function Contractos() {
     const tokenStoreBalance = async () => {
         const balance = await ngoldContract.balanceOf(tiendaContract.address);
         setTokenBalance2(ethers.utils.formatUnits(balance, 8));
-        console.log(ethers.utils.formatUnits(balance, 8));
     }
 
     useEffect(() => {

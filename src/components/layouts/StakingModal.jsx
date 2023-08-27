@@ -7,12 +7,13 @@ import { updateBalances } from '../../redux/blockchain/blockchainAction';
 import { useWeb3Modal } from '@web3modal/react'
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2';
+
 const StakingModal = (props) => {
     const [loading, setLoading] = useState(false);
     const [isApprove, setIsApprove] = useState(false)
     const { elfosContract, stakingContract, accountAddress } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
-
+    const dispatch = useDispatch()
     const verifyApprove =async()=>{
         setLoading(true)
         try {   
@@ -55,6 +56,7 @@ const StakingModal = (props) => {
         try {
             const tx = await stakingContract.stake(props.id);
             await tx.wait();
+            dispatch(updateBalances())
             setLoading(false)
             Swal.fire({
                 title: 'Success',

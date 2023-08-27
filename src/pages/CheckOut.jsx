@@ -62,6 +62,7 @@ const CheckOut = () => {
             await approve.wait();
             // Suscribirse al evento 'Approval'
             setLoading(false);
+            checkApprove()
             Swal.fire({
                 title: 'Success',
                 text: 'Approved successfully',
@@ -87,6 +88,7 @@ const CheckOut = () => {
             const approve = await busdContract.approve(tiendaContract.address, ethers.utils.parseEther("999999999999"));
             await approve.wait();
             setLoading(false);
+            checkApprove()
 
             setCheckApprovedToken(false);
             Swal.fire({
@@ -186,8 +188,7 @@ const CheckOut = () => {
                     }
                     const tokenAddress = token === "BUSD" ? busdContract.address : ngoldContract.address;
                     try {
-                        alert("compra con")
-                        alert(token)
+
                         const buy = await tiendaContract.buyProduct(
                             tokenAddress,
                             amountToPay.toString()

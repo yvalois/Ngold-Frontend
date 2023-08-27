@@ -2,8 +2,8 @@ import axios from 'axios';
 import {getToken, setToken} from './localstorage'
 
 
-//const API = "https://urchin-app-qlv7z.ondigitalocean.app/api"
-const API = "http://localhost:3000/api"
+const API = "https://plankton-app-it5jy.ondigitalocean.app/api"
+//const API = "http://localhost:3000/api"
 
 export const STORE_ID = "62f8d7884c3b4800136678c8"
 

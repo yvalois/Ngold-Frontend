@@ -53,6 +53,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { ethers } from 'ethers';
 import { useAccount } from 'wagmi'
 import Swal from 'sweetalert2';
+import { updateBalances } from '../../redux/blockchain/blockchainAction';
+
 HotPick4.propTypes = {
     data: PropTypes.array,
 };
@@ -65,6 +67,7 @@ function HotPick4(props) {
     const { isConnected } = useAccount();
     const [id, setId] = useState(10000);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch()
     const [dataTab] = useState([
         {
             id: 1,
@@ -151,15 +154,17 @@ function HotPick4(props) {
     const claim = async (id) => {
         setLoading(true)
         try {
-            const tx = await stakingContract.claimReward(id,    ngoldContract.address)
+            const tx = await stakingContract.claimReward(id, ngoldContract.address)
             await tx.wait();
+            dispatch(updateBalances())
+
             setLoading(false)
             Swal.fire({
                 title: 'Success',
                 text: 'Claim realizado correctamente',
                 icon: 'success',
                 confirmButtonText: 'OK'
-              });
+            });
         } catch (error) {
             Swal.fire({
                 title: 'Error',
@@ -177,13 +182,14 @@ function HotPick4(props) {
         try {
             const tx = await stakingContract.withdraw(id)
             await tx.wait();
+            dispatch(updateBalances())
             setLoading(false)
             Swal.fire({
                 title: 'Success',
                 text: 'Token retirado correctamente',
                 icon: 'success',
                 confirmButtonText: 'OK'
-              });
+            });
         } catch (error) {
             Swal.fire({
                 title: 'Error',
@@ -210,13 +216,13 @@ function HotPick4(props) {
                             <div className="d-flex justify-content-between mb-wr">
                                 <TabList>
 
-                                        {
-                                            dataTab.map(idx => (
-                                                <Tab key={idx.id} className="new-design">{idx.title}</Tab>
-                                            ))
-                                        }
+                                    {
+                                        dataTab.map(idx => (
+                                            <Tab key={idx.id} className="new-design">{idx.title}</Tab>
+                                        ))
+                                    }
 
-           
+
 
                                 </TabList>
                                 {/* <Dropdown>
@@ -245,8 +251,8 @@ function HotPick4(props) {
                             <TabPanel >
                                 <div className="row tf-filter-container wow fadeInUp">
                                     {ngoldNftBalance.length > 0 &&
-                                        (ngoldNftBalance.map(idx => (
-                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 tf-loadmore 3d cyber">
+                                        (ngoldNftBalance.map((idx, index) => (
+                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 tf-loadmore 3d cyber" key={index}>
                                                 <div className="sc-product style2">
                                                     <div className="top">
                                                         <Link to="/item-details-v1" className="tag">{idx.Nombre}</Link>
@@ -304,7 +310,7 @@ function HotPick4(props) {
                                                             Polygon</div>
                                                         <div className="col-rankingg">{item.currentReward} Ngold</div>
                                                         <div className="col-rankingg ">
-                                                            {!loading && <div className='nofication2' onClick={()=> claim(item.id)}>
+                                                            {!loading && <div className='nofication2' onClick={() => claim(item.id)}>
                                                                 <i className="fas fa-circle"></i> Reclamar
                                                             </div>}
                                                             {loading && <div className='nofication2'>
@@ -313,7 +319,7 @@ function HotPick4(props) {
 
 
                                                         </div>
-                                                        {!loading && <div className="col-rankingg nofication" onClick={()=>withdraw(item.id)}> <i className="fas fa-circle"></i>Retirar</div>}
+                                                        {!loading && <div className="col-rankingg nofication" onClick={() => withdraw(item.id)}> <i className="fas fa-circle"></i>Retirar</div>}
                                                         {loading && <div className="col-rankingg nofication" > <i className="fas fa-circle"></i>Cargando</div>}
                                                     </div>
 
@@ -328,12 +334,6 @@ function HotPick4(props) {
 
                         </Tabs>
 
-                    </div>
-                </div>
-
-                <div className="col-md-12">
-                    <div className="btn-loadmore wow fadeInUp">
-                        <Link to="/explore-v1" className="tf-button style-8 loadmore">Explore More <i className="fas fa-long-arrow-right"></i></Link>
                     </div>
                 </div>
             </div>

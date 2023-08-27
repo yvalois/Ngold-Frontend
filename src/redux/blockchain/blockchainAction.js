@@ -45,17 +45,9 @@ const updateAccount = (payload) => ({
     payload
 })
 
-const updateBalance = (ngoldBalance, busdBalance, cobroBalance, exchangeBusdBalance, exchangeNgoldBalance, ngoldNftBalance, ngoldStakingBalance) => ({
+const updateBalance = (payload) => ({
     type: 'UPDATE_BALANCE',
-    payload: {
-        ngoldBalance,
-        busdBalance,
-        cobroBalance,
-        exchangeBusdBalance,
-        exchangeNgoldBalance,
-        ngoldNftBalance,
-        ngoldStakingBalance
-    },
+    payload,
 })
 
 export const updateTokenS = (tokens) => ({
@@ -120,20 +112,19 @@ export const updateStakingTokens = (inversioneStakingContract, accountAddress) =
 
 export const updateBalances = () => async (dispatch, getState) => {
     const { ngoldContract, busdContract, elfosContract, stakingContract, cobroContract, accountAddress } = getState().blockchain;
-
     const ngoldBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
     const exchangeBusdBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
     const exchangeNgoldBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
     const busdBalance = parseFloat(await busdContract.balanceOf(accountAddress)) / 10 ** 18;
-    const cobroBalance = parseFloat(await cobroContract.balanceOf(accountAddress)) / 10 ** 18;
+    const cobroBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
+
+    //8 decimals token
 
 
     let ngoldNftBalance = [];
-    let ngoldStakingBalance = [];
-
+    let ngoldNftStakingBalance = [];
     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
-    let NgoldStakingBalance = await stakingContract.getNfts(accountAddress);
-
+    let NgoldStakingBalance = await stakingContract.getNftsInStaking();
     for (let i = 0; NgoldNftBalance.length > i; i++) {
         const name = `Elfo`
         let info = {
@@ -143,14 +134,17 @@ export const updateBalances = () => async (dispatch, getState) => {
         }
         ngoldNftBalance.push(info)
     }
+
     for (let i = 0; NgoldStakingBalance.length > i; i++) {
-        const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]), accountAddress);
+        const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 8)).toFixed(2);
         let info = {
             id: parseInt(NgoldStakingBalance[i]),
-            currentReward: valorConvertido
+            currentReward: valorConvertido,
+            image: `https://violet-disgusted-halibut-418.mypinata.cloud/ipfs/QmUncKwRVF1yXsckcTA3cQ6GgfMag1M8nQxgrKXMLWkbWH/1.png`
+
         }
-        ngoldStakingBalance.push(info)
+        ngoldNftStakingBalance.push(info)
     }
 
     dispatch(updateBalance({
@@ -160,7 +154,7 @@ export const updateBalances = () => async (dispatch, getState) => {
         exchangeBusdBalance,
         exchangeNgoldBalance,
         ngoldNftBalance,
-        ngoldStakingBalance
+        ngoldNftStakingBalance
     }))
 
 }
@@ -194,7 +188,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     let ngoldNftBalance = [];
                     let ngoldNftStakingBalance = [];
                     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
-                    let NgoldStakingBalance = await stakingContract.getNfts();
+                    let NgoldStakingBalance = await stakingContract.getNftsInStaking();
                     for (let i = 0; NgoldNftBalance.length > i; i++) {
                         const name = `Elfo`
                         let info = {
