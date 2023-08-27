@@ -166,7 +166,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
         try {
             try {
                 const networkID = await provider.getNetwork();
-                if ((process.env.REACT_APP_PRODUCTION === 'production' && networkID.chainId === 1) ||
+                if ((process.env.REACT_APP_PRODUCTION === 'production' && networkID.chainId === 137) ||
                     (process.env.REACT_APP_PRODUCTION === 'development' && networkID.chainId === 31337)) {
                     const ngoldContract = new ethers.Contract(NGOLD_ADDRESS, abiToken, signer);
                     const busdContract = new ethers.Contract(BUSD_ADDRESS, abiToken, signer);
