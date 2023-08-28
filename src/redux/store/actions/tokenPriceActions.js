@@ -29,7 +29,7 @@ export const loadTokenPrice = () => async dispatch => {
     const tokenInWei = await contract.fetchPrice();
     const token = ethers.utils.formatEther(tokenInWei);
 
-    dispatch(loadingTokenPriceSuccess({ tokenPrice: token }));
+    dispatch(loadingTokenPriceSuccess({ tokenPrice: tokenInWei }));
     }catch(e){
         dispatch(loadingTokenPriceFailure({ errorMsg: e.message }));
     }

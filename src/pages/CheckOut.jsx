@@ -9,6 +9,7 @@ import PhoneInput from 'react-phone-number-input'
 import { addOrder, createOrder } from "../redux/store/actions/orderActions";
 import { clearCart } from "../redux/store/actions/cartActions";
 import { useWeb3Modal } from '@web3modal/react'
+import { loadTokenPrice } from '../redux/store/actions/tokenPriceActions';
 
 const CheckOut = () => {
     const userInfo = useSelector((State) => State.user.userDetails);
@@ -164,6 +165,7 @@ const CheckOut = () => {
             accountAddress === undefined ||
             accountAddress === ""
         ) {
+            setLoading(true)
             open()
         } else {
             if (checkoutFull) {
@@ -306,8 +308,9 @@ const CheckOut = () => {
         });
     };
 
-    const getCartSubTotal = () => {
-        return cartItems
+    const getCartSubTotal = async() => {
+
+        return cartItems        
             .reduce((price, item) => price + item.price * item.qty, 0)
             .toFixed(2);
     };
@@ -321,17 +324,29 @@ const CheckOut = () => {
     
 
     const getCartTotalToken = () => {
+
+
         return cartItems
         .reduce((price, item) => price + item.price * item.qty / tokenPrice , 0)
     }
-    useEffect(() => {
-        const parsePrecio = (ethers.utils.formatUnits(getCartTotalToken().toString(), 18))
-        const parsePrecioBusd = (parseInt(getCartSubTotal()).toString())
 
-        setPrecio(parseFloat(parsePrecio).toFixed(2))
-        setPrecioBusd(parseFloat(parsePrecioBusd).toFixed(2))
+    useEffect(() => {
+        if(tokenPrice > 0 ){
+            const parsePrecio = getCartTotalToken().toString()
+            const parsePrecioBusd = (parseInt(getCartTotalToken() * tokenPrice).toString())
+
+            setPrecio(parseFloat(parsePrecio).toFixed(2))
+            setPrecioBusd(parseFloat(parsePrecioBusd).toFixed(2))
+            
+        }
+
 
     }, [tokenPrice,cartItems]);
+    
+
+    useEffect(() => {
+        setLoading(false)
+    }, [accountAddress])
     
     
 
@@ -388,15 +403,25 @@ const CheckOut = () => {
                         <div >
                             <button type="submit"
                                 onClick={handleOrden}>
-                                {accountAddress ?
-                                    token === Api.TOKEN_NAME ?
+                                {accountAddress && !loading ?
+
+
+                                    token === Api.TOKEN_NAME && !loading ?
+
                                     precio >= approvedUnits ?
                                             'Approve '
                                             : 'Buy '
-                                        : precioBusd >= approvedUnitsBusd ?
+
+                                    :loading ?
+                                    'Cargando':
+                                     precioBusd >= approvedUnitsBusd ?
                                             'Approve '
                                             : 'Buy '
-                                    : 'Connect '
+
+
+                                    : loading   ?
+                                    'Cargando'
+                                    :'Connect '
                                 }
                             </button>
                         </div>
@@ -428,7 +453,7 @@ const CheckOut = () => {
 
 
                     <div className='money'>
-                        <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${precio}` : `BUSD: ${getCartSubTotal()}`}</p>
+                        <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${precio}` : `BUSD: ${getCartTotalToken() * tokenPrice}`}</p>
                     </div>
 
                     
