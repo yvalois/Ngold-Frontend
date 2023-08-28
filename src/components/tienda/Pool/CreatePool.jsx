@@ -4,55 +4,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchNewProduct } from "../../../redux/store/actions/productActions";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { ethers } from "ethers";
 
 const CreatePool = () => {
 
     const [Nombre, setNombre] = useState("")
     const navigate = useNavigate();
-    const product = useSelector((state) => state.product);
-    const category = useSelector((state) => state.category);
-    const subcategory = useSelector((state) => state.subcategory);
-    const { products, initialLoad, loading } = product;
-    const { categories, categoriesLoaded } = category;
-    const { subCategories, subCategoriesLoaded } = subcategory;
+    
+    const {poolContract} = useSelector((state) => state.blockchain);
+
+
   
   
   
   
     const dispatch = useDispatch();
   
-    const [newProduct, setNewProduct] = useState({
-      name: "",
-      price: "",
-      description: "",
-      countInStock: "",
-      imageToCharge: "",
-      category: "",
-      subcategory: "",
-      discount: 0
+    const [newPool, setNewPool] = useState({
+      apr: 0,
+      max_w: 0,
+      max_p: 0,
+      tiempo_bloqueo: 0
     });
   
-    const convertImageToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    }
-  
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
       e.preventDefault();
   
-      const formData = new FormData();
-      formData.append("name", newProduct.name);
-      formData.append("price", newProduct.price);
-      formData.append("description", newProduct.description);
-      formData.append("countInStock", newProduct.countInStock);
-      formData.append("imageUrl", newProduct.imageToCharge);
-      formData.append("category", newProduct.category);
-      //if value "" alert 
-      if (newProduct.name === "" || newProduct.price === "" || newProduct.description === "" || newProduct.countInStock === "" || newProduct.imageToCharge === "" || newProduct.category === "") {
+      if (newPool.apr === "" || newPool.max_w === "" || newPool.max_p === "" || newPool.tiempo_bloqueo === "") {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -61,21 +39,19 @@ const CreatePool = () => {
         return;
       }
       try {
-        dispatch(fetchNewProduct(newProduct));
-        setNewProduct({
-          name: "",
-          price: "",
-          description: "",
-          countInStock: "",
-          imageToCharge: "",
-          category: "",
-          subcategory: "",
-          discount: 0
+        let time = daysToSeconds(newPool.tiempo_bloqueo); 
+        const tx = await poolContract.setStakePool(ethers.utils.parseEther(newPool.max_p), time, ethers.utils.parseEther(newPool.apr), ethers.utils.parseEther(newPool.max_w));
+        await tx.awit();
+        setNewPool({
+          apr: 0,
+          max_w: 0,
+          max_p: 0,
+          tiempo_bloqueo: 0
         });
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Product has been added",
+          text: "Pool creado correctamente",
         });
       } catch (error) {
         Swal.fire({
@@ -84,7 +60,10 @@ const CreatePool = () => {
           text: "Something went wrong",
         });
       }
-  
+    }
+
+    const daysToSeconds=(days)=>{
+      return days * 24 * 60 * 60
     }
 
   return (
@@ -94,6 +73,8 @@ const CreatePool = () => {
           <input
             type="number"
             placeholder="Apr"
+            value={newPool.price}
+            onChange={(e) => setNewPool({ ...newPool, apr: e.target.value })}
             required
           />
         </div>
@@ -101,6 +82,8 @@ const CreatePool = () => {
           <input
             type="number"
             placeholder="Maximo por wallet"
+            value={newPool.max_w}
+            onChange={(e) => setNewPool({ ...newPool, max_w: e.target.value })}
             required
           />
         </div>
@@ -108,6 +91,8 @@ const CreatePool = () => {
           <input
             type="number"
             placeholder="Maximo por pool"
+            value={newPool.max_p}
+            onChange={(e) => setNewPool({ ...newPool, max_p: e.target.value })}
             required
           />
         </div>
@@ -115,26 +100,8 @@ const CreatePool = () => {
           <input
             type="number"
             placeholder="Tiempo de bloqueo"
-            required
-          />
-        </div>
-        <div className="form-select" id="subject">
-          <select
-            value={newProduct.category}
-            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}>
-            <option value="">Category...</option>
-            {categoriesLoaded &&
-              categories.map((category, index) => (
-                <option key={index} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div>
-          <input
-            type="number"
-            placeholder="Calculo de recompensa"
+            value={newPool.tiempo_bloqueo}
+            onChange={(e) => setNewPool({ ...newPool, tiempo_bloqueo: e.target.value })}
             required
           />
         </div>

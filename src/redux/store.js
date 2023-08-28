@@ -11,11 +11,12 @@ import adminOrdersReducer from "./store/reducers/adminOrdersReducer";
 import userReducer from "./store/reducers/userReducer";
 import tokenPriceReducer from "./store/reducers/tokenPriceReducer";
 import subCategoryReducer from "./store/reducers/subCategoryReducer";
+import dataReducer from "./blockchain/dataReducer";
 
 
 const rootReducer = combineReducers({
     blockchain: blockchainReducer,
-
+    data: dataReducer,
     user: userReducer,
     store: storeReducer,
     product: productReducers,

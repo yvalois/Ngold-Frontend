@@ -21,6 +21,7 @@ import { useAccount } from 'wagmi'
 import { updateBalances } from '../../redux/blockchain/blockchainAction';
 import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
+import elfo from '../../assets/images/GEclasico.jpg'
 
 
 Banner05.propTypes = {
@@ -172,7 +173,7 @@ function Banner05(props) {
 
                             </div>
                             <div class="image">
-                                <div class="img-slider"><img src={img5} alt="Binasea" /></div>
+                                <div class="img-slider"><img src={elfo} alt="Binasea" /></div>
 
                                 <div class="swiper-container slider-card-product">
                                     <div class="swiper-wrapper">

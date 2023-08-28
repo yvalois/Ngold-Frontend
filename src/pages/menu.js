@@ -50,7 +50,7 @@ const menus = [
            {
                id: 1,
                sub: 'LogOut',
-               links: '#'
+               links: ''
            },
            {
             id: 2,

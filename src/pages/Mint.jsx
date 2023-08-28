@@ -11,7 +11,6 @@ import dataCollection from '../assets/fake-data/data-collection';
 import HotPick from '../components/hotpick/HotPick';
 import dataHotpick from '../assets/fake-data/data-hotpick';
 import Create5 from '../components/create/Create5';
-
 Mint.propTypes = {
     
 };

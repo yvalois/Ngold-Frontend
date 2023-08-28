@@ -7,6 +7,8 @@ import Exchange from '../../abis/Exchange.json';
 import Ngold from '../../abis/Ngold.json';
 import Staking from '../../abis/Staking.json';
 import Tienda from '../../abis/Tienda.json';
+import Pool from '../../abis/Pool.json';
+import elfo from '../../assets/images/elf_6.jpg'
 
 
 
@@ -24,6 +26,7 @@ const STAKING_ADDRESS = router.STAKING_ADDRESS;
 const COBRO_ADDRESS = router.COBRO_ADDRESS;
 const TIENDA_ADDRESS = router.TIENDA_ADDRESS;
 const ELFOS_ADDRESS = router.ELFOS_ADDRESS;
+const POOL_ADDRESS = router.POOL_ADDRESS;
 
 
 const loadingBlockchain = () => ({
@@ -130,7 +133,7 @@ export const updateBalances = () => async (dispatch, getState) => {
         let info = {
             nombre: name,
             id: parseInt(NgoldNftBalance[i]),
-            image: `https://violet-disgusted-halibut-418.mypinata.cloud/ipfs/QmUncKwRVF1yXsckcTA3cQ6GgfMag1M8nQxgrKXMLWkbWH/1.png`
+            image: elfo
         }
         ngoldNftBalance.push(info)
     }
@@ -141,7 +144,7 @@ export const updateBalances = () => async (dispatch, getState) => {
         let info = {
             id: parseInt(NgoldStakingBalance[i]),
             currentReward: valorConvertido,
-            image: `https://violet-disgusted-halibut-418.mypinata.cloud/ipfs/QmUncKwRVF1yXsckcTA3cQ6GgfMag1M8nQxgrKXMLWkbWH/1.png`
+            image: elfo
 
         }
         ngoldNftStakingBalance.push(info)
@@ -175,6 +178,8 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     const cobroContract = new ethers.Contract(COBRO_ADDRESS, Cobro, signer);
                     const elfosContract = new ethers.Contract(ELFOS_ADDRESS, Elfos, signer);
                     const tiendaContract = new ethers.Contract(TIENDA_ADDRESS, Tienda, signer);
+                    const poolContract = new ethers.Contract(POOL_ADDRESS, Pool, signer);
+
 
                     const ngoldBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
                     const exchangeBusdBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
@@ -194,7 +199,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         let info = {
                             nombre: name,
                             id: parseInt(NgoldNftBalance[i]),
-                            image: `https://violet-disgusted-halibut-418.mypinata.cloud/ipfs/QmUncKwRVF1yXsckcTA3cQ6GgfMag1M8nQxgrKXMLWkbWH/1.png`
+                            image: elfo
                         }
                         ngoldNftBalance.push(info)
                     }
@@ -215,6 +220,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         busdContract,
                         elfosContract,
                         stakingContract,
+                        poolContract,
                         ngoldBalance: ngoldBalance,
                         busdBalance: busdBalance,
                         ngoldNftBalance,

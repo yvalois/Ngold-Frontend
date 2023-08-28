@@ -66,8 +66,16 @@ const Header = () => {
 
 
     const [activeIndex, setActiveIndex] = useState(null);
-    const handleDropdown = index => {
-        setActiveIndex(index);
+    const handleDropdown = (index, data) => {
+        if (index !== activeIndex) {
+            setActiveIndex(index);
+        }else{
+            setActiveIndex(null);
+        }
+
+        if(handleMenuActive !== null && data === undefined) {
+            handleMenuActive();
+        }
     };
 
 
@@ -164,6 +172,7 @@ const Header = () => {
 
     const _handleLogout = () => {
         // console.log('click')
+        setMenuActive(false)
         dispatch(logoutCart());
         dispatch(logOut());
         history('tienda');
@@ -190,7 +199,7 @@ const Header = () => {
                                         {
                                             menus.map((data, idx) => (
                                                 (loginSuccess && data.id !== 7) ?
-                                                    (<li key={idx} onClick={() => handleDropdown(idx)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}>
+                                                    (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}>
                                                         <Link to={data.links}>{data.name}</Link>
                                                         {
                                                             data.namesub &&
@@ -198,8 +207,8 @@ const Header = () => {
                                                                 {
                                                                     data.namesub.map((submenu) => (
                                                                         submenu.sub !== "LogOut" ?
-                                                                            (userDetails.role === "admin" && submenu.id === 5) || ( submenu.id !== 5) ?
-                                                                                <li key={submenu.id} className="menu-item"><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
+                                                                            (userDetails.role === "admin" && submenu.id === 5) || (submenu.id !== 5) ?
+                                                                                <li key={submenu.id} className="menu-item" onClick={()=>{setMenuActive(false)}}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
                                                                                 : null
                                                                             :
                                                                             <li key={submenu.id} className="menu-item" onClick={_handleLogout}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
@@ -209,7 +218,7 @@ const Header = () => {
                                                         }
                                                     </li>)
                                                     : (!loginSuccess && data.id !== 8) ?
-                                                        (<li key={idx} onClick={() => handleDropdown(idx)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}
+                                                        (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}
                                                         >
                                                             <div className='navbar'>
 
@@ -223,7 +232,7 @@ const Header = () => {
                                                                     {
                                                                         data.namesub.map((submenu) => (
                                                                             submenu.sub !== "LogOut" ?
-                                                                                <li key={submenu.id} className="menu-item">
+                                                                                <li key={submenu.id} className="menu-item" onClick={()=>{setMenuActive(false)}}>
                                                                                     <div className='navbar'>
                                                                                         <Link to={submenu.links}>{submenu.sub}</Link>
                                                                                     </div>
