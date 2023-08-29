@@ -21,10 +21,10 @@ const CreatePool = () => {
     const dispatch = useDispatch();
   
     const [newPool, setNewPool] = useState({
-      apr: 0,
-      max_w: 0,
-      max_p: 0,
-      tiempo_bloqueo: 0
+      apr: '',
+      max_w: '',
+      max_p: '',
+      tiempo_bloqueo: ''
     });
   
     const handleSubmit = async(e) => {

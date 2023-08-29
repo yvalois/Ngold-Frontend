@@ -8,6 +8,10 @@ import './styles.scss';
 import logo from '../../assets/images/logo/logo.png';
 import logo_elf from '../../assets/images/logo/logo_elf.png';
 import logo_elf_black from '../../assets/images/logo/logo_elf_black.png';
+import logo2_elf from '../../assets/images/logo/logo2_white.png';
+import logo2_black_elf from '../../assets/images/logo/logo2_black.png';
+
+
 
 import logodark from '../../assets/images/logo/logo_dark.png';
 import { useWeb3Modal } from '@web3modal/react'

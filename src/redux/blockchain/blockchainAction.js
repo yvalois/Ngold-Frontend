@@ -210,8 +210,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         let info = {
                             id: parseInt(NgoldStakingBalance[i]),
                             currentReward: valorConvertido,
-                            image: `https://violet-disgusted-halibut-418.mypinata.cloud/ipfs/QmUncKwRVF1yXsckcTA3cQ6GgfMag1M8nQxgrKXMLWkbWH/1.png`
-
+                            image: elfo
                         }
                         ngoldNftStakingBalance.push(info)
                     }

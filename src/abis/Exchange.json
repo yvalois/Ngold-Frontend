@@ -3,11 +3,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_priceSetter",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "_OPCO",
         "type": "address"
       },
@@ -302,19 +297,6 @@
     "name": "deleteAcceptedToken",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "fetchPrice",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -681,7 +663,7 @@
   },
   {
     "inputs": [],
-    "name": "token_price",
+    "name": "tokenPrice",
     "outputs": [
       {
         "internalType": "uint256",

@@ -33,7 +33,7 @@ Banner05.propTypes = {
 function Banner05(props) {
     const { data } = props;
     const [cant, setCant] = useState(0);
-    const [precio, setPrecio] = useState(20);
+    const [precio, setPrecio] = useState(1);
     const [modalShow, setModalShow] = useState(false);
     const [allowance, setAllowance] = useState(0);
     const [loading, setLoading] = useState(false)

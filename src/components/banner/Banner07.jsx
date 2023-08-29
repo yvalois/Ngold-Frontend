@@ -198,13 +198,16 @@ function Banner06(props) {
     }
 
     const setearOutput = async (value) => {
-        if (isBuy) {
-            const valor = await exchangeContract.calculatePriceU(ethers.utils.parseUnits(value.toString(), decimals));
-            setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
-        } else {
-            const valor = await exchangeContract.calculatePriceN(ethers.utils.parseUnits(value.toString(), decimals));
-            setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
+        if(accountAddress){
+            if (isBuy) {
+                const valor = await exchangeContract.calculatePriceU(ethers.utils.parseUnits(value.toString(), decimals));
+                setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
+            } else {
+                const valor = await exchangeContract.calculatePriceN(ethers.utils.parseUnits(value.toString(), decimals));
+                setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
+            }
         }
+
     }
 
     useEffect(() => {

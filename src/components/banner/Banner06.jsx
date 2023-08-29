@@ -16,6 +16,7 @@ import icon1 from '../../assets/images/icon/rain1.svg'
 import icon2 from '../../assets/images/icon/rain2.svg'
 import icon3 from '../../assets/images/icon/ethe.svg'
 import avt from '../../assets/images/author/author1.png'
+import elfo from '../../assets/images/product/elf_6.jpg'
 
 Banner06.propTypes = {
     
@@ -65,7 +66,7 @@ function Banner06(props) {
                                                         </div>
                                                         <div className="features">
                                                             <div className="product-media">
-                                                                <img src={img2} alt="images" />
+                                                                <img src={elfo} alt="images" />
                                                             </div>
                                                             <div className="featured-countdown">
                                                                 <span className="js-countdown" data-timer="55555" data-labels=" ,  h , m , s "></span>
@@ -103,7 +104,7 @@ function Banner06(props) {
                                                         </div>
                                                         <div className="features">
                                                             <div className="product-media">
-                                                                <img src={img2} alt="images" />
+                                                                <img src={elfo} alt="images" />
                                                             </div>
                                                             <div className="featured-countdown">
                                                                 <span className="js-countdown" data-timer="55555" data-labels=" ,  h , m , s "></span>

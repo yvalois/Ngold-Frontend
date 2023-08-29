@@ -17,7 +17,7 @@ import { mainnet, hardhat,polygon } from 'wagmi/chains'
 function App() {
 
 
-    const chains = [hardhat]
+    const chains = [polygon]
 
     const projectId = '022ab2b4b6b684c47db3d9b652065c92'
     const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])

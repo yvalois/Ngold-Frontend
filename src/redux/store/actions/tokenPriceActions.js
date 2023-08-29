@@ -26,7 +26,7 @@ export const loadTokenPrice = () => async dispatch => {
     const provider = new ethers.providers.JsonRpcProvider(rpc);
     const contract = new ethers.Contract(exchange, exchangeAbi, provider);
 
-    const tokenInWei = await contract.fetchPrice();
+    const tokenInWei = await contract.fetchLatestPrice() ;
     const token = ethers.utils.formatEther(tokenInWei);
 
     dispatch(loadingTokenPriceSuccess({ tokenPrice: tokenInWei }));
