@@ -22,6 +22,8 @@ import { updateBalances } from '../../redux/blockchain/blockchainAction';
 import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
 import elfo from '../../assets/images/GEclasico.jpg'
+import logo_elf from '../../assets/images/logo/logo_elf.png';
+
 
 
 Banner05.propTypes = {
@@ -181,7 +183,7 @@ function Banner05(props) {
                                             <div class="card-product ">
                                                 <h4>Token #???</h4>
                                                 <div class="infor-author">
-                                                    <img src={avt} alt="Binasea" />
+                                                    <img src={logo_elf } alt="Binasea" />
                                                     <div class="infor">
                                                         <p>creator</p>
                                                         <h6 class="name">@NGold</h6>

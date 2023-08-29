@@ -7,6 +7,9 @@ import img2 from '../assets/images/collection/img-banner-collection.png'
 import { Link } from 'react-router-dom';
 import HotPick4 from '../components/hotpick/HotPick4';
 import dataHotpick from '../assets/fake-data/data-hotpick';
+import logo_elf from '../assets/images/logo/logo_elf.png';
+import banner_elf from '../assets/images/collection/Banner.jpg';
+
 
 Collection.propTypes = {
     
@@ -25,8 +28,8 @@ function Collection(props) {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="banner-collection-inner">
-                                <img src={img1} alt="Binasea" className="img-bg" />
-                                <img src={img2} alt="Binasea" className="img-banner" />
+                                <img src={banner_elf} alt="Binasea" className="img-bg" />
+                                <img src={logo_elf} alt="Binasea" className="img-banner" />
                                 {/* <div className="button-top">
                                     <Link to="#" className="btn-wishlish"><i className="fas fa-heart"></i> Add to Wishlist</Link>
                                     <Link to="#" className="btn-collect"><i className="fas fa-long-arrow-right"></i></Link>

@@ -6,6 +6,9 @@ import { Dropdown } from 'react-bootstrap';
 
 import './styles.scss';
 import logo from '../../assets/images/logo/logo.png';
+import logo_elf from '../../assets/images/logo/logo_elf.png';
+import logo_elf_black from '../../assets/images/logo/logo_elf_black.png';
+
 import logodark from '../../assets/images/logo/logo_dark.png';
 import { useWeb3Modal } from '@web3modal/react'
 
@@ -187,8 +190,8 @@ const Header = () => {
                             <div id="site-logo" className="clearfix">
                                 <div id="site-logo-inner">
                                     <Link to="/" rel="home" className="main-logo">
-                                        <img id="logo_header" className='logo-dark' src={logodark} alt="Binasea" />
-                                        <img id="logo_header" className='logo-light' src={logo} alt="Binasea" />
+                                        <img id="logo_header" className='logo-dark' src={logo_elf} alt="Binasea" />
+                                        <img id="logo_header" className='logo-light' src={logo_elf_black} alt="Binasea" />
                                     </Link>
                                 </div>
                             </div>

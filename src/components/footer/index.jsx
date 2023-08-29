@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 import logo from '../../assets/images/logo/logo.png';
 import logodark from '../../assets/images/logo/logo_dark.png';
-
+import logo_elf from '../../assets/images/logo/logo_elf.png';
+import logo_elf_black from '../../assets/images/logo/logo_elf_black.png';
 import './styles.scss'
 
 
@@ -116,8 +117,8 @@ function Footer(props) {
                         <div className="col-xl-4 col-lg-3 col-md-3">
                             <div className="widget widget-infor">
                                 <div className="logo">
-                                    <img id="logo_footer" className='logo-dark' src={logodark} alt="Binasea" />
-                                    <img id="logo_footer" className='logo-light' src={logo} alt="Binasea" />
+                                    <img id="logo_footer" className='logo-dark' src={logo_elf} alt="Binasea" />
+                                    <img id="logo_footer" className='logo-light' src={logo_elf_black} alt="Binasea" />
                                 </div>
                                 <p className="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
                                 <ul className="social-item">
