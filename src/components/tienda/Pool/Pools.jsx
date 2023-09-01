@@ -270,8 +270,8 @@ const Pools = () => {
 
 
     const tokenPricefetch = async () => {
-        const tokenPrice = await exchangeContract.token_price();
-        //const tokenPrice = await exchangeContract.fetchLatestPrice();
+        //const tokenPrice = await exchangeContract.token_price();
+        const tokenPrice = await exchangeContract.fetchLatestPrice();
         setTokenPrice(parseFloat(ethers.utils.formatEther(tokenPrice)));
     }
 
