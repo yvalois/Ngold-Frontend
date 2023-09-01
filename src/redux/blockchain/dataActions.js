@@ -166,7 +166,7 @@ export const fetchData = () => {
             }
             })
 
-            const TokenPrice = await exchange.token_price();
+            const TokenPrice = await exchange.fetchLatestPrice();
             const tokenPrice = parseFloat(ethers.utils.formatEther(TokenPrice));
             
             dispatch(loadingDataSuccess({
