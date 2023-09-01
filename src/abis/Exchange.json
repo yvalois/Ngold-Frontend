@@ -3,11 +3,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_priceSetter",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "_OPCO",
         "type": "address"
       },
@@ -306,12 +301,12 @@
   },
   {
     "inputs": [],
-    "name": "fetchPrice",
+    "name": "fetchLatestPrice",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "int256",
         "name": "",
-        "type": "uint256"
+        "type": "int256"
       }
     ],
     "stateMutability": "view",
@@ -681,7 +676,7 @@
   },
   {
     "inputs": [],
-    "name": "token_price",
+    "name": "tokenPrice",
     "outputs": [
       {
         "internalType": "uint256",
