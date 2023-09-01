@@ -43,7 +43,6 @@ function Contractos() {
 
     const Data = async () => {
         const fetchData = await exchangeContract.getSaledata();
-        console.log(fetchData);
         setData(fetchData.filter(data => data.claimed === false));
     }
 

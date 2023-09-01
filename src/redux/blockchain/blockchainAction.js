@@ -90,7 +90,7 @@ export const updateInversionTokens = (inversionesContract, accountAddress) => as
         inversionesBalance.push(info)
     }
 
-    console.log(inversionesBalance)
+
     dispatch(updateTokenI(inversionesBalance))
 }
 
@@ -299,14 +299,12 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
 
 export const fetchBalance = () => {
     return async (dispatch, getState) => {
-        const { tokenContract, busdContract, usdtContract, accountAddress, exchangeContract } = getState().blockchain
-        const tokenBalance = await tokenContract.balanceOf(accountAddress)
+        const { ngoldContract, busdContract,  accountAddress } = getState().blockchain
+        const tokenBalance = await ngoldContract.balanceOf(accountAddress)
         const busdBalance = await busdContract.balanceOf(accountAddress)
-        const usdtBalance = await usdtContract.balanceOf(accountAddress)
-        const tokenBalanceFormatted = parseFloat(tokenBalance) / 10 ** 8
+        const tokenBalanceFormatted = parseFloat(tokenBalance) / 10 ** 18
         const busdBalanceFormatted = parseFloat(ethers.utils.formatEther(busdBalance))
-        const usdtBalanceFormatted = parseFloat(ethers.utils.formatEther(usdtBalance))
-        dispatch(updateBalance(tokenBalanceFormatted, busdBalanceFormatted, usdtBalanceFormatted))
+        dispatch(updateBalance(tokenBalanceFormatted, busdBalanceFormatted, 0))
     }
 }
 

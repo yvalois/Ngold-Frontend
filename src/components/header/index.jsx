@@ -49,7 +49,7 @@ const Header = () => {
     const history = useNavigate();
 
 
-    // console.log({user})
+
     const { storeName, discount, StoreLoaded } = store;
     const { products, cartLoaded } = cart;
     const { loginSuccess, userDetails } = user;
@@ -178,7 +178,7 @@ const Header = () => {
     }
 
     const _handleLogout = () => {
-        // console.log('click')
+
         setMenuActive(false)
         dispatch(logoutCart());
         dispatch(logOut());

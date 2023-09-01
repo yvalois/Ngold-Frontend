@@ -24,12 +24,6 @@ const Pool = () => {
                                                 <MyPool/>
                                             </div>
                                         </TabPanel>
-
-
-
-
-
-
                                         </Tabs> 
     </div>
   )

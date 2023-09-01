@@ -14,7 +14,6 @@ const Pagos = () => {
 
     const Data = async () => {
         const fetchData = await exchangeContract.getSaledata();
-        console.log(fetchData);
         if (viewHistory) {
             setData(fetchData.filter(data => data.claimed === true && data.owner.toLowerCase() === accountAddress.toLowerCase()));
         } else {

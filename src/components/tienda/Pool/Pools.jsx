@@ -14,6 +14,8 @@ const Pools = () => {
     const [edit, setEdit] = useState(false)
     const dispatch = useDispatch();
     const stakin = useSelector(state => state.blockchain.poolContract);
+    const { exchangeContract } = useSelector(state => state.blockchain);
+
 
     const [pools, setPools] = useState([]);
     const [poolUserCounter, setPoolUserCounter] = useState(0);
@@ -25,12 +27,12 @@ const Pools = () => {
     const [newPoolTokenLimit, setNewPoolTokenLimit] = useState("");
     const [newMaxPerWallet, setNewMaxPerWallet] = useState("");
     const [tokenPrice, setTokenPrice] = useState("");
-
+    const [pool, setPool] = useState({});
     const [newApr, setNewApr] = useState("");
     const [newTokenLimit, setNewTokenLimit] = useState("");
-
+    const [time, setTime] = useState()
     const [isLoading, setIsLoading] = useState(false);
-
+    const [first, setFirst] = useState(0);
     const [AllData, setAllData] = useState([]);
 
     const getAllPools = async () => {
@@ -44,6 +46,7 @@ const Pools = () => {
                         stakingStartTime: moment(pool.stakingStartTime).format("DD MMM YYYY"),
                         stakeApr: ethers.utils.formatEther(pool.stakeApr),
                         tokenLockedTime: timestampToDays(pool.tokenLockedTime),
+                        tokenLockedTime2: pool.tokenLockedTime,
                         poolId: pool.poolId,
                         active: pool.active,
                         staketTokens: getPoolTokensLimit(pool.poolId),
@@ -79,6 +82,7 @@ const Pools = () => {
                     clearStartTime: data.startTime,
                     clearDateClaimed: data.dateClaimed,
                     tokenLockedTime: moment.unix(data.tokenLockedTime).format("DD MMM YYYY"),
+                    tokenLockedTime2:data.tokenLockedTime,
                     active: data.active,
 
                 })
@@ -266,7 +270,8 @@ const Pools = () => {
 
 
     const tokenPricefetch = async () => {
-        const tokenPrice = await stakin.tokenPrice();
+        const tokenPrice = await exchangeContract.token_price();
+        //const tokenPrice = await exchangeContract.fetchLatestPrice();
         setTokenPrice(parseFloat(ethers.utils.formatEther(tokenPrice)));
     }
 
@@ -289,26 +294,6 @@ const Pools = () => {
     });
 
 
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        try {
-            const estado = newPool.estado === "activo" ? true : false
-            Swal.fire({
-                icon: "success",
-                title: "Success!",
-                text: "Pool editado correctamente",
-            });
-        } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong",
-            });
-        }
-
-    }
-
     const [dataTab] = useState([
         {
             id: 1,
@@ -323,9 +308,12 @@ const Pools = () => {
 
     ]);
 
-    const editar = (id) => {
-        setId(id)
+    const editar = (_id) => {
+
+        setId(_id)
         setEdit(!edit)
+        setPool(pools[_id])
+        setFirst(pools[_id].tokenLockedTime)
     }
 
 
@@ -336,8 +324,6 @@ const Pools = () => {
             tokenPricefetch();
         }
     }, [stakin]);
-
-
 
     const [allDataFilter, setAllDataFilter] = useState(AllData);
     const [filterWord, setFilterWord] = useState("");
@@ -355,7 +341,6 @@ const Pools = () => {
         filterData();
     }, [filterWord, AllData]);
 
-    console.log(AllData)
 
     const calculateAcumulatedReward = (apr, dateClaimed, amuntStaked) => {
         const aprPerDay = apr / 365;
@@ -366,6 +351,38 @@ const Pools = () => {
         return calcWithTokenPrice.toFixed(6);
 
     }
+
+    const editPool = async(e)=>{
+        e.preventDefault()
+        let seconds;
+        if(first.toString() !== pool.tokenLockedTime.toString()){
+            seconds = daysToSeconds(parseInt(pool.tokenLockedTime))
+        }else{
+            seconds = pool.tokenLockedTime2
+        }
+        try {
+            const tx = await stakin.editStakePool(pool.poolId, ethers.utils.parseEther(parseInt(pool.stakeTokensLimit).toString()), seconds, ethers.utils.parseEther(parseInt(pool.stakeApr).toString()), ethers.utils.parseEther(parseInt(pool.tokenLimitPerWallet).toString()), pool.activate);
+            await tx.wait();
+            await getAllPools()
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Pool creado correctamente",
+              });
+              editar(pool.poolId)
+        } catch (error) {
+            console.log(error)
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Ha ocurrido un error",
+              });
+        }
+    }
+
+    const daysToSeconds=(days)=>{
+        return days * 24 * 60 * 60
+      }
 
 
     return (
@@ -410,7 +427,6 @@ const Pools = () => {
                                                 <div className="col-rankingg">Usuarios</div>
                                                 <div className="col-rankingg">maximo por wallet</div>
                                                 <div className="col-rankingg">rewarded</div>
-                                                <div className="col-rankingg">Editar</div>
                                             </div>
                                         </div>
 
@@ -438,8 +454,8 @@ const Pools = () => {
                                                                 }
                                                             </div>
                                                             <div className="col-rankingg ">
-                                                            {pool.tokenLimitPerWallet}
-                                                            </div> 
+                                                                {pool.tokenLimitPerWallet}
+                                                            </div>
 
                                                             <div className="col-rankingg ">
                                                                 {rewarded[pool.poolId] ?
@@ -448,7 +464,7 @@ const Pools = () => {
                                                             </div>
                                                             <div className="col-rankingg ">
                                                                 <div className='contenedor-de'>
-                                                                    <div className='delete-button' onClick={() => editar(2)}>
+                                                                    <div className='delete-button' onClick={() => editar(pool.poolId)}>
 
                                                                         <AiTwotoneEdit />
 
@@ -475,17 +491,19 @@ const Pools = () => {
 
 
                 {edit && <div className='content'>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={(e)=>editPool(e)}>
                         <div className='create-pool'>
                             <div className='close-edit' >
                                 <span>
-                                    <AiFillCloseCircle onClick={() => editar(2)} />
+                                    <AiFillCloseCircle onClick={() => editar(id)} />
                                 </span>
                             </div>
                             <div>
                                 <input
                                     type="number"
                                     placeholder="Apr"
+                                    value={pool.stakeApr}
+                                    onChange={(e) => setPool({ ...pool, stakeApr : e.target.value })}
                                     required
                                 />
                             </div>
@@ -493,6 +511,8 @@ const Pools = () => {
                                 <input
                                     type="number"
                                     placeholder="Maximo por wallet"
+                                    value={pool.tokenLimitPerWallet}
+                                    onChange={(e) => setPool({ ...pool, tokenLimitPerWallet : e.target.value })}
                                     required
                                 />
                             </div>
@@ -500,13 +520,20 @@ const Pools = () => {
                                 <input
                                     type="number"
                                     placeholder="Maximo por pool"
+                                    value={pool.stakeTokensLimit}
+                                    onChange={(e) => setPool({ ...pool, stakeTokensLimit : e.target.value })}
                                     required
                                 />
                             </div>
                             <div>
                                 <input
-                                    type="number"
+                                    type="text"
                                     placeholder="Tiempo de bloqueo"
+                                    value={pool.tokenLockedTime}
+                                    onChange={(e) => {
+                                        setFirst(pool.tokenLockedTime)
+                                        setPool({ ...pool, tokenLockedTime : e.target.value })
+                                        }}
                                     required
                                 />
                             </div>

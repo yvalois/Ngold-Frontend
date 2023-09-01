@@ -29,7 +29,6 @@ const CreatePool = () => {
   
     const handleSubmit = async(e) => {
       e.preventDefault();
-  
       if (newPool.apr === "" || newPool.max_w === "" || newPool.max_p === "" || newPool.tiempo_bloqueo === "") {
         Swal.fire({
           icon: "error",
@@ -40,8 +39,9 @@ const CreatePool = () => {
       }
       try {
         let time = daysToSeconds(newPool.tiempo_bloqueo); 
+        alert( ethers.utils.parseEther(newPool.apr))
         const tx = await poolContract.setStakePool(ethers.utils.parseEther(newPool.max_p), time, ethers.utils.parseEther(newPool.apr), ethers.utils.parseEther(newPool.max_w));
-        await tx.awit();
+        await tx.wait();
         setNewPool({
           apr: 0,
           max_w: 0,
@@ -54,6 +54,7 @@ const CreatePool = () => {
           text: "Pool creado correctamente",
         });
       } catch (error) {
+        console.log(error)
         Swal.fire({
           icon: "error",
           title: "Oops...",

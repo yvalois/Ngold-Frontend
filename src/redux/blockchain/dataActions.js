@@ -75,6 +75,8 @@ export const fetchData = () => {
             const Data = [];
             const AccountPools = [];
             const staking = await store.getState().blockchain.poolContract;
+            const exchange = await store.getState().blockchain.exchangeContract;
+
             const token = await store.getState().blockchain.ngoldContract;
 
             
@@ -92,10 +94,10 @@ export const fetchData = () => {
             const allowed = ethers.utils.formatEther(allow);
 
             const {bannedAccounts, bannedLoaded} = await store.getState().banned
-            const bannedWallets = bannedAccounts.banneds;
-
+            
+            const bannedWallets = bannedAccounts?.banneds;
             const filterbanPools = getPools.filter(pool => {
-                const banned  = bannedWallets.find(banned => banned.addressBanned === address);
+            const banned  = bannedWallets?.find(banned => banned.addressBanned === address);
                 if(banned){
                     if(banned.poolsBanned.includes(pool.poolId)){
                         return false;
@@ -117,7 +119,6 @@ export const fetchData = () => {
                 })
             })
 
-
             const getData = data.map(data => {
                 Data.push({
                     owner: data.owner,
@@ -138,7 +139,9 @@ export const fetchData = () => {
 
             // filter banned pools from accountPools
             const accountsPools = accountsPools1.filter(accountPool => {
-                const banned = bannedWallets.find(banned => banned.addressBanned === address);
+
+                const banned = bannedWallets?.find(banned => banned.addressBanned === address);
+
                 if (banned) {
                     return !banned.poolsBanned.includes(accountPool.poolId);
                 } else {
@@ -163,11 +166,9 @@ export const fetchData = () => {
             }
             })
 
-    
-
-            const TokenPrice = await staking.tokenPrice();
+            const TokenPrice = await exchange.token_price();
             const tokenPrice = parseFloat(ethers.utils.formatEther(TokenPrice));
-           
+            
             dispatch(loadingDataSuccess({
                 pools: Pools,
                 accountPools: AccountPools,

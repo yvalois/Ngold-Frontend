@@ -38,11 +38,7 @@ function Banner03(props) {
         setQuery(event.target.value);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Aquí puedes agregar la lógica para manejar la búsqueda
-        console.log('Realizar búsqueda con:', query);
-    };
+
 
     const filter = () => {
         const filteredProducts = products.filter(product => {
@@ -65,7 +61,7 @@ function Banner03(props) {
         <section className="tf-slider">
 
             <div className="search-bar">
-                <form onSubmit={handleSubmit} id='store-search-bar'>
+                <form id='store-search-bar'>
                     <input
                         type="text"
                         placeholder="Buscar..."

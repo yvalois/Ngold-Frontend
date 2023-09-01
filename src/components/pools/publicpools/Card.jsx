@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Card (){
+function Card (data){
   return (
     <div className='cardpool'>
         <div className='cardpool-info'>
@@ -8,7 +8,7 @@ function Card (){
                 0/100
             </span>
             <span>
-                0%
+                {data.stakeApr}%
             </span>
         </div>
 

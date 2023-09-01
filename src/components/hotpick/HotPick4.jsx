@@ -148,9 +148,7 @@ function HotPick4(props) {
             setId(id)
         }
     }
-    // useEffect(() => {
-    //     console.log(ngoldNftBalance)
-    // }, [])
+
     const claim = async (id) => {
         setLoading(true)
         try {
