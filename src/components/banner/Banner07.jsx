@@ -13,6 +13,10 @@ import img2 from '../../assets/images/product/product79.jpg'
 
 import icon11 from '../../assets/images/svg/icon-wallet-1.svg'
 import icon22 from '../../assets/images/svg/icon-wallet-2.svg'
+import ngold from '../../assets/images/icon/ngold.png'
+import usdt from '../../assets/images/icon/usdt.png'
+
+
 import { useDispatch, useSelector } from "react-redux";
 import { FaExchangeAlt } from "react-icons/fa";
 import { ethers } from 'ethers';
@@ -256,14 +260,14 @@ function Banner06(props) {
 
                                         {isBuy ?
                                             (<div className='tokens'>
-                                                <img src={icon11} alt='token1' />
+                                                <img src={usdt} alt='token1' />
                                                 <div className='icon' onClick={() => setIsBuy(false)}> <FaExchangeAlt /> </div>
-                                                <img src={icon22} alt='token2' />
+                                                <img src={ngold} alt='token2' />
                                             </div>)
                                             : (<div className='tokens'>
-                                                <img src={icon22} alt='token2' />
+                                                <img src={ngold} alt='token2' />
                                                 <div className='icon' onClick={() => setIsBuy(true)}> <FaExchangeAlt /> </div>
-                                                <img src={icon11} alt='token1' />
+                                                <img src={usdt} alt='token1' />
                                             </div>)
                                         }
 
