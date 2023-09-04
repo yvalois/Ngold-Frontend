@@ -10,6 +10,7 @@ import { addOrder, createOrder } from "../redux/store/actions/orderActions";
 import { clearCart } from "../redux/store/actions/cartActions";
 import { useWeb3Modal } from '@web3modal/react'
 import { loadTokenPrice } from '../redux/store/actions/tokenPriceActions';
+import { ConnectKitButton } from "connectkit";
 
 const CheckOut = () => {
     const userInfo = useSelector((State) => State.user.userDetails);
@@ -18,13 +19,13 @@ const CheckOut = () => {
     const { discount } = useSelector((State) => State.store);
     const { infoLoaded } = useSelector((State) => State.user);
     const { fullName, address, country, city, zipCode, state, phone, email, verificationCode } = userInfo;
-    const { open } = useWeb3Modal()
+
 
     const [checkApprovedToken, setCheckApprovedToken] = useState(false);
     const [checkApprovedBusd, setCheckApprovedBusd] = useState(0);
     const [approvedUnits, setApprovedUnits] = useState(0);
     const [approvedUnitsBusd, setApprovedUnitsBusd] = useState(0);
-    
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -55,7 +56,7 @@ const CheckOut = () => {
         } catch (err) {
             console.log(err);
         }
-    }   
+    }
     const approveToken = async () => {
         try {
             setLoading(true);
@@ -144,7 +145,7 @@ const CheckOut = () => {
     const [checkoutFull, setCheckoutFull] = useState(false);
 
 
-    const handleOrden = async () => {
+    const handleOrden = async (show) => {
         if (verificationCode === false) {
             Swal.fire({
                 title: 'Please Verify Your email',
@@ -166,7 +167,7 @@ const CheckOut = () => {
             accountAddress === ""
         ) {
             setLoading(true)
-            open()
+            show()
         } else {
             if (checkoutFull) {
                 try {
@@ -217,7 +218,7 @@ const CheckOut = () => {
                             text: 'orden realizada correctamente',
                             icon: 'success',
                             confirmButtonText: 'OK'
-                          });
+                        });
 
 
                     } catch (err) {
@@ -308,9 +309,9 @@ const CheckOut = () => {
         });
     };
 
-    const getCartSubTotal = async() => {
+    const getCartSubTotal = async () => {
 
-        return cartItems        
+        return cartItems
             .reduce((price, item) => price + item.price * item.qty, 0)
             .toFixed(2);
     };
@@ -321,38 +322,38 @@ const CheckOut = () => {
             .toFixed(2)
     }
 
-    
+
 
     const getCartTotalToken = () => {
 
 
         return cartItems
-        .reduce((price, item) => price + item.price * item.qty / tokenPrice , 0)
+            .reduce((price, item) => price + item.price * item.qty / tokenPrice, 0)
     }
 
     useEffect(() => {
-        if(tokenPrice > 0 ){
+        if (tokenPrice > 0) {
             const parsePrecio = getCartTotalToken().toString()
             const parsePrecioBusd = (parseInt(getCartTotalToken() * tokenPrice).toString())
 
             setPrecio(parseFloat(parsePrecio).toFixed(2))
             setPrecioBusd(parseFloat(parsePrecioBusd).toFixed(2))
-            
+
         }
 
 
-    }, [tokenPrice,cartItems]);
-    
+    }, [tokenPrice, cartItems]);
+
 
     useEffect(() => {
         setLoading(false)
     }, [accountAddress])
-    
-    
+
+
 
     return (
         <div className='checkout'>
-           <div className='checkout-container'>
+            <div className='checkout-container'>
 
 
                 <div className='checkout-form-container'>
@@ -401,33 +402,39 @@ const CheckOut = () => {
                         </div>
 
                         <div >
-                            <button type="submit"
-                                onClick={handleOrden}>
-                                {accountAddress && !loading ?
+                            <ConnectKitButton.Custom>
+                                {({ isConnected, show, truncatedAddress, ensName }) => {
+                                    return (
+                                        <button type="submit"
+                                            onClick={()=>handleOrden(show)}>
+                                            {accountAddress && !loading ?
 
 
-                                    token === Api.TOKEN_NAME && !loading ?
+                                                token === Api.TOKEN_NAME && !loading ?
 
-                                    precio >= approvedUnits ?
-                                            'Approve '
-                                            : 'Buy '
+                                                    precio >= approvedUnits ?
+                                                        'Approve '
+                                                        : 'Buy '
 
-                                    :loading ?
-                                    'Cargando':
-                                     precioBusd >= approvedUnitsBusd ?
-                                            'Approve '
-                                            : 'Buy '
+                                                    : loading ?
+                                                        'Cargando' :
+                                                        precioBusd >= approvedUnitsBusd ?
+                                                            'Approve '
+                                                            : 'Buy '
 
 
-                                    : loading   ?
-                                    'Cargando'
-                                    :'Connect '
-                                }
-                            </button>
+                                                : loading ?
+                                                    'Cargando'
+                                                    : 'Connect '
+                                            }
+                                        </button>
+                                    );
+                                }}
+                            </ConnectKitButton.Custom>
                         </div>
                     </div>
                 </div>
-      
+
                 <div className='products-information-container'>
 
 
@@ -456,13 +463,13 @@ const CheckOut = () => {
                         <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${precio}` : `BUSD: ${getCartTotalToken() * tokenPrice}`}</p>
                     </div>
 
-                    
+
                 </div>
 
 
 
 
-            </div> 
+            </div>
         </div>
 
     )

@@ -87,7 +87,7 @@ const Header = () => {
     };
 
 
-    const { open } = useWeb3Modal()
+
     const { address, isConnected } = useAccount()
     const { chain } = useNetwork();
 
@@ -203,6 +203,22 @@ const Header = () => {
 
                             <div className="header-center">
                                 <nav id="main-nav" className={`main-nav ${menuActive ? 'active' : ''}`}>
+                                <div className='button-sidebar'>
+                                <ConnectKitButton.Custom>
+                                    {({ isConnected, show, truncatedAddress, ensName }) => {
+                                        return (
+                                            <Link onClick={()=>sesion(show)} className="tf-button "><span>{isConnected ? 
+                                            accountAddress === null && isConnected ? 
+                                            "Cargando" 
+                                            : 
+                                            shortAddress
+                                            : 'Connect Wallet' }</span></Link>
+
+                                        );
+                                    }}
+                                </ConnectKitButton.Custom>
+                                </div>
+   
                                     <ul id="menu-primary-menu" className="menu">
                                         {
                                             menus.map((data, idx) => (
@@ -264,11 +280,14 @@ const Header = () => {
                                                         null
                                             ))
                                         }
+                                        
                                     </ul>
+
                                 </nav>
+                                
                             </div>
 
-                            <div className="header-right">
+                            <div className="header-right mode-switch">
                                 <ConnectKitButton.Custom>
                                     {({ isConnected, show, truncatedAddress, ensName }) => {
                                         return (
@@ -282,6 +301,7 @@ const Header = () => {
                                         );
                                     }}
                                 </ConnectKitButton.Custom>
+                                
                                 {/* <span className="user ">
                                         <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <mask id="mask0_2981_49321" maskUnits="userSpaceOnUse" x="0" y="11" width="16" height="7">
@@ -303,7 +323,7 @@ const Header = () => {
                                 <DarkMode />
                             </div>
 
-                            <div className={`mobile-button ${menuActive ? 'active' : ''}`} onClick={handleMenuActive}><span></span></div>
+                            <div className={`mobile-button ${menuActive ? 'active' : ''}`} onClick={handleMenuActive}><span>aaaa</span></div>
                         </div>
                     </div>
                 </div>

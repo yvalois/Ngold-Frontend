@@ -23,6 +23,7 @@ import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
 import elfo from '../../assets/images/GEclasico.jpg'
 import logo_elf from '../../assets/images/logo/logo_elf.png';
+import { ConnectKitButton } from "connectkit";
 
 
 
@@ -41,7 +42,6 @@ function Banner05(props) {
     const decimals = 18;
     const { isConnected, isConnecting } = useAccount()
 
-    const { open } = useWeb3Modal()
     const dispatch = useDispatch();
 
     const manageCant = (type) => {
@@ -93,7 +93,7 @@ function Banner05(props) {
                     text: 'Aprovado correctamente',
                     icon: 'success',
                     confirmButtonText: 'OK'
-                  });
+                });
                 setLoading(false);
 
             }
@@ -122,7 +122,7 @@ function Banner05(props) {
                     text: 'Minteado correctamente',
                     icon: 'success',
                     confirmButtonText: 'OK'
-                  });
+                });
                 setLoading(false);
 
             }
@@ -183,7 +183,7 @@ function Banner05(props) {
                                             <div class="card-product ">
                                                 <h4>Token #???</h4>
                                                 <div class="infor-author">
-                                                    <img src={logo_elf } alt="Binasea" />
+                                                    <img src={logo_elf} alt="Binasea" />
                                                     <div class="infor">
                                                         <p>creator</p>
                                                         <h6 class="name">@NGold</h6>
@@ -207,7 +207,11 @@ function Banner05(props) {
 
                                                 <div class="btn-button ">
                                                     {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
-                                                    {!isConnected && !loading && <Link to="#" onClick={open} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>}
+                                                    {!isConnected && !loading && <ConnectKitButton.Custom>
+                                                        {({ isConnected, show, truncatedAddress, ensName }) => {
+                                                            return (<Link to="#" onClick={show} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
+                                                        }}
+                                                    </ConnectKitButton.Custom>}
                                                     {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Cargando</Link>}
                                                     {/* <Link to="/item-details-v1" class="tf-button style-3">View Details</Link> */}
                                                 </div>

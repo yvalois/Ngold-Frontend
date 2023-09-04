@@ -24,6 +24,7 @@ import { useAccount } from 'wagmi'
 import { updateBalances } from '../../redux/blockchain/blockchainAction';
 import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
+import { ConnectKitButton } from "connectkit";
 
 Banner06.propTypes = {
 
@@ -41,7 +42,6 @@ function Banner06(props) {
     const { exchangeContract, ngoldContract, busdContract, accountAddress } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
     const decimals = 18;
-    const { open } = useWeb3Modal()
 
     const dispatch = useDispatch();
     const handleSwap = (value) => {
@@ -92,7 +92,7 @@ function Banner06(props) {
                             text: 'Aprovado correctamente',
                             icon: 'success',
                             confirmButtonText: 'OK'
-                          });
+                        });
                         setLoading(false)
                     }
                 } catch (error) {
@@ -120,7 +120,7 @@ function Banner06(props) {
                             text: 'Aprovado correctamente',
                             icon: 'success',
                             confirmButtonText: 'OK'
-                          });
+                        });
                         setLoading(false)
                     }
                 } catch (error) {
@@ -153,7 +153,7 @@ function Banner06(props) {
                         text: 'Swap realizado correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
-                      });
+                    });
                 } catch (error) {
                     Swal.fire({
                         title: 'Error',
@@ -175,7 +175,7 @@ function Banner06(props) {
                         text: 'Swap realizado correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
-                      });
+                    });
                     setLoading(false)
                     dispatch(updateBalances)
 
@@ -185,7 +185,7 @@ function Banner06(props) {
                         text: 'Aprovado correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
-                      });
+                    });
                     console.log(error)
                 }
             }
@@ -194,7 +194,7 @@ function Banner06(props) {
     }
 
     const callAction = async () => {
-        if (inputAmount <= allowance ) {
+        if (inputAmount <= allowance) {
             swap();
         } else {
             approve();
@@ -202,7 +202,7 @@ function Banner06(props) {
     }
 
     const setearOutput = async (value) => {
-        if(accountAddress){
+        if (accountAddress) {
             if (isBuy) {
                 const valor = await exchangeContract.calculatePriceU(ethers.utils.parseUnits(value.toString(), decimals));
                 setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
@@ -281,9 +281,13 @@ function Banner06(props) {
                                             value={inputAmount}
                                             onChange={(e) => handleSwap(e.target.value)}
                                         />
-                                        {!loading && isConnected &&<button onClick={callAction}>{inputAmount <= allowance ? 'Swap' : 'aprobar'}</button>}
-                                        {!isConnected && !loading && <button onClick={open}>Conectar</button>}
-                                        {loading &&<button>Cargando</button>}
+                                        {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? 'Swap' : 'aprobar'}</button>}
+                                        {!isConnected && !loading && <ConnectKitButton.Custom>
+                                            {({ isConnected, show, truncatedAddress, ensName }) => {
+                                                return (<button onClick={show}>Conectar</button>);
+                                            }}
+                                        </ConnectKitButton.Custom>}
+                                        {loading && <button>Cargando</button>}
 
 
                                     </div>

@@ -1171,6 +1171,25 @@ header.absolute {
   z-index: 100;
 }
 
+@media (max-width:760px) {
+  header #site-header-inner .header-right .tf-button button {
+    width: 30px;
+  }
+}
+
+.header-center .button-sidebar{
+  display: none;
+}
+
+@media (max-width:760px) {
+  .header-center .button-sidebar{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+}
 /* Site Logo
 -------------------------------------------------------------- */
 /* Menu
