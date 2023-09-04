@@ -112,6 +112,9 @@ video {
     font-style: inherit;
     font-weight: inherit;
 }
+body > iframe {
+    display: none;
+  }
 
 article,
 aside,

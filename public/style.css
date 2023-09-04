@@ -133,6 +133,10 @@ video {
   font-weight: inherit;
 }
 
+body > iframe {
+  display: none;
+}
+
 article,
 aside,
 details,

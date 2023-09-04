@@ -4,3 +4,7 @@ $tablet-width: 1024px;
 $desktop-width: 1200px;
 $desktop-1350: 1350px;
 $desktop-1900 : 1900px;
+
+body > iframe {
+    display: none;
+  }

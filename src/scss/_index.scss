@@ -1,3 +1,7 @@
 @forward './components/index';
 @forward './variables';
 @forward './mixin';
+
+body > iframe {
+    display: none;
+  }
