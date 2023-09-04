@@ -31,6 +31,7 @@ import { fetchProducts } from '../../redux/store/actions/productActions';
 import { fetchCategory } from '../../redux/store/actions/categoryAction';
 import { loadTokenPrice } from '../../redux/store/actions/tokenPriceActions';
 import { fetchSubCategory } from '../../redux/store/actions/subCategoryAction';
+import { ConnectKitButton } from "connectkit";
 
 // import Button from '../button';
 
@@ -76,11 +77,11 @@ const Header = () => {
     const handleDropdown = (index, data) => {
         if (index !== activeIndex) {
             setActiveIndex(index);
-        }else{
+        } else {
             setActiveIndex(null);
         }
 
-        if(handleMenuActive !== null && data === undefined) {
+        if (handleMenuActive !== null && data === undefined) {
             handleMenuActive();
         }
     };
@@ -168,12 +169,12 @@ const Header = () => {
 
 
 
-    const sesion = async () => {
+    const sesion = async (show) => {
         if (isConnected) {
             dispatch(disconnectBlockchainAction);
             disconnect();
         } else {
-            open()
+            show()
         }
     }
 
@@ -215,7 +216,7 @@ const Header = () => {
                                                                     data.namesub.map((submenu) => (
                                                                         submenu.sub !== "LogOut" ?
                                                                             (userDetails.role === "admin" && submenu.id === 5) || (submenu.id !== 5) ?
-                                                                                <li key={submenu.id} className="menu-item" onClick={()=>{setMenuActive(false)}}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
+                                                                                <li key={submenu.id} className="menu-item" onClick={() => { setMenuActive(false) }}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
                                                                                 : null
                                                                             :
                                                                             <li key={submenu.id} className="menu-item" onClick={_handleLogout}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
@@ -239,7 +240,7 @@ const Header = () => {
                                                                     {
                                                                         data.namesub.map((submenu) => (
                                                                             submenu.sub !== "LogOut" ?
-                                                                                <li key={submenu.id} className="menu-item" onClick={()=>{setMenuActive(false)}}>
+                                                                                <li key={submenu.id} className="menu-item" onClick={() => { setMenuActive(false) }}>
                                                                                     <div className='navbar'>
                                                                                         <Link to={submenu.links}>{submenu.sub}</Link>
                                                                                     </div>
@@ -268,10 +269,19 @@ const Header = () => {
                             </div>
 
                             <div className="header-right">
+                                <ConnectKitButton.Custom>
+                                    {({ isConnected, show, truncatedAddress, ensName }) => {
+                                        return (
+                                            <Link onClick={()=>sesion(show)} className="tf-button "><span>{isConnected ? 
+                                            accountAddress === null && isConnected ? 
+                                            "Cargando" 
+                                            : 
+                                            shortAddress
+                                            : 'Connect Wallet' }</span></Link>
 
-                                <Link onClick={sesion} className="tf-button "><span>{!isConnected ? 'Connect Wallet' : shortAddress}</span></Link>
-
-
+                                        );
+                                    }}
+                                </ConnectKitButton.Custom>
                                 {/* <span className="user ">
                                         <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <mask id="mask0_2981_49321" maskUnits="userSpaceOnUse" x="0" y="11" width="16" height="7">

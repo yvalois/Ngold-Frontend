@@ -39,7 +39,6 @@ const CreatePool = () => {
       }
       try {
         let time = daysToSeconds(newPool.tiempo_bloqueo); 
-        alert( ethers.utils.parseEther(newPool.apr))
         const tx = await poolContract.setStakePool(ethers.utils.parseEther(newPool.max_p), time, ethers.utils.parseEther(newPool.apr), ethers.utils.parseEther(newPool.max_w));
         await tx.wait();
         setNewPool({

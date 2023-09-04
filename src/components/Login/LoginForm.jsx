@@ -101,7 +101,6 @@ const handleSubmit = () => {
 
 useEffect(() => {
     if (error) {
-  alert(code)
 
         console.log(errorMsg);
         setLoading(false);

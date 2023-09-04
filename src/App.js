@@ -14,20 +14,22 @@ import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { mainnet, hardhat,polygon } from 'wagmi/chains'
+import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from "connectkit"
+
+
 function App() {
 
 
     const chains = [polygon]
 
-    const projectId = '022ab2b4b6b684c47db3d9b652065c92'
-    const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
-    const wagmiConfig = createConfig({
-        autoConnect: true,
-        connectors: w3mConnectors({ projectId, chains }),
-        publicClient
-    })
-    const ethereumClient = new EthereumClient(wagmiConfig, chains);
-
+    const wagmiConfig = createConfig(
+        getDefaultConfig({
+          appName: "Ngold",
+          alchemyId: "gS7apTrs7AzWt0gYkd2p9fikCNpPtvNR", // or infuraId
+          walletConnectProjectId: "022ab2b4b6b684c47db3d9b652065c92",
+          chains,
+        }),
+      );
 
     useEffect(() => {
         AOS.init({
@@ -38,7 +40,8 @@ function App() {
     return (
         <>
             <WagmiConfig config={wagmiConfig}>
-                <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+      <ConnectKitProvider>
+
                 <Header />
 
                 <Routes>
@@ -53,6 +56,8 @@ function App() {
                 </Routes>
 
                 <Footer />
+      </ConnectKitProvider>
+
             </WagmiConfig>
         </>
     );
