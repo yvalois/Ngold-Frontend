@@ -127,7 +127,7 @@ export const updateBalances = () => async (dispatch, getState) => {
     let ngoldNftBalance = [];
     let ngoldNftStakingBalance = [];
     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
-    let NgoldStakingBalance = await stakingContract.getNftsInStaking();
+    let NgoldStakingBalance = await stakingContract.getNfts();
     for (let i = 0; NgoldNftBalance.length > i; i++) {
         const name = `Elfo`
         let info = {
@@ -193,7 +193,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     let ngoldNftBalance = [];
                     let ngoldNftStakingBalance = [];
                     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
-                    let NgoldStakingBalance = await stakingContract.getNftsInStaking();
+                    let NgoldStakingBalance = await stakingContract.getNfts();
                     for (let i = 0; NgoldNftBalance.length > i; i++) {
                         const name = `Elfo`
                         let info = {
@@ -203,7 +203,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         }
                         ngoldNftBalance.push(info)
                     }
-
+                    console.log(NgoldStakingBalance)
                     for (let i = 0; NgoldStakingBalance.length > i; i++) {
                         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
                         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 8)).toFixed(2);
