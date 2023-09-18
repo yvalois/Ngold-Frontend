@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import PageTitle from '../components/pagetitle/PageTitle';
 import { Link } from 'react-router-dom';
@@ -17,6 +17,7 @@ import avtd4 from '../assets/images/author/authour-bid-2.png'
 import avtd5 from '../assets/images/author/authour-bid-3.png'
 import avtd6 from '../assets/images/author/author-history-1.jpg'
 import avtd7 from '../assets/images/author/author-history-2.jpg'
+import StakingModal from '../components/layouts/StakingModal';
 
 ItemDetails01.propTypes = {
     
@@ -24,7 +25,12 @@ ItemDetails01.propTypes = {
 
 function ItemDetails01(props) {
     const [modalShow, setModalShow] = useState(false);
-
+    const [nft, setNft] = useState({
+        nombre: "",
+        id:0,
+        descripcion:"",
+        image:""
+    })
     const [tabDetails] = useState([
 
         {
@@ -34,87 +40,12 @@ function ItemDetails01(props) {
             name: 'Nosotros'
         }
     ])
-
-    const [tabBid] = useState([
-        {
-            id: 1,
-            avt: avtd3,
-            price: '1.35 ETH',
-            name: 'carlisle',
-            time : '3/26/2022, 7:28 AM'
-        },
-        {
-            id: 2,
-            avt: avtd4,
-            price: '1.35 ETH',
-            name: 'carlisle',
-            time : '3/26/2022, 7:28 AM'
-        },
-        {
-            id: 3,
-            avt: avtd5,
-            price: '1.35 ETH',
-            name: 'carlisle',
-            time : '3/26/2022, 7:28 AM'
-        },
-        {
-            id: 4,
-            avt: avtd3,
-            price: '1.35 ETH',
-            name: 'carlisle',
-            time : '3/26/2022, 7:28 AM'
-        },
-        {
-            id: 5,
-            avt: avtd4,
-            price: '1.35 ETH',
-            name: 'carlisle',
-            time : '3/26/2022, 7:28 AM'
-        },
-        {
-            id: 6,
-            avt: avtd5,
-            price: '1.35 ETH',
-            name: 'carlisle',
-            time : '3/26/2022, 7:28 AM'
-        },
-       
-
-    ])
-
-    const [tabHistory] = useState([
-        {
-            id: 1,
-            name : 'Mason Woodward',
-            avt: avtd6,
-
-        },
-        {
-            id: 2,
-            name : 'Violet Pascall ',
-            avt: avtd7,
-
-        },
-        {
-            id: 3,
-            name : 'Camilla Hudson ',
-            avt: avtd6,
-
-        },
-        {
-            id: 4,
-            name : 'Derick Reed ',
-            avt: avtd7,
-
-        },
-        {
-            id: 5,
-            name : 'Mason Woodward',
-            avt: avtd6,
-
-        },
-
-    ])
+    
+    useEffect(() => {
+        const token = window.localStorage.getItem('Nft');
+        setNft(JSON.parse(token))
+    }, [])
+    
     return (
         <div>
 
@@ -124,12 +55,12 @@ function ItemDetails01(props) {
                 <div className="tf-container">
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="tf-item-detail-inner">
+                            <div className="tf-item-detail-inner">  
                                 <div className="image">
-                                    <img src={img1} alt="Binasea" />
+                                    <img src={nft.image} alt="Binasea" />
                                 </div>
                                 <div className="content">
-                                    <h2 className="title-detail">GoldenElf #4449</h2>
+                                    <h2 className="title-detail">{nft.nombre} #{nft.id}</h2>
                                     <p className="except">A Collection Of 10,000 Undead NFTs Minted On The Ethereum Blockchain. Each Unique Deadfella Is Randomly Generated From A Combination.</p>
 
                                     <Tabs className="tf-tab">
@@ -186,8 +117,8 @@ function ItemDetails01(props) {
                                         <div className="heading">
                                             <h6>Acciones</h6>
                                         </div>
-                                        <div className="button">
-                                            <Link to="#" className="tf-button" data-toggle="modal" data-target="#popup_bid">Stakear</Link>
+                                        <div className="button" onClick={()=>setModalShow(true)}>
+                                            <Link to="#" className="tf-button" data-toggle="modal" data-target="#popup_bid" >Stakear</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +128,11 @@ function ItemDetails01(props) {
                 </div>
             </section>
 
-            
+            <StakingModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                id={nft.id}
+            />
         </div>
     );
 }

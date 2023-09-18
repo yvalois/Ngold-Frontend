@@ -6,7 +6,7 @@ const menus = [
     },
     {
         id: 2,
-        name: 'Mint',
+        name: 'Comprar Golden Elf',
         links: 'mint'
     },
     {
@@ -21,7 +21,7 @@ const menus = [
     },
     {
         id: 5,
-        name: 'Coleccion',
+        name: 'Inventario',
         links: '/coleccion',
     },
     {

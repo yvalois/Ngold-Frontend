@@ -21,10 +21,11 @@ import { useAccount } from 'wagmi'
 import { updateBalances } from '../../redux/blockchain/blockchainAction';
 import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
-import elfo from '../../assets/images/GEclasico.jpg'
+import elfo from '../../assets/images/signo.jpeg'
 import logo_elf from '../../assets/images/logo/logo_elf.png';
 import { ConnectKitButton } from "connectkit";
-
+import ngold from '../../assets/images/icon/ngold.png'
+import MintNftModal from '../layouts/MintNftModal';
 
 
 Banner05.propTypes = {
@@ -38,7 +39,7 @@ function Banner05(props) {
     const [modalShow, setModalShow] = useState(false);
     const [allowance, setAllowance] = useState(0);
     const [loading, setLoading] = useState(false)
-    const { elfosContract, ngoldContract, busdContract, accountAddress } = useSelector(state => state.blockchain);
+    const { elfosContract, ngoldContract, busdContract, accountAddress, ngoldNftBalance } = useSelector(state => state.blockchain);
     const decimals = 18;
     const { isConnected, isConnecting } = useAccount()
 
@@ -109,24 +110,25 @@ function Banner05(props) {
 
         }
     }
+    const funcion = async () => {
+        dispatch(updateBalances())
+    }
 
     const mint = async () => {
         setLoading(true);
         try {
             if (cant > 0) {
                 const tx = await elfosContract.buyToken(cant, ngoldContract.address);
-                dispatch(updateBalances())
                 await tx.wait()
-                Swal.fire({
-                    title: 'Success',
-                    text: 'Minteado correctamente',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
+                await funcion();
+                window.localStorage.setItem("Nft", JSON.stringify(ngoldNftBalance[ngoldNftBalance.length - 1]));
+                //JSON.parse
+                setModalShow(true);
                 setLoading(false);
 
             }
         } catch (error) {
+            console.log(error)
             Swal.fire({
                 title: 'Error',
                 text: error.reason,
@@ -165,23 +167,23 @@ function Banner05(props) {
                         <div class="tf-slider-item style-5">
 
                             <div class="content-inner">
-                                <img src={img1} alt="Binasea" class="img-star star-1 ani4" />
+                                {/* <img src={img1} alt="Binasea" class="img-star star-1 ani4" />
                                 <img src={img2} alt="Binasea" class="img-star star-2 ani5" />
                                 <img src={img3} alt="Binasea" class="img-star star-3 ani4" />
-                                <img src={img4} alt="Binasea" class="img-star star-4 ani5" />
-                                <h1 class="heading">
-                                    Get your <span className='palabra'>NFT</span>
+                                <img src={img4} alt="Binasea" class="img-star star-4 ani5" /> */}
+                                <h1 className="heading">
+                                    Compra tu <span className='palabra'>NgoldElf</span>
                                 </h1>
 
                             </div>
-                            <div class="image">
+                            <div className="image">
                                 <div class="img-slider"><img src={elfo} alt="Binasea" /></div>
 
                                 <div class="swiper-container slider-card-product">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
                                             <div class="card-product ">
-                                                <h4>Token #???</h4>
+                                                <h4>Golden Elf #???</h4>
                                                 <div class="infor-author">
                                                     <img src={logo_elf} alt="Binasea" />
                                                     <div class="infor">
@@ -194,7 +196,7 @@ function Banner05(props) {
                                                         <p>Price</p>
                                                         <div class="price">
                                                             {/* Ngold Logo */}
-                                                            <div class="icon"><i class="fab fa-ethereum"></i></div>
+                                                            <div class="icon"><img src={ngold} /></div>
                                                             <p>{parseFloat(precio * cant).toFixed(1)}</p>
                                                         </div>
                                                     </div>
@@ -229,11 +231,17 @@ function Banner05(props) {
                 </div>
             </div>
 
-            <CardModal
+
+
+
+            <MintNftModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+                id={ngoldNftBalance[ngoldNftBalance.length - 1]?.id}
             />
         </section>
+
+
     );
 }
 

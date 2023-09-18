@@ -15,7 +15,7 @@ function Contractos() {
         return address.slice(0, 4) + "..." + address.slice(address.length - 4);
     }
 
-    const { ngoldContract, busdContract, accountAddress, exchangeContract, tiendaContract } = useSelector(state => state.blockchain);
+    const { ngoldContract, busdContract, accountAddress, exchangeContract, tiendaContract,elfosContract  } = useSelector(state => state.blockchain);
     const dispatch = useDispatch();
     
     const [busdBalance, setBusdBalance] = useState(0);
@@ -24,6 +24,8 @@ function Contractos() {
     const [busdAmount, setBusdAmount] = useState(0);
     const [busdBalance2, setBusdBalance2] = useState(0);
     const [tokenBalance2, setTokenBalance2] = useState(0);
+    const [busdBalance3, setBusdBalance3] = useState(0);
+    const [tokenBalance3, setTokenBalance3] = useState(0);
 
     const [data, setData] = useState([]);
     const [totalBusd, setTotalBusd] = useState(0);
@@ -35,9 +37,18 @@ function Contractos() {
         setTokenBalance(parseFloat(token / 10 ** 8));
     }
 
+    const nftBalanace = async () => {
+        const busd = await busdContract.balanceOf(elfosContract.address);
+        const token = await ngoldContract.balanceOf(elfosContract.address);
+        setBusdBalance3(ethers.utils.formatEther(busd));
+        setTokenBalance3(parseFloat(token / 10 ** 8));
+    }
+
+
     useEffect(() => {
         if (accountAddress) {
             exchangeBalanace();
+            nftBalanace();
         }
     }, [accountAddress])
 
@@ -135,41 +146,47 @@ function Contractos() {
                 });
             }
         }
-        
     }
 
-    const retireBUSDBalanace = async () => {
-        try{
-        const tx = await tiendaContract.retireTokenBalance(busdContract.address);
-        await tx.wait();
-        busdStoreBalance();
-        Swal.fire({
-            icon: 'success',
-            title: 'Tokens retirados',
-            text: 'Los tokens han sido retirados del contrato',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        }
-        catch(e){
-            console.log(e);
-            if(e.reason){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: e.reason,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Ha ocurrido un error',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+    const retire2 = async (option) => {
+        if (accountAddress) {
+            if (option === 1) {
+                const amount = (tokenAmount * 10 ** 8).toString();
+                const tx = await tiendaContract.retireTokenBalance(ngoldContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
             }
+            if (option === 2) {
+                const amount = ethers.utils.parseEther(busdAmount.toString());
+                const tx = await tiendaContract.retireTokenBalance(busdContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+            }
+        } else {
+            alert('Connect wallet');
+        }
+    }
+
+    const retire3 = async (option) => {
+        if (accountAddress) {
+            if (option === 1) {
+                const amount = (tokenAmount * 10 ** 8).toString();
+                const tx = await elfosContract.withdrawToken(ngoldContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+            }
+            if (option === 2) {
+                const amount = ethers.utils.parseEther(busdAmount.toString());
+                const tx = await elfosContract.withdrawToken(busdContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+            }
+        } else {
+            alert('Connect wallet');
         }
     }
 
@@ -180,16 +197,16 @@ function Contractos() {
                 <div className="overflow-table">
                     <div className='dashboard-content inventory content-tab'>
                         <div className="inner-content inventory">
-                            <h4 className="title-dashboard">Contractos</h4>
+                            <h4 className="title-dashboard">Balances</h4>
 
                             <div className="table-ranking top">
 
                                 <div className="title-ranking">
                                     <div className="col-rankingg">Contracto</div>
                                     <div className="col-rankingg">Balance Ngold</div>
-                                    <div className="col-rankingg">Balance Busd</div>
+                                    <div className="col-rankingg">Balance USDT</div>
                                     <div className="col-rankingg">Retirar Ngold</div>
-                                    <div className="col-rankingg">Balance Busd</div>
+                                    <div className="col-rankingg">Balance USDT</div>
 
                                 </div>
                             </div>
@@ -230,14 +247,36 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg coin">{busdBalance2}</div>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
-                                                <button onClick={retireTokenBalanace}>
+                                                <button onClick={retire2(1)}>
                                                     Retirar
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
-                                                <button  onClick={retireBUSDBalanace}>
+                                                <button  onClick={retire2(2)}>
+                                                    Retirar
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="table-ranking ">
+                                    <div className="content-ranking">
+                                        <div className="col-rankingg">NFts</div>
+                                        <div className="col-rankingg">{tokenBalance3}</div>
+                                        <div className="col-rankingg coin">{busdBalance3}</div>
+                                        <div className="col-rankingg">
+                                            <div className='action-button'>
+                                                <button onClick={retire3(1)}>
+                                                    Retirar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="col-rankingg ">
+                                            <div className='action-button'>
+                                                <button  onClick={retire3(2)}>
                                                     Retirar
                                                 </button>
 
@@ -265,7 +304,7 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                             <div className="title-ranking2">
                                                 <div className="col-rankingg">Wallet</div>
                                                 <div className="col-rankingg">Ngold</div>
-                                                <div className="col-rankingg">Busd</div>
+                                                <div className="col-rankingg">USDT</div>
                                                 <div className="col-rankingg">Tiempo restante</div>
                                                 <div className="col-rankingg"></div>
                                                 <div className="col-rankingg"></div>

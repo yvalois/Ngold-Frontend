@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { Modal } from "react-bootstrap";
-import { ethers } from 'ethers';
 import { useAccount } from 'wagmi'
 import { updateBalances } from '../../redux/blockchain/blockchainAction';
-import { useWeb3Modal } from '@web3modal/react'
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2';
 

@@ -54,6 +54,7 @@ import { ethers } from 'ethers';
 import { useAccount } from 'wagmi'
 import Swal from 'sweetalert2';
 import { updateBalances } from '../../redux/blockchain/blockchainAction';
+import { useNavigate } from 'react-router-dom';
 
 HotPick4.propTypes = {
     data: PropTypes.array,
@@ -68,6 +69,7 @@ function HotPick4(props) {
     const [id, setId] = useState(10000);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
+    const navegar = useNavigate();
     const [dataTab] = useState([
         {
             id: 1,
@@ -199,6 +201,21 @@ function HotPick4(props) {
             setLoading(false)
         }
     }
+
+    const setToken = (id)=>{
+        let position 
+        for (let i = 0; position === undefined; i++){
+            if(ngoldNftBalance[i].id === id){
+                position = i;
+                window.localStorage.setItem('Nft',JSON.stringify(ngoldNftBalance[position]))
+                navegar('/item-details-v1')
+                break
+            }else{
+                position = undefined;
+            }
+        }
+
+    }
     return (
         <section className="tf-section tf-hot-pick tf-filter">
             <div className="tf-container">
@@ -250,7 +267,7 @@ function HotPick4(props) {
                                 <div className="row tf-filter-container wow fadeInUp">
                                     {ngoldNftBalance.length > 0 &&
                                         (ngoldNftBalance.map((idx, index) => (
-                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 tf-loadmore 3d cyber" key={index}>
+                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 tf-loadmore 3d cyber" key={index} onClick={()=>{setToken(idx.id)}}>
                                                 <div className="sc-product style2">
                                                     <div className="top">
                                                         <Link to="/item-details-v1" className="tag">{idx.Nombre}</Link>

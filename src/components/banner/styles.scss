@@ -47,12 +47,12 @@
             margin-right: 8px;
             border-width: 2px;
             &:hover {
-                background: rgb(208, 208, 28) ;
+                background:  #FFAE00 ;
                 color: #fff;
-                border-color: rgb(208, 208, 28) ;
+                border-color:  #FFAE00 ;
             }
             &.style-2 {
-                border-color: rgb(208, 208, 28) ;
+                border-color:  #FFAE00 ;
                 padding: 11px 37px;
                 &:hover {
                     background: transparent;
@@ -106,7 +106,7 @@
                 font-weight: 700;
                 font-size: 20px;
                 line-height: 26px;
-                color: rgb(208, 208, 28) ;
+                color:  #FFAE00 ;
                 padding: 8px 12px;
                 background-color: #fff;
                 border-radius: 16px;
@@ -210,7 +210,7 @@
                     .price {
                         .cash {
                             background-color: #fff;
-                            color: rgb(208, 208, 28) ;
+                            color:  #FFAE00 ;
                             border-radius: 16px;
                             font-weight: 700;
                             font-size: 20px;
@@ -242,7 +242,7 @@
                 max-width: 880px;
                 margin: 0 auto;
                 span {
-                    color: rgb(208, 208, 28) ;
+                    color:  #FFAE00 ;
                 }
             }
             .heading {
@@ -391,7 +391,7 @@
                         &:hover {
                             background: var(--primary-color52);
                             color: var(--primary-color14);
-                            border-color: rgb(208, 208, 28) ;
+                            border-color:  #FFAE00 ;
                         }
                     }
                     
@@ -444,7 +444,7 @@
             .heading {
                 margin-bottom: 22px;
                 span {
-                    color: rgb(208, 208, 28) ;
+                    color:  #FFAE00 ;
                 }
             }
             .sub-heading {
@@ -480,10 +480,10 @@
                     padding:9px 37px; 
                     margin-right: 16px;
                     &:hover {
-                        border-color:rgb(208, 208, 28) ;
+                        border-color: #FFAE00 ;
                     }
                     &.style-2 { 
-                        border-color:rgb(208, 208, 28) ;
+                        border-color: #FFAE00 ;
                         padding: 10px 60px ;
                         margin-right: 0;
                         &:hover {
@@ -542,7 +542,7 @@
                             font-weight: 700;
                             font-size: 24px;
                             line-height: 32px;
-                            color: rgb(208, 208, 28) ;
+                            color:  #FFAE00 ;
                         }
                     }
                 }
@@ -564,7 +564,7 @@
                                 width: 42px;
                                 height: 42px;
                                 @include flex(center,center);
-                                background-color: rgb(208, 208, 28) ;
+                                background-color:  #FFAE00 ;
                                 color: #fff;
                                 border-radius: 50%;
                                 margin-right: 12px;
@@ -599,12 +599,12 @@
                     margin-right: 13px;
                     border-width: 2px;
                     &:hover {
-                        background: rgb(208, 208, 28) ;
+                        background:  #FFAE00 ;
                         color: #fff;
-                        border-color: rgb(208, 208, 28) ;
+                        border-color:  #FFAE00 ;
                     }
                     &.style-2 {
-                        border-color: rgb(208, 208, 28) ;
+                        border-color:  #FFAE00 ;
                         &:hover {
                             background: transparent;
                             border: 2px solid var(--primary-color14);
@@ -781,9 +781,9 @@
                     }
                 }
                 .product-button a {
-                    background-color: rgb(208, 208, 28) ;
+                    background-color:  #FFAE00 ;
                     color: #fff;
-                    border-color: rgb(208, 208, 28) ;
+                    border-color:  #FFAE00 ;
                 }
 
             }

@@ -98,7 +98,7 @@ const ProductDetail = () => {
                     <h2>{product.name}</h2>
                     <p> {product.description}</p>
                 </div>
-                <h6>Precio: ${product.price} Busd</h6>
+                <h6>Precio: ${product.price} USDT</h6>
 
                 <div className='buttons-detail'>
                     <div className="cantidad-input">

@@ -39,7 +39,7 @@ function Banner06(props) {
     const [allowance, setAllowance] = useState(0);
     const [isBuy, setIsBuy] = useState(true);
     const [loading, setLoading] = useState(false);
-    const { exchangeContract, ngoldContract, busdContract, accountAddress } = useSelector(state => state.blockchain);
+    const { exchangeContract, ngoldContract, busdContract, accountAddress,ngoldBalance, busdBalance } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
     const decimals = 18;
 
@@ -140,6 +140,7 @@ function Banner06(props) {
     }
 
     const swap = async () => {
+        
         if (parseFloat(inputAmount).toFixed(2) > 0) {
             if (isBuy) {
                 setLoading(true)
@@ -147,7 +148,7 @@ function Banner06(props) {
                     const tx = await exchangeContract.buyToken(ethers.utils.parseUnits(inputAmount.toString(), decimals), busdContract.address);
                     await tx.wait();
                     setLoading(false)
-                    dispatch(updateBalances)
+                    dispatch(updateBalances())
                     Swal.fire({
                         title: 'Success',
                         text: 'Swap realizado correctamente',
@@ -177,7 +178,7 @@ function Banner06(props) {
                         confirmButtonText: 'OK'
                     });
                     setLoading(false)
-                    dispatch(updateBalances)
+                    dispatch(updateBalances())
 
                 } catch (error) {
                     Swal.fire({
@@ -221,7 +222,11 @@ function Banner06(props) {
     }, [inputAmount])
 
 
-
+    useEffect(() => {
+        setOutputAmount('')
+        setInputAmount('')
+    }, [isBuy])
+    
     return (
         <section className="tf-slider">
             <div className="container-fluid">
@@ -254,7 +259,8 @@ function Banner06(props) {
                             </div>
                             <div className="image ani4">
                                 <div className="crypto-swap">
-                                    <h1>Crypto Exchange</h1>
+                                    <h4>Crypto Exchange</h4>
+                                    <h6>{isBuy ? "(Comprar Ngold)" : "(Vender Ngold)"}</h6>
                                     <div className='tokens_container'>
 
 
@@ -275,12 +281,28 @@ function Banner06(props) {
                                     </div>
 
                                     <div className="input-container">
-                                        <input
-                                            type="text"
-                                            placeholder="Monto"
-                                            value={inputAmount}
-                                            onChange={(e) => handleSwap(e.target.value)}
-                                        />
+                                        <div className='balance'>
+                                            <input
+                                                type="text"
+                                                placeholder="Monto"
+                                                value={inputAmount}
+                                                onChange={(e) => handleSwap(e.target.value)}
+                                            />
+
+                                            <div className='balances-item'>
+                                            <img src={ngold} alt='token2' />
+
+                                                <p>Balance: {ngoldBalance !== undefined ? parseFloat(ngoldBalance).toFixed(2) : 0} NGOLD'S  </p>
+                                            </div>
+                                            <div className='balances-item'>
+                                            <img src={usdt} alt='token1' />
+
+                                                <p>Balance: {busdBalance !== undefined ? parseFloat(busdBalance).toFixed(2) : 0} USDT</p>
+
+                                            </div>
+
+                                        </div>
+
                                         {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? 'Swap' : 'aprobar'}</button>}
                                         {!isConnected && !loading && <ConnectKitButton.Custom>
                                             {({ isConnected, show, truncatedAddress, ensName }) => {
@@ -289,14 +311,11 @@ function Banner06(props) {
                                         </ConnectKitButton.Custom>}
                                         {loading && <button>Cargando</button>}
 
-
                                     </div>
-
                                     <div className="output-container">
-                                        <p>Monto de salida:</p>
-                                        <p>{outputAmount} {isBuy ? 'NGOLD' : 'BUSD'}</p>
+                                        <p>Monto a recibir:</p>
+                                        <p>{outputAmount} {isBuy ? 'NGOLD' : 'USDT'}</p>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

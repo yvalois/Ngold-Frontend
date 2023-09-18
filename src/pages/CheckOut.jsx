@@ -397,7 +397,7 @@ const CheckOut = () => {
 
                             >
                                 <option value={Api.TOKEN_NAME}>{Api.TOKEN_NAME}</option>
-                                <option value="BUSD">BUSD </option>
+                                <option value="BUSD">USDT </option>
                             </select>
                         </div>
 
@@ -460,7 +460,7 @@ const CheckOut = () => {
 
 
                     <div className='money'>
-                        <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${precio}` : `BUSD: ${getCartTotalToken() * tokenPrice}`}</p>
+                        <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${precio}` : `USDT: ${getCartTotalToken() * tokenPrice}`}</p>
                     </div>
 
 

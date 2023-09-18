@@ -507,7 +507,7 @@ input::-moz-focus-inner {
     padding: 0;
 }
 
-/* Remove chrome rgb(208, 208, 28) autofill */
+/* Remove chrome  #FFAE00 autofill */
 
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #f7f7f7 inset
@@ -653,7 +653,7 @@ input[type="submit"] {
     font-weight: 700;
     font-size: 16px;
     line-height:24px;
-    background-color: rgb(208, 208, 28) ;
+    background-color:  #FFAE00 ;
     color: #fff;
     border-radius: 50px;
     padding: 17px 50px;
@@ -663,7 +663,7 @@ input[type="submit"] {
     &:focus,
     &:hover {
         outline: 0;
-        background: rgb(208, 208, 28) ;
+        background:  #FFAE00 ;
         color: #fff;           
     }
 }
@@ -847,7 +847,7 @@ label.error {
     margin-right : auto;
     padding-right: 15px;
     padding-left : 15px;
-    width        : 1440px;
+    width        : 1640px;
     max-width    : 100%;
 }
 .mb63 {
@@ -944,7 +944,7 @@ a {
     --background-body: #fff;
     --primary-color: #565660;
     --primary-color2: rgba(86, 86, 96, 0.6);
-    --primary-color3: rgb(208, 208, 28) ;
+    --primary-color3:  #FFAE00 ;
     --primary-color4: #E5E5E5;
     --primary-color5: #191820;
     --primary-color6: #fff;
@@ -955,7 +955,7 @@ a {
     --primary-color11: #F7F7F7;
     --primary-color12: rgba(229, 229, 229, 0.5);
     --primary-color13: rgba(55, 73, 233, 0.1);
-    --primary-color14: rgb(208, 208, 28) ;
+    --primary-color14:  #FFAE00 ;
     --primary-color15: #E5E5E5;
     --primary-color16: #191820;
     --primary-color17: #E5E5E5;
@@ -974,7 +974,7 @@ a {
     --primary-color30:#565660;
     --primary-color31: #B9B8BB;
     --primary-color32: #CCD2E3;
-    --primary-color33: rgb(208, 208, 28) ;
+    --primary-color33:  #FFAE00 ;
     --primary-color34: #B9B8BB;
     --primary-color35:rgba(55, 73, 233, 0.1);
     --primary-color36: #E5E5E5;
@@ -984,12 +984,12 @@ a {
     --primary-color40: rgba(55, 73, 233, 0.1);
     --primary-color41: #F7F7F7;
     --primary-color42: #CFDBD5;
-    --primary-color43: rgb(208, 208, 28) ;
+    --primary-color43:  #FFAE00 ;
     --primary-color44: #fff;
     --primary-color45: rgba(55, 73, 233, 0.1);
     --primary-color46: rgba(86, 86, 96,0.1);
     --primary-color47: #E5E5E5;
-    --primary-color48: rgb(208, 208, 28) ;
+    --primary-color48:  #FFAE00 ;
     --primary-color49: #BBBAC2;
     --primary-color50: linear-gradient(141.18deg, rgba(0, 0, 0, 0) -1.4%, rgba(0, 0, 0, 0.0568) -1.38%, rgba(0, 0, 0, 0.0096) 113.47%);
     --primary-color51:#B9B8BB;
@@ -1025,7 +1025,7 @@ a {
     --background-body: #191820;
     --primary-color: rgb(247, 247, 247,0.8);
     --primary-color2: #8A8AA0;
-    --primary-color3: rgb(208, 208, 28) ;
+    --primary-color3:  #FFAE00 ;
     --primary-color4: #28303F;
     --primary-color5: #fff;
     --primary-color6: #1F1F2C;
@@ -1047,8 +1047,8 @@ a {
     --primary-color22: #1F1F2C;
     --primary-color23: #EBEBEB;
     --primary-color24: rgba(0, 0, 0, 0);
-    --primary-color25: rgb(208, 208, 28) ;
-    --primary-color26: rgb(208, 208, 28) ;
+    --primary-color25:  #FFAE00 ;
+    --primary-color26:  #FFAE00 ;
     --primary-color27:#2B3F6C;
     --primary-color28:#fff;
     --primary-color29:rgba(255, 255, 255, 0.3);
@@ -1060,7 +1060,7 @@ a {
     --primary-color35:#1F1F2C;
     --primary-color36: #565660;
     --primary-color37: #B9B8BB;
-    --primary-color38: rgb(208, 208, 28) ;
+    --primary-color38:  #FFAE00 ;
     --primary-color39:rgba(255, 255, 255, 0.1);
     --primary-color40: rgba(255, 255, 255, 0.1);
     --primary-color41: transparent;
@@ -1074,7 +1074,7 @@ a {
     --primary-color49: #B9B8BB;
     --primary-color50: linear-gradient(141.18deg, rgba(0, 0, 0, 0) -1.4%, rgba(0, 0, 0, 0.0568) -1.38%, rgba(0, 0, 0, 0.0096) 113.47%);
     --primary-color51:#A9A9C2;
-    --primary-color52:rgb(208, 208, 28) ;
+    --primary-color52: #FFAE00 ;
 
 
 
@@ -1091,7 +1091,7 @@ a {
     --product-color13: #292831;
     --product-color14: #565660;
     --product-color15: transparent;
-    --product-color16: rgb(208, 208, 28) ;
+    --product-color16:  #FFAE00 ;
     --product-color17: #1F1F2C;
     --product-color18: rgba(207, 219, 213, 0.15);
     --product-color19: rgba(255, 255, 255, 0.1);
@@ -1126,7 +1126,7 @@ a {
   }
   &.style-2 {
       padding      : 12px 37px;
-      background: rgb(208, 208, 28) ;
+      background:  #FFAE00 ;
       color: #fff;
       border-radius: 12px;
   }
@@ -1841,7 +1841,7 @@ a {
         .button-live-auction-next:not(.swiper-button-disabled),
         .button-live-auction-prev:not(.swiper-button-disabled) {
             &::after {
-                background: rgb(208, 208, 28) ;
+                background:  #FFAE00 ;
                 color: #fff;
                 border: transparent;
                 @include transition3;
@@ -1883,7 +1883,6 @@ a {
         position: relative;
         &::after {
 
-            background: url('../src/assets/images/newbanners/goldbuildings.jpg') center center no-repeat ;
             background-size: cover; 
             background-repeat: no-repeat; 
             background-attachment: fixed;
@@ -1951,7 +1950,7 @@ a {
             font-weight: 700;
             font-size: 14px;
             line-height: 18px;
-            color: rgb(208, 208, 28) ;
+            color:  #FFAE00 ;
         }
     }
 }
@@ -1982,7 +1981,7 @@ a {
             background-color: var(--background-body);
             border-radius: 50%;
             &:hover {
-                background-color: rgb(208, 208, 28) ;
+                background-color:  #FFAE00 ;
                 color: #fff;
             }
         }
@@ -1999,7 +1998,7 @@ a {
                 margin-right: 8px;
             }
             &:hover {
-                background-color: rgb(208, 208, 28) ;
+                background-color:  #FFAE00 ;
                 color: #fff;
             }
         }
@@ -2135,11 +2134,11 @@ a {
                 &.react-tabs__tab--selected,
                 &:hover {
                     background: rgba(55, 73, 233, 0.1);
-                    border-color: rgb(208, 208, 28) ;
+                    border-color:  #FFAE00 ;
                     & a {
                         color: var(--primary-color14);
                         & .svg-fill {
-                            fill: rgb(208, 208, 28) ;
+                            fill:  #FFAE00 ;
                         }
                     }
                     &::after {
@@ -2179,7 +2178,7 @@ a {
             margin-bottom: 15px;
             margin-left: 0;
                 & span {
-                color: rgb(208, 208, 28) ;
+                color:  #FFAE00 ;
             }
         }
         & p {
@@ -2198,14 +2197,14 @@ a {
                 border: 2px solid transparent;
                 padding: 10px 41px 10px 44px;
                 &:hover {
-                    border-color: rgb(208, 208, 28) ;
+                    border-color:  #FFAE00 ;
                 }
                 @include tablet {
                     margin-bottom: 20px;
                 }
             }
             & a.btn-2 {
-                border: 1px solid rgb(208, 208, 28) ;
+                border: 1px solid  #FFAE00 ;
                 padding: 10px 38px 11px 37px;
             }
             
@@ -2311,7 +2310,7 @@ a {
                     margin-right: 24px;
                     border: 2px solid transparent;
                     &:hover {
-                        border-color: rgb(208, 208, 28) ;
+                        border-color:  #FFAE00 ;
                         color: var(--primary-color5);
                         background: transparent;
                     }
@@ -2323,7 +2322,7 @@ a {
                     padding: 9px 70px 11px 70px;
                     color: var(--primary-color5);
                     &:hover {
-                        background: rgb(208, 208, 28) ;
+                        background:  #FFAE00 ;
                         color: #fff;
                     }
                 }
@@ -2365,7 +2364,7 @@ a {
                 
             }
             & span {
-                color: rgb(208, 208, 28) ;
+                color:  #FFAE00 ;
             }
         }
         & p {
@@ -2387,7 +2386,7 @@ a {
                     margin-right: 15px;
                     border: 2px solid transparent;
                     &:hover {
-                        border-color: rgb(208, 208, 28) ;
+                        border-color:  #FFAE00 ;
                         color: var(--primary-color5);
                         background: transparent;
                     }
@@ -2400,7 +2399,7 @@ a {
                     color: var(--primary-color5);
                     border-color: var(--primary-color7);
                     &:hover {
-                        background: rgb(208, 208, 28) ;
+                        background:  #FFAE00 ;
                         color: #fff;
                         border-color: transparent;
                     }
@@ -2716,8 +2715,8 @@ a {
         color: var(--primary-color14);
         font-weight: 700;
         &:hover {
-            background-color: rgb(208, 208, 28) ;
-            border-color: rgb(208, 208, 28) ;
+            background-color:  #FFAE00 ;
+            border-color:  #FFAE00 ;
             color: #fff;
         }
         &.style-8,&.style-2 {
@@ -2734,8 +2733,8 @@ a {
                 font-size: 21px;
             }
             &:hover {
-                background-color: rgb(208, 208, 28) ;
-                border-color: rgb(208, 208, 28) ;
+                background-color:  #FFAE00 ;
+                border-color:  #FFAE00 ;
                 color: #fff;
             }
         }
@@ -2752,11 +2751,11 @@ a {
             background-clip: padding-box;
             padding: 10px 31px;
             &:hover {
-                background-color: rgb(208, 208, 28) ;
-                border-color: rgb(208, 208, 28) ;
+                background-color:  #FFAE00 ;
+                border-color:  #FFAE00 ;
                 color: #fff;
                 background-clip: unset;
-                border: 2px solid rgb(208, 208, 28) ;
+                border: 2px solid  #FFAE00 ;
                 &::before {
                     display: none;
                 }
@@ -2821,7 +2820,7 @@ a {
                 height: 28px;
                 @include flex(center,center);
                 display: inline-flex;
-                background-color: rgb(208, 208, 28) ;
+                background-color:  #FFAE00 ;
                 border-radius: 50%;
                 margin-right: 7px;
                 color: #fff;
@@ -3021,7 +3020,7 @@ a {
                         margin-right: 0;
                     }
                     &:hover {
-                        background: rgb(208, 208, 28) ;
+                        background:  #FFAE00 ;
                         color: #fff;
                     }
                 }
@@ -3102,7 +3101,7 @@ a {
             &.active::after {
                 content:"";
                 position: absolute;
-                background-color: rgb(208, 208, 28) ;
+                background-color:  #FFAE00 ;
                 width: 100%;
                 height: 2px;
                 bottom: 0;

@@ -11,6 +11,7 @@ import logo_elf_black from '../../assets/images/logo/logo_elf_black.png';
 import logo2_elf from '../../assets/images/logo/logo2_white.png';
 import logo2_black_elf from '../../assets/images/logo/logo2_black.png';
 
+import TransferModal from '../layouts/TransferModal';
 
 
 import logodark from '../../assets/images/logo/logo_dark.png';
@@ -31,7 +32,7 @@ import { fetchProducts } from '../../redux/store/actions/productActions';
 import { fetchCategory } from '../../redux/store/actions/categoryAction';
 import { loadTokenPrice } from '../../redux/store/actions/tokenPriceActions';
 import { fetchSubCategory } from '../../redux/store/actions/subCategoryAction';
-import { ConnectKitButton } from "connectkit";
+import { ConnectKitButton, useModal } from "connectkit";
 
 // import Button from '../button';
 
@@ -41,7 +42,7 @@ const Header = () => {
     const [is, setIs] = useState(false)
     const [scroll, setScroll] = useState(false);
     const dispatch = useDispatch();
-    const { accountAddress } = useSelector(state => state.blockchain);
+    const { accountAddress, loading, isConnect } = useSelector(state => state.blockchain);
     const [shortAddress, setShortAddress] = useState('')
     const { disconnect } = useDisconnect();
     const cart = useSelector(state => state.cart);
@@ -50,11 +51,12 @@ const Header = () => {
     const history = useNavigate();
 
 
-
     const { storeName, discount, StoreLoaded } = store;
     const { products, cartLoaded } = cart;
     const { loginSuccess, userDetails } = user;
-    const { isOwner } = useSelector(state => state.blockchain);
+    const { isOwner, loading: loading2 } = useSelector(state => state.blockchain);
+    const { open, setOpen } = useModal();
+    const [modalShow, setModalShow] = useState(false);
 
 
     useEffect(() => {
@@ -171,7 +173,7 @@ const Header = () => {
 
     const sesion = async (show) => {
         if (isConnected) {
-            dispatch(disconnectBlockchainAction);
+            dispatch(disconnectBlockchainAction());
             disconnect();
         } else {
             show()
@@ -185,6 +187,16 @@ const Header = () => {
         dispatch(logOut());
         history('tienda');
     }
+
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (loading) {
+                setOpen(false)
+            }
+        }, 2000);
+    }, [loading])
+
 
     return (
         <header className={`header ${scroll ? 'is-fixed' : ''}`}>
@@ -202,23 +214,27 @@ const Header = () => {
                             </div>
 
                             <div className="header-center">
-                                <nav id="main-nav" className={`main-nav ${menuActive ? 'active' : ''}`}>
-                                <div className='button-sidebar'>
-                                <ConnectKitButton.Custom>
-                                    {({ isConnected, show, truncatedAddress, ensName }) => {
-                                        return (
-                                            <Link onClick={()=>sesion(show)} className="tf-button "><span>{isConnected ? 
-                                            accountAddress === null && isConnected ? 
-                                            "Cargando" 
-                                            : 
-                                            shortAddress
-                                            : 'Connect Wallet' }</span></Link>
 
-                                        );
-                                    }}
-                                </ConnectKitButton.Custom>
-                                </div>
-   
+                                <nav id="main-nav" className={`main-nav ${menuActive ? 'active' : ''}`}>
+
+                                    <div className='button-sidebar'>
+
+
+                                        <ConnectKitButton.Custom>
+                                            {({ isConnected, show, truncatedAddress, ensName }) => {
+                                                return (
+                                                    <Link onClick={() => sesion(show)} className="tf-button "><span>
+                                                        {isConnect ?
+                                                            shortAddress
+                                                            : loading ?
+                                                                "Cargando"
+                                                                : 'Connect Wallet'}</span></Link>
+
+                                                );
+                                            }}
+                                        </ConnectKitButton.Custom>
+                                    </div>
+
                                     <ul id="menu-primary-menu" className="menu">
                                         {
                                             menus.map((data, idx) => (
@@ -280,28 +296,30 @@ const Header = () => {
                                                         null
                                             ))
                                         }
-                                        
+
                                     </ul>
 
                                 </nav>
-                                
-                            </div>
 
+                            </div>
+                            <button className='tf-button' onClick={()=> setModalShow(true)}>
+                                        Transferir
+                                    </button>
                             <div className="header-right mode-switch">
                                 <ConnectKitButton.Custom>
                                     {({ isConnected, show, truncatedAddress, ensName }) => {
                                         return (
-                                            <Link onClick={()=>sesion(show)} className="tf-button "><span>{isConnected ? 
-                                            accountAddress === null && isConnected ? 
-                                            "Cargando" 
-                                            : 
-                                            shortAddress
-                                            : 'Connect Wallet' }</span></Link>
+                                            <Link onClick={() => sesion(show)} className="tf-button "><span>{isConnected ?
+                                                accountAddress === null && isConnected ?
+                                                    "Cargando"
+                                                    :
+                                                    shortAddress
+                                                : 'Connect Wallet'}</span></Link>
 
                                         );
                                     }}
                                 </ConnectKitButton.Custom>
-                                
+
                                 {/* <span className="user ">
                                         <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <mask id="mask0_2981_49321" maskUnits="userSpaceOnUse" x="0" y="11" width="16" height="7">
@@ -323,12 +341,16 @@ const Header = () => {
                                 <DarkMode />
                             </div>
 
-                            <div className={`mobile-button ${menuActive ? 'active' : ''}`} onClick={handleMenuActive}><span>aaaa</span></div>
+                            <div className={`mobile-button ${menuActive ? 'active' : ''}`} onClick={handleMenuActive}></div>
                         </div>
                     </div>
                 </div>
             </div>
-
+        <TransferModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                id={2}
+        />
         </header>
 
     );

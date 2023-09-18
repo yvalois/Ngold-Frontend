@@ -129,7 +129,7 @@ export const updateBalances = () => async (dispatch, getState) => {
     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
     let NgoldStakingBalance = await stakingContract.getNfts();
     for (let i = 0; NgoldNftBalance.length > i; i++) {
-        const name = `Elfo`
+        const name = `GoldenElf`
         let info = {
             nombre: name,
             id: parseInt(NgoldNftBalance[i]),
@@ -164,7 +164,7 @@ export const updateBalances = () => async (dispatch, getState) => {
 
 export const fetchBlockchain = (accountAddress, signer, provider) => {
     return async (dispatch) => {
-        const a = "production"
+
         dispatch(loadingBlockchain())
         try {
             try {
@@ -195,7 +195,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
                     let NgoldStakingBalance = await stakingContract.getNfts();
                     for (let i = 0; NgoldNftBalance.length > i; i++) {
-                        const name = `Elfo`
+                        const name = `GoldenElf`
                         let info = {
                             nombre: name,
                             id: parseInt(NgoldNftBalance[i]),
@@ -203,7 +203,6 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         }
                         ngoldNftBalance.push(info)
                     }
-                    console.log(NgoldStakingBalance)
                     for (let i = 0; NgoldStakingBalance.length > i; i++) {
                         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
                         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 8)).toFixed(2);
@@ -237,7 +236,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     }))
                 }
                 else {
-                    if (a === 'production') {
+                    if (process.env.REACT_APP_PRODUCTION === 'production') {
                         try {
                             await provider.provider.request({
                                 method: 'wallet_switchEthereumChain',
@@ -270,7 +269,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                                 }
                             }
                         }
-                    } else if (a === 'development') {
+                    } else if (process.env.REACT_APP_PRODUCTION === 'development') {
                         try {
                             await provider.provider.request({
                                 method: 'wallet_switchEthereumChain',

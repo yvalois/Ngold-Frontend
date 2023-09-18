@@ -69,7 +69,7 @@ const Pagos = () => {
 
                                 <div className="title-ranking2">
                                     <div className="col-rankingg">Opco ingresados</div>
-                                    <div className="col-rankingg">Busd a retirar</div>
+                                    <div className="col-rankingg">USDT a retirar</div>
                                     <div className="col-rankingg">dia de retiro</div>
                                     <div className="col-rankingg">Retirar</div>
                                     <div className="col-rankingg"></div>

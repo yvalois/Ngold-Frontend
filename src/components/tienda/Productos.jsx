@@ -97,7 +97,7 @@ function Productos() {
                                                             {item.name}
                                                         </div>
                                                         <div className="col-rankingg coin">                      {item.price}
-                                                            busd</div>
+                                                            USDT</div>
                                                         <div className="col-rankingg">
                                                             {item.categorieId.name}
 

@@ -8,11 +8,15 @@ import { fetchBalance } from "../../../redux/blockchain/blockchainAction";
 import { useDispatch } from "react-redux";
 import Swal from 'sweetalert2'
 import { fetchData } from "../../../redux/blockchain/dataActions";
+import { ConnectKitButton, useModal } from "connectkit";
+
 function Pools() {
   const dispatch = useDispatch();
   const stakin = useSelector(state => state.blockchain.poolContract);
 
   const blockchain = useSelector(state => state.blockchain);
+  const { isConnect, loading } = useSelector(state => state.blockchain);
+
 
   const data = useSelector(state => state.data);
 
@@ -34,80 +38,85 @@ function Pools() {
   const changeLoadingCard = (is) => {
     setCartLoading(is);
   }
-
-  const stake = async (poolId, amount) => {
+  const { open, setOpen } = useModal();
+  const stake = async (poolId, amount, show) => {
     setIsLoading(true);
-    if (allowances > amount) {
-      try {
-        const value = amount * 10 ** 18
-        const tx = await stakin.setUserStake(poolId, value.toString());
-        stakin.on("Stake", (poolId, amount) => {
-
-          setStakeValue(0);
-          dispatch(fetchBalance());
+    if(isConnect){
+      if (allowances > amount) {
+        try {
+          const value = amount * 10 ** 18
+          const tx = await stakin.setUserStake(poolId, value.toString());
+          stakin.on("Stake", (poolId, amount) => {
+  
+            setStakeValue(0);
+            dispatch(fetchBalance());
+            dispatch(fetchData());
+            setIsLoading(false);
+          });
+          await tx.wait();
+          Swal.fire({
+            title: 'Success',
+            text: 'Bloqueado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+          setIsLoading(false);
+  
+        } catch (err) {
+          console.log(err);
+          Swal.fire({
+            title: 'Error',
+            text: error.reason,
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK',
+          })
+          if (err.reason) {
+            setErrorMsg(err.reason);
+            setError(true);
+          }
+          setIsLoading(false);
+        }
+      } else {
+        try {
+          const value = amount * 10 ** 18
+          const tx = await blockchain.ngoldContract.approve(blockchain.poolContract.address, value.toString());
+          await tx.wait();
           dispatch(fetchData());
-          setIsLoading(false);
-        });
-        await tx.wait();
-        Swal.fire({
-          title: 'Success',
-          text: 'Bloqueado correctamente',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-        setIsLoading(false);
-
-      } catch (err) {
-        console.log(err);
-        Swal.fire({
-          title: 'Error',
-          text: error.reason,
-          icon: 'error',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'OK',
-        })
-        if (err.reason) {
-          setErrorMsg(err.reason);
-          setError(true);
+  
+          Swal.fire({
+            title: 'Success',
+            text: 'Aprovado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+          blockchain.ngoldContract.on('Approval', (owner, spender, value) => {
+  
+            setAllowance(ethers.utils.formatEther(value));
+            setIsLoading(false);
+          })
+  
         }
-        setIsLoading(false);
-      }
-    } else {
-      try {
-        const value = amount * 10 ** 18
-        const tx = await blockchain.ngoldContract.approve(blockchain.poolContract.address, value.toString());
-        await tx.wait();
-        dispatch(fetchData());
-
-        Swal.fire({
-          title: 'Success',
-          text: 'Aprovado correctamente',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-        blockchain.ngoldContract.on('Approval', (owner, spender, value) => {
-
-          setAllowance(ethers.utils.formatEther(value));
+        catch (err) {
+          if (error.reason) {
+            setErrorMsg(error.reason);
+            setError(true);
+  
+          }
+          Swal.fire({
+            title: 'Error',
+            text: error.reason,
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK',
+          })
           setIsLoading(false);
-        })
-
-      }
-      catch (err) {
-        if (error.reason) {
-          setErrorMsg(error.reason);
-          setError(true);
-
         }
-        Swal.fire({
-          title: 'Error',
-          text: error.reason,
-          icon: 'error',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'OK',
-        })
-        setIsLoading(false);
       }
+    }else{
+      show()
     }
+
   }
 
 
@@ -184,30 +193,29 @@ function Pools() {
       dispatch(fetchData());
       contractOwnerEqualToAddress();
     }
+    dispatch(fetchData());
+
   }, [blockchain]);
+
 
   useEffect(() => {
 
-    if (stakin) {
-      setPools(data.pools);
-      setMyStaked(data.accountPools);
-      setTokenPrice(data.tokenPrice);
+    setPools(data.pools);
+    setMyStaked(data.accountPools);
+    setTokenPrice(data.tokenPrice);
 
-    }
   }, [stakin, data]);
 
   useEffect(() => {
     if (data.Data) {
       const Data = data.Data;
-      console.log(Data)
       const sum = Data.reduce((acc, curr) => {
         acc[curr.poolId] = (acc[curr.poolId] || 0) + curr.stakedTokens;
         return acc;
       }, {});
       setTokensPerPool(sum);
-      if(allowances == 0){
-      setAllowance(data.allowance)
-
+      if (allowances == 0) {
+        setAllowance(data.allowance)
       }
     }
   }, [data]);
@@ -268,18 +276,29 @@ function Pools() {
               >Pool llena
               </button>
               :
-              <button
-                className="bg-yellow-300 text-black cursor-pointer w-36 shadow-md rounded-lg"
-                onClick={() => stake(item.poolId, stakeValue)}
-              >
-                {!isLoading?
-                  allowances > stakeValue ?
-                    "Bloquear"
-                    :
-                    "Aprobar"
-                  : "Cargando"
-                }
-              </button>
+              <ConnectKitButton.Custom>
+                {({ show, isConnecting, hide }) => {
+                  return(
+                  <button
+                    className="bg-yellow-300 text-black cursor-pointer w-36 shadow-md rounded-lg"
+                    onClick={() => stake(item.poolId, stakeValue,show)}
+                  >
+                    {
+
+                      isConnect ?
+                        !isLoading || !isConnecting  ?
+                          allowances > stakeValue ?
+                            "Bloquear"
+                            :
+                            "Aprobar"
+                          : "Cargando"
+                        : "Conectar"
+                    }
+                  </button>)
+                }}
+              </ConnectKitButton.Custom>
+
+
             }
           </div>
         </div>

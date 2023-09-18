@@ -81,7 +81,7 @@ const Carrito = ({ producto, eliminarProducto }) => {
                     <div className="content-ranking">
                       <div className="col-rankingg"><div className="image"><img src={item.imageUrl.url} alt={item.name} /></div></div>
                       <div className="col-rankingg">{item.name}</div>
-                      <div className="col-rankingg coin">{item.price} busd</div>
+                      <div className="col-rankingg coin">{item.price} USDT</div>
                       <div className="col-rankingg">
                         <div className='cant-buttons'>
                           <div className='decrease' onClick={()=>disminuirCantidad(item.product, item.qty)}><FaMinus /></div>
@@ -91,7 +91,7 @@ const Carrito = ({ producto, eliminarProducto }) => {
 
                       </div>
                       <div className="col-rankingg ">
-                        {parseFloat(item.qty * item.price).toFixed(2) } busd
+                        {parseFloat(item.qty * item.price).toFixed(2) } USDT
                       </div>
                       <div className="col-rankingg ">
                         <div className='contenedor-de'>

@@ -1,30 +1,43 @@
 import store from "../store";
 import { ethers } from "ethers";
 import moment from "moment";
+import Pool from '../../abis/Pool.json';
+import { contract } from './blockchainRouter';
+import abiToken from '../../abis/abiERC20.json';
+import Exchange from '../../abis/Exchange.json';
 
+
+
+
+const router = contract();
+
+const POOL_ADDRESS = router.POOL_ADDRESS;
+const NGOLD_ADDRESS = router.NGOLD_ADDRESS;
+const EXCHANGE_ADDRESS = router.EXCHANGE_ADDRESS;
+const rpc = router.RPC_URL;
 
 const timestampToDays = (timestamp) => {
     if (timestamp < 60) {
-      return `${timestamp} seconds`;
+        return `${timestamp} seconds`;
     }
     else if (timestamp < 3600) {
-      return `${Math.floor(timestamp / 60)} minutes`;
+        return `${Math.floor(timestamp / 60)} minutes`;
     }
     else if (timestamp < 86400) {
-      return `${Math.floor(timestamp / 3600)} hours`;
+        return `${Math.floor(timestamp / 3600)} hours`;
     }
     else if (timestamp < 2592000) {
         return `${Math.floor(timestamp / 86400)} days`;
     }
     else if (timestamp < 31536000) {
-      return `${Math.floor(timestamp / 2592000)} months`;
+        return `${Math.floor(timestamp / 2592000)} months`;
     }
     else {
-      return `${Math.floor(timestamp / 31536000)} years`;
+        return `${Math.floor(timestamp / 31536000)} years`;
     }
-  }
+}
 
-  const timestampToDate = (timestamp) => {
+const timestampToDate = (timestamp) => {
     return moment.unix(timestamp).format("DD MMM, YYYY");
 }
 
@@ -74,108 +87,117 @@ export const fetchData = () => {
             const Pools = [];
             const Data = [];
             const AccountPools = [];
-            const staking = await store.getState().blockchain.poolContract;
-            const exchange = await store.getState().blockchain.exchangeContract;
+            const provider = new ethers.providers.JsonRpcProvider(rpc);
+            const staking = new ethers.Contract(POOL_ADDRESS, Pool, provider);
+            const exchange = new ethers.Contract(EXCHANGE_ADDRESS, Exchange, provider);
+            const token = new ethers.Contract(NGOLD_ADDRESS, abiToken, provider);
 
-            const token = await store.getState().blockchain.ngoldContract;
 
-            
-            if(staking){
-            const getPools = await staking.getAllPools();
+            if (staking) {
 
-            const data = await staking.getAllData();
+                const getPools = await staking.getAllPools();
 
-            const accountPools = await staking.getStakingPoolInfos();
+                const data = await staking.getAllData();
 
-            const address = await store.getState().blockchain.accountAddress;
+                const accountPools = await staking.getStakingPoolInfos();
 
-            const allow = await token.allowance(store.getState().blockchain.accountAddress, staking.address);
+                const address = await store.getState().blockchain.accountAddress;
+                let allow;
+                let allowed;
+                if (address) {
+                    allow = await token.allowance(address, staking.address);
+                    allowed = ethers.utils.formatEther(allow);
+                }else{
+                    allow = 0
+                    allowed = 0
+                }
 
-            const allowed = ethers.utils.formatEther(allow);
 
-            const {bannedAccounts, bannedLoaded} = await store.getState().banned
-            
-            const bannedWallets = bannedAccounts?.banneds;
-            const filterbanPools = getPools.filter(pool => {
-            const banned  = bannedWallets?.find(banned => banned.addressBanned === address);
-                if(banned){
-                    if(banned.poolsBanned.includes(pool.poolId)){
-                        return false;
+                const { bannedAccounts, bannedLoaded } = await store.getState().banned
+
+                const bannedWallets = bannedAccounts?.banneds;
+                const filterbanPools = getPools.filter(pool => {
+                    const banned = bannedWallets?.find(banned => banned.addressBanned === address);
+                    if (banned) {
+                        if (banned.poolsBanned.includes(pool.poolId)) {
+                            return false;
+                        }
                     }
-                }
-                return true;
-            })
-
-            const pools = filterbanPools.map(pool => {
-          
-                Pools.push({
-                    stakeTokensLimit: parseFloat(ethers.utils.formatEther(pool.stakeTokensLimit)),
-                    stakingStartTime: moment(pool.stakingStartTime).format("DD MMM YYYY"),
-                    stakeApr: parseInt(ethers.utils.formatEther(pool.stakeApr)),
-                    tokenLockedTime: timestampToDays(pool.tokenLockedTime),
-                    poolId: pool.poolId,
-                    active: pool.active,
-                    tokenLimitPerWallet: parseFloat(ethers.utils.formatEther(pool.tokenLimitPerWallet)),
-                })
-            })
-
-            const getData = data.map(data => {
-                Data.push({
-                    owner: data.owner,
-                    stakedTokens: parseFloat(ethers.utils.formatEther(data.stakedTokens)),
-                    rewardedAmount: parseFloat(ethers.utils.formatEther(data.rewardedAmount)),
-                    index: parseInt(data.index),
-                    poolId: data.poolId,
-                    stakeTime: timestampToDate(data.stakeTime),
-                    startTime: timestampToDate(data.startTime),
-                    dateClaimed: timestampToDate(data.dateClaimed),
-                    tokenLockedTime: moment.unix(data.tokenLockedTime).format("DD MMM YYYY"),
-                    active: data.active,
-
-                })
-            })
-            const accountsPools1 = accountPools.filter(accountPool => parseFloat(accountPool.stakedTokens) !== 0);
-
-
-            // filter banned pools from accountPools
-            const accountsPools = accountsPools1.filter(accountPool => {
-
-                const banned = bannedWallets?.find(banned => banned.addressBanned === address);
-
-                if (banned) {
-                    return !banned.poolsBanned.includes(accountPool.poolId);
-                } else {
                     return true;
-                }
-            })
- 
-
-            const getAccountPools = accountsPools.map(pool => {
-                if(pool.active === true){
-                AccountPools.push({
-                    poolId: pool.poolId,
-                    stakedTokens: parseFloat(ethers.utils.formatEther(pool.stakedTokens)).toFixed(2),
-                    rewardedAmount: parseFloat(ethers.utils.formatEther(pool.rewardedAmount)).toFixed(2),
-                    active: pool.active,
-                    stakeTime: pool.stakeTime,
-                    startTime: moment(pool.startTime).format("DD MMM YYYY"),
-                    tokenLockedTime: pool.tokenLockedTime,
-                    dateClaimed: pool.dateClaimed,
-                    index: parseInt(pool.index),
                 })
-            }
-            })
+                const pools = filterbanPools.map(pool => {
 
-            const TokenPrice = await exchange.fetchLatestPrice();
-            const tokenPrice = parseFloat(ethers.utils.formatEther(TokenPrice));
-            
-            dispatch(loadingDataSuccess({
-                pools: Pools,
-                accountPools: AccountPools,
-                Data: Data,
-                tokenPrice: tokenPrice,
-                allowance: allowed,
-            }));
+                    Pools.push({
+                        stakeTokensLimit: parseFloat(ethers.utils.formatEther(pool.stakeTokensLimit)),
+                        stakingStartTime: moment(pool.stakingStartTime).format("DD MMM YYYY"),
+                        stakeApr: parseInt(ethers.utils.formatEther(pool.stakeApr)),
+                        tokenLockedTime: timestampToDays(pool.tokenLockedTime),
+                        poolId: pool.poolId,
+                        active: pool.active,
+                        tokenLimitPerWallet: parseFloat(ethers.utils.formatEther(pool.tokenLimitPerWallet)),
+                    })
+                })
+
+                const getData = data.map(data => {
+                    Data.push({
+                        owner: data.owner,
+                        stakedTokens: parseFloat(ethers.utils.formatEther(data.stakedTokens)),
+                        rewardedAmount: parseFloat(ethers.utils.formatEther(data.rewardedAmount)),
+                        index: parseInt(data.index),
+                        poolId: data.poolId,
+                        stakeTime: timestampToDate(data.stakeTime),
+                        startTime: timestampToDate(data.startTime),
+                        dateClaimed: timestampToDate(data.dateClaimed),
+                        tokenLockedTime: moment.unix(data.tokenLockedTime).format("DD MMM YYYY"),
+                        active: data.active,
+
+                    })
+                })
+                const accountsPools1 = accountPools.filter(accountPool => parseFloat(accountPool.stakedTokens) !== 0);
+
+
+                // filter banned pools from accountPools
+                const accountsPools = accountsPools1.filter(accountPool => {
+
+                    const banned = bannedWallets?.find(banned => banned.addressBanned === address);
+
+                    if (banned) {
+                        return !banned.poolsBanned.includes(accountPool.poolId);
+                    } else {
+                        return true;
+                    }
+                })
+
+
+                const getAccountPools = accountsPools.map(pool => {
+                    if (pool.active === true) {
+                        AccountPools.push({
+                            poolId: pool.poolId,
+                            stakedTokens: parseFloat(ethers.utils.formatEther(pool.stakedTokens)).toFixed(2),
+                            rewardedAmount: parseFloat(ethers.utils.formatEther(pool.rewardedAmount)).toFixed(2),
+                            active: pool.active,
+                            stakeTime: pool.stakeTime,
+                            startTime: moment(pool.startTime).format("DD MMM YYYY"),
+                            tokenLockedTime: pool.tokenLockedTime,
+                            dateClaimed: pool.dateClaimed,
+                            index: parseInt(pool.index),
+                        })
+                    }
+                })
+
+
+                const TokenPrice = await exchange.tokenPrice();
+
+                const tokenPrice = parseFloat(ethers.utils.formatEther(TokenPrice));
+
+                dispatch(loadingDataSuccess({
+                    pools: Pools,
+                    accountPools: AccountPools,
+                    Data: Data,
+                    tokenPrice: tokenPrice,
+                    allowance: allowed,
+                }));
+
             }
         } catch (error) {
             dispatch(loadingDataFailure({
@@ -187,9 +209,9 @@ export const fetchData = () => {
 
 export const updateDataAction = () => {
     return (dispatch) => {
-        try{
-        dispatch(fetchData());
-        }catch(error){
+        try {
+            dispatch(fetchData());
+        } catch (error) {
             console.log(error);
         }
 

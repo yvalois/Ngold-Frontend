@@ -28,7 +28,7 @@ function Create5(props) {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="53" height="53" viewBox="0 0 53 53" fill="none">
                                         <path d="M21 0L26.6719 14.9631L42 20.5L26.6719 26.0369L21 41L15.3281 26.0369L0 20.5L15.3281 14.9631L21 0Z" fill="#C4C4C4"/>
                                         <path d="M21 0L26.6719 14.9631L42 20.5L26.6719 26.0369L21 41L15.3281 26.0369L0 20.5L15.3281 14.9631L21 0Z" fill="#F6CA2A"/>
-                                        <path d="M41.5 30L44.606 38.394L53 41.5L44.606 44.606L41.5 53L38.394 44.606L30 41.5L38.394 38.394L41.5 30Z" fill="rgb(208, 208, 28) "/>
+                                        <path d="M41.5 30L44.606 38.394L53 41.5L44.606 44.606L41.5 53L38.394 44.606L30 41.5L38.394 38.394L41.5 30Z" fill=" #FFAE00 "/>
                                         </svg>
                                 </div>
                                 <div className="details-1 ani1">
@@ -85,7 +85,7 @@ function Create5(props) {
                                         <rect x="510" y="20" width="20" height="18" rx="2" fill="#48BC65"/>
                                         </g>
                                         <g opacity="0.3" filter="url(#filter2_bf_1_5)">
-                                        <rect x="518" y="94" width="237" height="238" rx="16" fill="rgb(208, 208, 28) "/>
+                                        <rect x="518" y="94" width="237" height="238" rx="16" fill=" #FFAE00 "/>
                                         </g>
                                         <g opacity="0.6" filter="url(#filter3_f_1_5)">
                                         <rect x="519" y="417" width="53" height="47" rx="2" fill="#F6CA2A" fill-opacity="0.33"/>

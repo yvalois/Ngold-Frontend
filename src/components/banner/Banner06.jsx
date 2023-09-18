@@ -62,7 +62,7 @@ function Banner06(props) {
 
                                                     <div className="sc-product  ">
                                                     <div className="top">
-                                                            <Link to="/mint" className="tag">NFt noseque #64</Link>
+                                                            <Link to="/mint" className="tag">NgoldElf #???</Link>
                                                         </div>
                                                         <div className="features">
                                                             <div className="product-media">
@@ -100,7 +100,7 @@ function Banner06(props) {
                                                     </div>
                                                     <div className="sc-product  ">
                                                     <div className="top">
-                                                            <Link to="/mint" className="tag">NFt noseque #64</Link>
+                                                            <Link to="/mint" className="tag">NgoldElf #???</Link>
                                                         </div>
                                                         <div className="features">
                                                             <div className="product-media">
