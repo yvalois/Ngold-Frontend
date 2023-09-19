@@ -172,7 +172,7 @@ function Banner05(props) {
                                 <img src={img3} alt="Binasea" class="img-star star-3 ani4" />
                                 <img src={img4} alt="Binasea" class="img-star star-4 ani5" /> */}
                                 <h1 className="heading">
-                                    Compra tu <span className='palabra'>NgoldElf</span>
+                                    Compra tu <span className='palabra'>Golden ELF</span>
                                 </h1>
 
                             </div>
@@ -183,7 +183,7 @@ function Banner05(props) {
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
                                             <div class="card-product ">
-                                                <h4>Golden Elf #???</h4>
+                                                <h4>Golden ELF #???</h4>
                                                 <div class="infor-author">
                                                     <img src={logo_elf} alt="Binasea" />
                                                     <div class="infor">
@@ -211,7 +211,7 @@ function Banner05(props) {
                                                     {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
                                                     {!isConnected && !loading && <ConnectKitButton.Custom>
                                                         {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                            return (<Link to="#" onClick={show} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
+                                                            return (<Link to="#" onClick={()=>show} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
                                                         }}
                                                     </ConnectKitButton.Custom>}
                                                     {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Cargando</Link>}

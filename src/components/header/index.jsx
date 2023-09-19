@@ -114,7 +114,6 @@ const Header = () => {
         const signer = await getEthersSigner(chain.id);
         const provider = getEthersProvider(chain.id);
         dispatch(fetchBlockchain(address, signer, provider));
-        setOpen(false)
     }
 
     useEffect(() => {
@@ -170,7 +169,7 @@ const Header = () => {
             setShortAddress(addr)
         }
 
-    }, [accountAddress])
+    }, [accountAddress, address])
 
 
 
