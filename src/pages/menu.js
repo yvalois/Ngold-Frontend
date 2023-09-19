@@ -1,9 +1,9 @@
 const menus = [
-    {
-        id: 1,
-        name: 'Inicio',
-        links: '/',
-    },
+    // {
+    //     id: 1,
+    //     name: 'Inicio',
+    //     links: '/',
+    // },
     {
         id: 2,
         name: 'Comprar Golden ELF',
