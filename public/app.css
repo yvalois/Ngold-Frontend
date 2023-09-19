@@ -585,6 +585,7 @@ body[data-magic-cursor=hide] .mouse-cursor {
   display: none;
 }
 .header .header__left .main-nav .menu {
+  width: auto;
   margin-left: 46px;
   display: flex;
   align-items: center;

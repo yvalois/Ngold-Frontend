@@ -6,7 +6,7 @@ const menus = [
     },
     {
         id: 2,
-        name: 'Comprar Golden Elf',
+        name: 'Comprar Golden ELF',
         links: 'mint'
     },
     {

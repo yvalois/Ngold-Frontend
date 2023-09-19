@@ -164,7 +164,7 @@ export const updateBalances = () => async (dispatch, getState) => {
 
 export const fetchBlockchain = (accountAddress, signer, provider) => {
     return async (dispatch) => {
-
+        
         dispatch(loadingBlockchain())
         try {
             try {

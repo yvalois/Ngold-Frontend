@@ -32,7 +32,7 @@ import { fetchProducts } from '../../redux/store/actions/productActions';
 import { fetchCategory } from '../../redux/store/actions/categoryAction';
 import { loadTokenPrice } from '../../redux/store/actions/tokenPriceActions';
 import { fetchSubCategory } from '../../redux/store/actions/subCategoryAction';
-import { ConnectKitButton, useModal } from "connectkit";
+import { ConnectKitButton, useModal,useSIWE } from "connectkit";
 
 // import Button from '../button';
 
@@ -50,7 +50,6 @@ const Header = () => {
     const store = useSelector(state => state.store);
     const history = useNavigate();
 
-
     const { storeName, discount, StoreLoaded } = store;
     const { products, cartLoaded } = cart;
     const { loginSuccess, userDetails } = user;
@@ -58,6 +57,10 @@ const Header = () => {
     const { open, setOpen } = useModal();
     const [modalShow, setModalShow] = useState(false);
 
+    const manageTransfer=()=>{
+        setModalShow(true)
+        handleMenuActive()
+    }
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
@@ -111,7 +114,7 @@ const Header = () => {
         const signer = await getEthersSigner(chain.id);
         const provider = getEthersProvider(chain.id);
         dispatch(fetchBlockchain(address, signer, provider));
-        window.localStorage.removeItem("wc@2:core:0.3//keychain");
+        setOpen(false)
     }
 
     useEffect(() => {
@@ -189,13 +192,13 @@ const Header = () => {
     }
 
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (loading) {
-                setOpen(false)
-            }
-        }, 2000);
-    }, [loading])
+    // useEffect(() => {
+
+    //     if(address){
+    //         setOpen(false)
+    //     }
+  
+    // }, [address]);
 
 
     return (
@@ -233,6 +236,10 @@ const Header = () => {
                                                 );
                                             }}
                                         </ConnectKitButton.Custom>
+
+                                        <button className='tf-button' onClick={manageTransfer}>
+                                        Transferir NGOLD
+                                    </button>
                                     </div>
 
                                     <ul id="menu-primary-menu" className="menu">
@@ -302,19 +309,20 @@ const Header = () => {
                                 </nav>
 
                             </div>
-                            <button className='tf-button' onClick={()=> setModalShow(true)}>
-                                        Transferir
-                                    </button>
+
                             <div className="header-right mode-switch">
+                            <button className='tf-button' onClick={()=> setModalShow(true)}>
+                                        Transferir NGOLD
+                                    </button>
                                 <ConnectKitButton.Custom>
                                     {({ isConnected, show, truncatedAddress, ensName }) => {
                                         return (
-                                            <Link onClick={() => sesion(show)} className="tf-button "><span>{isConnected ?
-                                                accountAddress === null && isConnected ?
+                                            <button onClick={() => sesion(show)} className="tf-button "><span>{isConnected ?
+                                                 loading ?
                                                     "Cargando"
                                                     :
                                                     shortAddress
-                                                : 'Connect Wallet'}</span></Link>
+                                                : 'Connect Wallet'}</span></button>
 
                                         );
                                     }}
