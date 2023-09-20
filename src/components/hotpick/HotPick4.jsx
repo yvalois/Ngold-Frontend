@@ -267,7 +267,7 @@ function HotPick4(props) {
                                 <div className="row tf-filter-container wow fadeInUp">
                                     {ngoldNftBalance.length > 0 &&
                                         (ngoldNftBalance.map((idx, index) => (
-                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 tf-loadmore 3d cyber" key={index} onClick={()=>{setToken(idx.id)}}>
+                                            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 tf-loadmore 3d cyber" key={index} >
                                                 <div className="sc-product style2">
                                                     <div className="top">
                                                         <Link to="/item-details-v1" className="tag">{idx.Nombre}</Link>
@@ -279,7 +279,7 @@ function HotPick4(props) {
                                                         </div>
                                                     </div>
                                                     <div className="features">
-                                                        <div className="product-media">
+                                                        <div className="product-media" onClick={()=>{setToken(idx.id)}}>
                                                             <img src={idx.image} alt="images" />
                                                         </div>
                                                         <div className="rain-drop1"><img src={icon1} alt="images" /></div>

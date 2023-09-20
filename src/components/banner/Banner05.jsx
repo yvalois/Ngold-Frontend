@@ -85,7 +85,7 @@ function Banner05(props) {
         setLoading(true);
         try {
             if (cant > 0) {
-                if(token === "NGOLD"){
+                if (token === "NGOLD") {
                     const tx = await ngoldContract.approve(
                         elfosContract.address,
                         ethers.utils.parseUnits((precio * cant).toString(), decimals)
@@ -99,8 +99,8 @@ function Banner05(props) {
                         confirmButtonText: 'OK'
                     });
                     setLoading(false);
-    
-                }else{
+
+                } else {
                     const tx = await busdContract.approve(
                         elfosContract.address,
                         ethers.utils.parseUnits((precio * cant).toString(), decimals)
@@ -114,7 +114,7 @@ function Banner05(props) {
                         confirmButtonText: 'OK'
                     });
                     setLoading(false);
-    
+
                 }
 
             }
@@ -138,22 +138,27 @@ function Banner05(props) {
         setLoading(true);
         try {
             if (cant > 0) {
-                if(token === "NGOLD"){
+                if (token === "NGOLD") {
                     const tx = await elfosContract.buyToken(cant, ngoldContract.address);
                     await tx.wait()
                     await funcion();
                     window.localStorage.setItem("Nft", JSON.stringify(ngoldNftBalance[ngoldNftBalance.length - 1]));
                     //JSON.parse
-                    setModalShow(true);
-                    setLoading(false);
-                }else{
+                    setTimeout(() => {
+                        setModalShow(true);
+                        setLoading(false);
+                    }, 2000);
+
+                } else {
                     const tx = await elfosContract.buyToken(cant, busdContract.address);
                     await tx.wait()
                     await funcion();
                     window.localStorage.setItem("Nft", JSON.stringify(ngoldNftBalance[ngoldNftBalance.length - 1]));
                     //JSON.parse
-                    setModalShow(true);
-                    setLoading(false);
+                    setTimeout(() => {
+                        setModalShow(true);
+                        setLoading(false);
+                    }, 2000);
                 }
 
 
@@ -269,7 +274,7 @@ function Banner05(props) {
                                                     {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
                                                     {!isConnected && !loading && <ConnectKitButton.Custom>
                                                         {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                            return (<Link to="#" onClick={() => {show()}} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
+                                                            return (<Link to="#" onClick={() => { show() }} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
                                                         }}
                                                     </ConnectKitButton.Custom>}
                                                     {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Cargando</Link>}

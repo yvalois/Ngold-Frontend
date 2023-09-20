@@ -7,7 +7,7 @@ import img2 from '../assets/images/collection/img-banner-collection.png'
 import { Link } from 'react-router-dom';
 import HotPick4 from '../components/hotpick/HotPick4';
 import dataHotpick from '../assets/fake-data/data-hotpick';
-import logo_elf from '../assets/images/logo/logo_elf.png';
+import logo_elf from '../assets/images/logo/logo2_black.jpeg';
 import logo2_elf from '../assets/images/logo/logo2_white.png';
 
 import banner_elf from '../assets/images/collection/Banner2.jpg';

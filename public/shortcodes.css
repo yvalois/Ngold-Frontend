@@ -15,7 +15,7 @@ body > iframe {
 }
 
 .tf-heading .heading {
-  color: var(--primary-color5);
+  color: white;
 }
 
 .tf-heading .button {
@@ -3674,22 +3674,26 @@ body > iframe {
   margin-bottom: 63px;
   display: flex;
   justify-content: center;
+  background-color: #000;
+  border-radius: 30px;
+  
 }
 
 .banner-collection-inner .img-bg {
   border-radius: 16px;
 }
 
-.banner-collection-inner .img-banner {
+.banner-collection-inner .img-banner  {
   position: absolute;
   left: 50%;
   bottom: 0;
-  transform: translate(-50%, 50%);
-  border-radius: 50%;
+  border-radius: 10px;
   width: 160px;
   height: 160px;
-  object-fit:contain;
+  background-color: #000;
 }
+
+
 
 .banner-collection-inner .button-top {
   position: absolute;
