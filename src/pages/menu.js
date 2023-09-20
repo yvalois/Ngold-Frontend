@@ -6,12 +6,12 @@ const menus = [
      },
     {
         id: 2,
-        name: 'Comprar - Buy Golden ELF',
+        name: 'Comprar-Buy Golden ELF',
         links: 'mint'
     },
     {
         id: 4,
-        name: 'Comprar - Buy NGOLD',
+        name: 'Comprar-Buy NGOLD',
         links: '/swap'
     },
     {

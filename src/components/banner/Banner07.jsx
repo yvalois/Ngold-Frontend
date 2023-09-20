@@ -179,14 +179,13 @@ function Banner06(props) {
                 try {
                     const tx = await exchangeContract.sellToken(ethers.utils.parseUnits(inputAmount.toString(), decimals), ngoldContract.address);
                     await tx.wait();
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Swap realizado correctamente',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
+                    
                     setLoading(false)
-                    dispatch(updateBalances())
+                    dispatch(updateBalances());
+                    setCant(outputAmount);
+                    setShowModal(true)
+                    setOutputAmount('');
+                    setInputAmount('');
 
                 } catch (error) {
                     Swal.fire({

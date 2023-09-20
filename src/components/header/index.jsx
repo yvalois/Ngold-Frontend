@@ -222,7 +222,7 @@ const Header = () => {
                             <div className='button-sidebar'>
 
 
-                                <ConnectKitButton.Custom>
+                                {/* <ConnectKitButton.Custom>
                                     {({ isConnected, show, truncatedAddress, ensName }) => {
                                         return (
                                             <Link onClick={() => sesion(show)} className="tf-button "><span>
@@ -234,7 +234,7 @@ const Header = () => {
 
                                         );
                                     }}
-                                </ConnectKitButton.Custom>
+                                </ConnectKitButton.Custom> */}
 
                                 <button className='tf-button' onClick={manageTransfer}>
                                     Transferir NGOLD
@@ -307,6 +307,23 @@ const Header = () => {
 
                         </nav>
 
+                    </div>
+                    <div className='connect'>
+                        <ConnectKitButton.Custom>
+                            {({ isConnected, show, truncatedAddress, ensName }) => {
+                                return (
+                                    <button onClick={() => sesion(show)} className="tf-button "><span>{
+                                        loading || (isConnected && !isConnect) ?
+                                            "cargando"
+                                            : isConnect ?
+                                                shortAddress :
+                                                "Connect Wallet"}</span></button>
+                                );
+                            }}
+
+
+
+                        </ConnectKitButton.Custom>
                     </div>
 
                     <div className="header-right mode-switch">

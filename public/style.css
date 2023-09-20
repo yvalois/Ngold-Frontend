@@ -1143,9 +1143,27 @@ header #site-header-inner #main-nav {
 }
 
 #main-nav .menu a{
-  font-size: 16px;
+  font-size: 15px;
 }
 
+#main-nav .menu a:active{
+  color:#FFAE00 ;
+}
+#site-header-inner .connect{
+
+  display: none;
+
+}
+
+@media (max-width: 1280px) {
+  #site-header-inner .connect{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 20px;
+  }
+}
 
 
 
