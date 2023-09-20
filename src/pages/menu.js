@@ -11,7 +11,7 @@ const menus = [
     },
     {
         id: 4,
-        name: 'Swap',
+        name: 'Comprar NGOLD',
         links: '/swap'
     },
     {

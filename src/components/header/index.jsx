@@ -148,12 +148,12 @@ const Header = () => {
 
     useEffect(() => {
 
-        if ( chain?.unsupported !== undefined && chain.unsupported === false) {
+        if (chain?.unsupported !== undefined && chain.unsupported === false) {
             setTimeout(() => {
                 getSign();
                 setIs(true)
             }, 2000);
-        } else if ( chain?.unsupported !== undefined && chain.unsupported === true) {
+        } else if (chain?.unsupported !== undefined && chain.unsupported === true) {
             setTimeout(() => {
                 switchChain()
                 setIs(false)
@@ -202,135 +202,134 @@ const Header = () => {
 
 
     return (
-        <header className={`header ${scroll ? 'is-fixed' : ''}`}>
+        <header className={`header2 ${scroll ? 'is-fixed' : ''}`}>
             <div className="tf-container">
-                <div className="row">
-                    <div className="col-md-12">
-                        <div id="site-header-inner">
-                            <div id="site-logo" className="clearfix">
-                                <div id="site-logo-inner">
-                                    <Link to="/" rel="home" className="main-logo">
-                                        <img id="logo_header" className='logo-dark' src={logo_elf} alt="Binasea" />
-                                        <img id="logo_header" className='logo-light' src={logo_elf_black} alt="Binasea" />
-                                    </Link>
-                                </div>
-                            </div>
 
-                            <div className="header-center">
+                <div id="site-header-inner">
+                    <div id="site-logo" className="clearfix">
+                        <div id="site-logo-inner">
+                            <Link to="/" rel="home" className="main-logo">
+                                <img id="logo_header" className='logo-dark' src={logo_elf} alt="Binasea" />
+                                <img id="logo_header" className='logo-light' src={logo_elf_black} alt="Binasea" />
+                            </Link>
+                        </div>
+                    </div>
 
-                                <nav id="main-nav" className={`main-nav ${menuActive ? 'active' : ''}`}>
+                    <div className="header__left">
 
-                                    <div className='button-sidebar'>
+                        <nav id="main-nav" className={`main-nav ${menuActive ? 'active' : ''}`}>
+
+                            <div className='button-sidebar'>
 
 
-                                        <ConnectKitButton.Custom>
-                                            {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                return (
-                                                    <Link onClick={() => sesion(show)} className="tf-button "><span>
-                                                        {loading || (isConnected && !isConnect) ?
+                                <ConnectKitButton.Custom>
+                                    {({ isConnected, show, truncatedAddress, ensName }) => {
+                                        return (
+                                            <Link onClick={() => sesion(show)} className="tf-button "><span>
+                                                {loading || (isConnected && !isConnect) ?
                                                     "cargando"
                                                     : isConnect ?
                                                         shortAddress :
                                                         "Connect Wallet"}</span></Link>
 
-                                                );
-                                            }}
-                                        </ConnectKitButton.Custom>
-
-                                        <button className='tf-button' onClick={manageTransfer}>
-                                            Transferir NGOLD
-                                        </button>
-                                    </div>
-
-                                    <ul id="menu-primary-menu" className="menu">
-                                        {
-                                            menus.map((data, idx) => (
-                                                (loginSuccess && data.id !== 7) ?
-                                                    (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}>
-                                                        <Link to={data.links}>{data.name}</Link>
-                                                        {
-                                                            data.namesub &&
-                                                            <ul className="sub-menu">
-                                                                {
-                                                                    data.namesub.map((submenu) => (
-                                                                        submenu.sub !== "LogOut" ?
-                                                                            (userDetails.role === "admin" && submenu.id === 5) || (submenu.id !== 5) ?
-                                                                                <li key={submenu.id} className="menu-item" onClick={() => { setMenuActive(false) }}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
-                                                                                : null
-                                                                            :
-                                                                            <li key={submenu.id} className="menu-item" onClick={_handleLogout}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
-                                                                    ))
-                                                                }
-                                                            </ul>
-                                                        }
-                                                    </li>)
-                                                    : (!loginSuccess && data.id !== 8) ?
-                                                        (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}
-                                                        >
-                                                            <div className='navbar'>
-
-                                                                <Link to={data.links}>
-                                                                    {data.name}
-                                                                </Link>
-                                                            </div>
-                                                            {
-                                                                data.namesub &&
-                                                                <ul className="sub-menu">
-                                                                    {
-                                                                        data.namesub.map((submenu) => (
-                                                                            submenu.sub !== "LogOut" ?
-                                                                                <li key={submenu.id} className="menu-item" onClick={() => { setMenuActive(false) }}>
-                                                                                    <div className='navbar'>
-                                                                                        <Link to={submenu.links}>{submenu.sub}</Link>
-                                                                                    </div>
-                                                                                </li>
-                                                                                :
-                                                                                <li key={submenu.id} className="menu-item" onClick={_handleLogout}>
-                                                                                    <div className='navbar'>
-                                                                                        <Link to={submenu.links}>{submenu.sub}
-                                                                                        </Link>
-                                                                                    </div>
-
-                                                                                </li>
-
-                                                                        ))
-                                                                    }
-
-                                                                </ul>
-                                                            }
-                                                        </li>)
-                                                        :
-                                                        null
-                                            ))
-                                        }
-
-                                    </ul>
-
-                                </nav>
-
-                            </div>
-
-                            <div className="header-right mode-switch">
-                                <button className='tf-button' onClick={() => setModalShow(true)}>
-                                    Transferir NGOLD
-                                </button>
-                                <ConnectKitButton.Custom>
-                                    {({ isConnected, show, truncatedAddress, ensName }) => {
-                                        return (
-                                            <button onClick={() => sesion(show)} className="tf-button "><span>{
-                                                loading || (isConnected && !isConnect) ?
-                                                    "cargando"
-                                                    : isConnect ?
-                                                        shortAddress :
-                                                        "Connect Wallet"}</span></button>
                                         );
                                     }}
-
-
-
                                 </ConnectKitButton.Custom>
 
-                                {/* <span className="user ">
+                                <button className='tf-button' onClick={manageTransfer}>
+                                    Transferir NGOLD
+                                </button>
+                            </div>
+
+                            <ul id="menu-primary-menu" className="menu">
+                                {
+                                    menus.map((data, idx) => (
+                                        (loginSuccess && data.id !== 7) ?
+                                            (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}>
+                                                <h1 to={data.links}>{data.name}</h1>
+                                                {
+                                                    data.namesub &&
+                                                    <ul className="sub-menu">
+                                                        {
+                                                            data.namesub.map((submenu) => (
+                                                                submenu.sub !== "LogOut" ?
+                                                                    (userDetails.role === "admin" && submenu.id === 5) || (submenu.id !== 5) ?
+                                                                        <li key={submenu.id} className="menu-item" onClick={() => { setMenuActive(false) }}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
+                                                                        : null
+                                                                    :
+                                                                    <li key={submenu.id} className="menu-item" onClick={_handleLogout}><NavLink to={submenu.links}>{submenu.sub}</NavLink></li>
+                                                            ))
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>)
+                                            : (!loginSuccess && data.id !== 8) ?
+                                                (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}
+                                                >
+
+
+                                                    <Link to={data.links}>
+                                                        {data.name}
+                                                    </Link>
+
+                                                    {
+                                                        data.namesub &&
+                                                        <ul className="sub-menu">
+                                                            {
+                                                                data.namesub.map((submenu) => (
+                                                                    submenu.sub !== "LogOut" ?
+                                                                        <li key={submenu.id} className="menu-item" onClick={() => { setMenuActive(false) }}>
+
+                                                                            <Link to={submenu.links}>{submenu.sub}</Link>
+
+                                                                        </li>
+                                                                        :
+                                                                        <li key={submenu.id} className="menu-item" onClick={_handleLogout}>
+
+                                                                            <Link to={submenu.links}>{submenu.sub}
+                                                                            </Link>
+
+
+                                                                        </li>
+
+                                                                ))
+                                                            }
+
+                                                        </ul>
+                                                    }
+                                                </li>)
+                                                :
+                                                null
+                                    ))
+                                }
+
+                            </ul>
+
+                        </nav>
+
+                    </div>
+
+                    <div className="header-right mode-switch">
+                        <button className='tf-button' onClick={() => setModalShow(true)}>
+                            Transferir NGOLD
+                        </button>
+                        <ConnectKitButton.Custom>
+                            {({ isConnected, show, truncatedAddress, ensName }) => {
+                                return (
+                                    <button onClick={() => sesion(show)} className="tf-button "><span>{
+                                        loading || (isConnected && !isConnect) ?
+                                            "cargando"
+                                            : isConnect ?
+                                                shortAddress :
+                                                "Connect Wallet"}</span></button>
+                                );
+                            }}
+
+
+
+                        </ConnectKitButton.Custom>
+
+                        {/* <span className="user ">
                                         <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <mask id="mask0_2981_49321" maskUnits="userSpaceOnUse" x="0" y="11" width="16" height="7">
                                                 <path fillRule="evenodd" clipRule="evenodd" d="M0 11.2949H15.1998V18.0009H0V11.2949Z" fill="white" />
@@ -348,13 +347,13 @@ const Header = () => {
                                             </g>
                                         </svg>
                                         </span> */}
-                                <DarkMode />
-                            </div>
-
-                            <div className={`mobile-button ${menuActive ? 'active' : ''}`} onClick={handleMenuActive}></div>
-                        </div>
+                        <DarkMode />
                     </div>
+
+                    <div className={`mobile-button ${menuActive ? 'active' : ''}`} onClick={handleMenuActive}></div>
                 </div>
+
+
             </div>
             <TransferModal
                 show={modalShow}
