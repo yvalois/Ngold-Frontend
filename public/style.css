@@ -1135,15 +1135,20 @@ header #site-header-inner #main-nav {
   flex-shrink: 1;
 }
 #main-nav .menu {
+  width: 100%;
   display: flex;
   padding: 10px;
-  margin-left: 10px;
+  margin-left: -40px;
   margin-right: 10px; 
   text-align: center;
 }
 
+#main-nav .menu li{
+  padding: 2px;
+}
+
 #main-nav .menu a{
-  font-size: 15px;
+  font-size: 17px;
 }
 
 #main-nav .menu a:active{
