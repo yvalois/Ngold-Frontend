@@ -246,7 +246,7 @@ const Header = () => {
                                     menus.map((data, idx) => (
                                         (loginSuccess && data.id !== 7) ?
                                             (<li key={idx} onClick={() => handleDropdown(idx, data.namesub)} className={`menu-item ${data.namesub ? 'menu-item-has-children' : ''} ${activeIndex === idx ? 'active' : ''}`}>
-                                                <h1 to={data.links}>{data.name}</h1>
+                                                <Link to={data.links}>{data.name}</Link>
                                                 {
                                                     data.namesub &&
                                                     <ul className="sub-menu">
