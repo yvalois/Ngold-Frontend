@@ -32,7 +32,7 @@ const StakingModal = (props) => {
             setLoading(false)
             Swal.fire({
                 title: 'Success',
-                text: 'Aprovado correctamente',
+                text: 'aprobadoi correctamente',
                 icon: 'success',
                 confirmButtonText: 'OK'
               });

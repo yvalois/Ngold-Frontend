@@ -190,7 +190,7 @@ function Banner06(props) {
                 } catch (error) {
                     Swal.fire({
                         title: 'Success',
-                        text: 'Aprovado correctamente',
+                        text: 'aprobadoi correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });

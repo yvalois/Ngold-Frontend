@@ -86,7 +86,7 @@ function Pools() {
   
           Swal.fire({
             title: 'Success',
-            text: 'Aprovado correctamente',
+            text: 'aprobadoi correctamente',
             icon: 'success',
             confirmButtonText: 'OK'
           });
