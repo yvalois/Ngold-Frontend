@@ -269,7 +269,7 @@ function Banner05(props) {
                                                     {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
                                                     {!isConnected && !loading && <ConnectKitButton.Custom>
                                                         {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                            return (<Link to="#" onClick={() => show()} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
+                                                            return (<Link to="#" onClick={() => {show()}} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
                                                         }}
                                                     </ConnectKitButton.Custom>}
                                                     {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Cargando</Link>}

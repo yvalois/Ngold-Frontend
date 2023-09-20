@@ -53,7 +53,7 @@ const Header = () => {
     const { storeName, discount, StoreLoaded } = store;
     const { products, cartLoaded } = cart;
     const { loginSuccess, userDetails } = user;
-    const { isOwner, loading: loading2 } = useSelector(state => state.blockchain);
+    const { isOwner, loading: loading2, errorMsg } = useSelector(state => state.blockchain);
     const { open, setOpen } = useModal();
     const [modalShow, setModalShow] = useState(false);
 
@@ -162,7 +162,7 @@ const Header = () => {
             window.localStorage.removeItem("wc@2:core:0.3//keychain")
 
         }
-    }, [chain])
+    }, [chain, errorMsg])
 
     useEffect(() => {
         if (accountAddress !== null) {
