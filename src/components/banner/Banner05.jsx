@@ -25,6 +25,8 @@ import elfo from '../../assets/images/signo.jpeg'
 import logo_elf from '../../assets/images/logo/logo_elf.png';
 import { ConnectKitButton } from "connectkit";
 import ngold from '../../assets/images/icon/ngold.png'
+import usdt from '../../assets/images/icon/usdt.png'
+
 import MintNftModal from '../layouts/MintNftModal';
 
 
@@ -42,7 +44,7 @@ function Banner05(props) {
     const { elfosContract, ngoldContract, busdContract, accountAddress, ngoldNftBalance } = useSelector(state => state.blockchain);
     const decimals = 18;
     const { isConnected, isConnecting } = useAccount()
-
+    const [token, setToken] = useState('NGOLD')
     const dispatch = useDispatch();
 
     const manageCant = (type) => {
@@ -83,19 +85,37 @@ function Banner05(props) {
         setLoading(true);
         try {
             if (cant > 0) {
-                const tx = await ngoldContract.approve(
-                    elfosContract.address,
-                    ethers.utils.parseUnits((precio * cant).toString(), decimals)
-                );
-                await tx.wait();
-                await verifyApprove();
-                Swal.fire({
-                    title: 'Success',
-                    text: 'Aprovado correctamente',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                setLoading(false);
+                if(token === "NGOLD"){
+                    const tx = await ngoldContract.approve(
+                        elfosContract.address,
+                        ethers.utils.parseUnits((precio * cant).toString(), decimals)
+                    );
+                    await tx.wait();
+                    await verifyApprove();
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Aprovado correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    setLoading(false);
+    
+                }else{
+                    const tx = await busdContract.approve(
+                        elfosContract.address,
+                        ethers.utils.parseUnits((precio * cant).toString(), decimals)
+                    );
+                    await tx.wait();
+                    await verifyApprove();
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Aprovado correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    setLoading(false);
+    
+                }
 
             }
         } catch (error) {
@@ -118,13 +138,24 @@ function Banner05(props) {
         setLoading(true);
         try {
             if (cant > 0) {
-                const tx = await elfosContract.buyToken(cant, ngoldContract.address);
-                await tx.wait()
-                await funcion();
-                window.localStorage.setItem("Nft", JSON.stringify(ngoldNftBalance[ngoldNftBalance.length - 1]));
-                //JSON.parse
-                setModalShow(true);
-                setLoading(false);
+                if(token === "NGOLD"){
+                    const tx = await elfosContract.buyToken(cant, ngoldContract.address);
+                    await tx.wait()
+                    await funcion();
+                    window.localStorage.setItem("Nft", JSON.stringify(ngoldNftBalance[ngoldNftBalance.length - 1]));
+                    //JSON.parse
+                    setModalShow(true);
+                    setLoading(false);
+                }else{
+                    const tx = await elfosContract.buyToken(cant, busdContract.address);
+                    await tx.wait()
+                    await funcion();
+                    window.localStorage.setItem("Nft", JSON.stringify(ngoldNftBalance[ngoldNftBalance.length - 1]));
+                    //JSON.parse
+                    setModalShow(true);
+                    setLoading(false);
+                }
+
 
             }
         } catch (error) {
@@ -191,12 +222,39 @@ function Banner05(props) {
                                                         <h6 class="name">@NGold</h6>
                                                     </div>
                                                 </div>
+
+                                                <div className="form-select2" id="subject">
+                                                    <select
+                                                        value={token}
+                                                        onChange={(e) => {
+                                                            setToken(e.target.value);
+                                                        }}
+                                                    >
+                                                        <option value="NGOLD">
+                                                            NGOLD
+                                                        </option>
+                                                        <option value="USDT" >
+                                                            USDT
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+
+
+
+
+
+
+
                                                 <div class="infor-price">
+
                                                     <div class="curent-bid">
                                                         <p>Price</p>
                                                         <div class="price">
                                                             {/* Ngold Logo */}
-                                                            <div class="icon"><img src={ngold} /></div>
+                                                            {token === "NGOLD" && <div class="icon"><img src={ngold} /></div>}
+                                                            {token === "USDT" && <div class="icon"><img src={usdt} /></div>}
+
                                                             <p>{parseFloat(precio * cant).toFixed(1)}</p>
                                                         </div>
                                                     </div>
@@ -211,7 +269,7 @@ function Banner05(props) {
                                                     {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
                                                     {!isConnected && !loading && <ConnectKitButton.Custom>
                                                         {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                            return (<Link to="#" onClick={()=>show()} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
+                                                            return (<Link to="#" onClick={() => show()} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
                                                         }}
                                                     </ConnectKitButton.Custom>}
                                                     {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Cargando</Link>}
@@ -224,7 +282,10 @@ function Banner05(props) {
                                 </div>
 
                             </div>
+
+
                         </div>
+
                     </div>
 
 

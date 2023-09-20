@@ -54,7 +54,7 @@ function Banner06(props) {
                                                     </h1>
                                                     <p className="sub-heading">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Integer Nec Odio. Praesent Libero. Sed </p>
                                                     <div className="btn-slider text-center">
-                                                        <Link to="/mint" className="tf-button style-2">Get your Nft</Link>
+                                                        <Link to="/mint" className="tf-button style-2">Obten tu Golden ELF</Link>
                                                         {/* <Link to="/create" className="tf-button style-9">Creat NFT</Link> */}
                                                     </div>
                                                 </div>

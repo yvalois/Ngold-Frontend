@@ -1,9 +1,9 @@
 const menus = [
-    // {
-    //     id: 1,
-    //     name: 'Inicio',
-    //     links: '/',
-    // },
+    {
+         id: 1,
+         name: 'Inicio',
+         links: '/',
+     },
     {
         id: 2,
         name: 'Comprar Golden ELF',
@@ -16,7 +16,7 @@ const menus = [
     },
     {
         id: 4,
-        name: 'Pools',
+        name: 'Staking NGOLD',
         links: '/Pool'
     },
     {

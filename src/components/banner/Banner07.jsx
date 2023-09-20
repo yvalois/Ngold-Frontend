@@ -25,21 +25,27 @@ import { updateBalances } from '../../redux/blockchain/blockchainAction';
 import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
 import { ConnectKitButton } from "connectkit";
-
+import { contract } from './../../redux/blockchain/blockchainRouter';
+import { getWalletClient } from '@wagmi/core'
+import { useNetwork } from 'wagmi';
+import ModalSwap from '../layouts/modalSwap';
 Banner06.propTypes = {
 
 };
 
 function Banner06(props) {
     const { data } = props;
-
+    const router = contract();
+    const { chain } = useNetwork();
     const [inputAmount, setInputAmount] = useState('');
     const [outputAmount, setOutputAmount] = useState('');
     const [isSwapped, setIsSwapped] = useState(false);
     const [allowance, setAllowance] = useState(0);
     const [isBuy, setIsBuy] = useState(true);
     const [loading, setLoading] = useState(false);
-    const { exchangeContract, ngoldContract, busdContract, accountAddress,ngoldBalance, busdBalance } = useSelector(state => state.blockchain);
+    const [cant, setCant] = useState(0);
+    const [showModal, setShowModal] = useState(false)
+    const { exchangeContract, ngoldContract, busdContract, accountAddress, ngoldBalance, busdBalance, provider, isConnect } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
     const decimals = 18;
 
@@ -89,8 +95,10 @@ function Banner06(props) {
                         await verifyApprove()
                         Swal.fire({
                             title: 'Success',
-                            text: 'Aprovado correctamente',
+                            text: 'Aprobado correctamente',
                             icon: 'success',
+                            confirmButtonColor: '#FFAE00',
+
                             confirmButtonText: 'OK'
                         });
                         setLoading(false)
@@ -101,7 +109,8 @@ function Banner06(props) {
                         title: 'Error',
                         text: error.reason,
                         icon: 'error',
-                        confirmButtonColor: '#3085d6',
+                        confirmButtonColor: '#FFAE00',
+
                         confirmButtonText: 'OK',
                     })
                 }
@@ -117,8 +126,9 @@ function Banner06(props) {
                         await verifyApprove()
                         Swal.fire({
                             title: 'Success',
-                            text: 'Aprovado correctamente',
+                            text: 'Aprobado correctamente',
                             icon: 'success',
+
                             confirmButtonText: 'OK'
                         });
                         setLoading(false)
@@ -140,21 +150,19 @@ function Banner06(props) {
     }
 
     const swap = async () => {
-        
+
         if (parseFloat(inputAmount).toFixed(2) > 0) {
             if (isBuy) {
                 setLoading(true)
                 try {
                     const tx = await exchangeContract.buyToken(ethers.utils.parseUnits(inputAmount.toString(), decimals), busdContract.address);
                     await tx.wait();
-                    setLoading(false)
-                    dispatch(updateBalances())
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Swap realizado correctamente',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
+                    setLoading(false);
+                    dispatch(updateBalances());
+                    setCant(outputAmount);
+                    setShowModal(true)
+                    setOutputAmount('');
+                    setInputAmount('');
                 } catch (error) {
                     Swal.fire({
                         title: 'Error',
@@ -226,7 +234,39 @@ function Banner06(props) {
         setOutputAmount('')
         setInputAmount('')
     }, [isBuy])
-    
+
+
+    const addToMetamask = async () => {
+        const walletClient = await getWalletClient(chain?.id)
+
+        const tokenAddress = router.NGOLD_ADDRESS;
+        const tokenSymbol = "NGOLD";
+        const tokenDecimals = 18;
+        try {
+            const wasAdded = await walletClient.request({
+                method: "wallet_watchAsset",
+                params: {
+                    type: "ERC20", 
+                    options: {
+                        address: tokenAddress, 
+                        symbol: tokenSymbol, 
+                        decimals: tokenDecimals, 
+
+                    },
+                },
+            });
+
+            if (wasAdded) {
+                console.log("Thanks for your interest!");
+            } else {
+                console.log("Your loss!");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
     return (
         <section className="tf-slider">
             <div className="container-fluid">
@@ -260,7 +300,7 @@ function Banner06(props) {
                             <div className="image ani4">
                                 <div className="crypto-swap">
                                     <h4>Crypto Exchange</h4>
-                                    <h6>{isBuy ? "(Comprar Ngold)" : "(Vender Ngold)"}</h6>
+                                    <h6>{isBuy ? "(Comprar NGOLD)" : "(Vender NGOLD)"}</h6>
                                     <div className='tokens_container'>
 
 
@@ -290,12 +330,12 @@ function Banner06(props) {
                                             />
 
                                             <div className='balances-item'>
-                                            <img src={ngold} alt='token2' />
+                                                <img src={ngold} alt='token2' />
 
                                                 <p>Balance: {ngoldBalance !== undefined ? parseFloat(ngoldBalance).toFixed(2) : 0} NGOLD'S  </p>
                                             </div>
                                             <div className='balances-item'>
-                                            <img src={usdt} alt='token1' />
+                                                <img src={usdt} alt='token1' />
 
                                                 <p>Balance: {busdBalance !== undefined ? parseFloat(busdBalance).toFixed(2) : 0} USDT</p>
 
@@ -303,7 +343,7 @@ function Banner06(props) {
 
                                         </div>
 
-                                        {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? 'Swap' : 'aprobar'}</button>}
+                                        {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? 'Comprar Ngold' : 'aprobar'}</button>}
                                         {!isConnected && !loading && <ConnectKitButton.Custom>
                                             {({ isConnected, show, truncatedAddress, ensName }) => {
                                                 return (<button onClick={show}>Conectar</button>);
@@ -315,6 +355,7 @@ function Banner06(props) {
                                     <div className="output-container">
                                         <p>Monto a recibir:</p>
                                         <p>{outputAmount} {isBuy ? 'NGOLD' : 'USDT'}</p>
+                                        {isConnect && <button onClick={addToMetamask}> Agregar token</button>}
                                     </div>
                                 </div>
                             </div>
@@ -324,6 +365,12 @@ function Banner06(props) {
                     </div>
                 </div>
             </div>
+            <ModalSwap
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                cant={cant}
+                token={isBuy}
+            />
         </section>
     );
 }

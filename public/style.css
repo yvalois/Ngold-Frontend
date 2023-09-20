@@ -862,8 +862,7 @@ label.error {
   margin-right: auto;
   padding-right: 15px;
   padding-left: 15px;
-  width: 1440px;
-  max-width: 100%;
+  min-width: 95%;
 }
 
 .mb63 {
@@ -1133,7 +1132,7 @@ header #site-header-inner #site-logo {
   margin-right: 14.7%;
 }
 header #site-header-inner #main-nav {
-  flex-shrink: 1;
+  flex-shrink:3;
 }
 header #site-header-inner .header-right {
   margin-left: auto;

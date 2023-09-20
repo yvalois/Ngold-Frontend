@@ -122,8 +122,6 @@ export const updateBalances = () => async (dispatch, getState) => {
     const cobroBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
 
     //8 decimals token
-
-
     let ngoldNftBalance = [];
     let ngoldNftStakingBalance = [];
     let NgoldNftBalance = await elfosContract.getMyInventory(accountAddress);
@@ -137,7 +135,6 @@ export const updateBalances = () => async (dispatch, getState) => {
         }
         ngoldNftBalance.push(info)
     }
-
     for (let i = 0; NgoldStakingBalance.length > i; i++) {
         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 8)).toFixed(2);
@@ -145,7 +142,6 @@ export const updateBalances = () => async (dispatch, getState) => {
             id: parseInt(NgoldStakingBalance[i]),
             currentReward: valorConvertido,
             image: elfo
-
         }
         ngoldNftStakingBalance.push(info)
     }
@@ -164,7 +160,7 @@ export const updateBalances = () => async (dispatch, getState) => {
 
 export const fetchBlockchain = (accountAddress, signer, provider) => {
     return async (dispatch) => {
-        
+
         dispatch(loadingBlockchain())
         try {
             try {
@@ -229,6 +225,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         exchangeBusdBalance: exchangeBusdBalance,
                         exchangeNgoldBalance,
                         signer,
+                        provider,
                         tiendaContract,
                         cobroContract,
                         cobroBalance,
@@ -298,7 +295,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
 
 export const fetchBalance = () => {
     return async (dispatch, getState) => {
-        const { ngoldContract, busdContract,  accountAddress } = getState().blockchain
+        const { ngoldContract, busdContract, accountAddress } = getState().blockchain
         const tokenBalance = await ngoldContract.balanceOf(accountAddress)
         const busdBalance = await busdContract.balanceOf(accountAddress)
         const tokenBalanceFormatted = parseFloat(tokenBalance) / 10 ** 18

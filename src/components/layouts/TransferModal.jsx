@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from "react-bootstrap";
 import { ethers } from 'ethers';
 import { useAccount } from 'wagmi'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from 'sweetalert2';
 import { ConnectKitButton, useModal } from "connectkit";
+import { updateBalances } from '../../redux/blockchain/blockchainAction';
 
 const StakingModal = (props) => {
     const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ const StakingModal = (props) => {
 
     const { ngoldContract } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
-
+    const dispatch = useDispatch()
 
 
     const transfer = async (show) => {
@@ -24,12 +25,17 @@ const StakingModal = (props) => {
                 const tx = await ngoldContract.transfer(address, ethers.utils.parseUnits(cant, 18));
                 await tx.wait();
                 setLoading(false)
-
+                dispatch(updateBalances())
+                setAddress('')
+                setCant('')
                 Swal.fire({
                     title: 'Success',
                     text: 'Transferencia realizada correctamente',
                     icon: 'success',
+                    confirmButtonColor: '#FFAE00',
                     confirmButtonText: 'OK'
+                }).then(() => {
+                    props.onHide()
                 });
             } catch (error) {
                 setLoading(false)
@@ -38,7 +44,7 @@ const StakingModal = (props) => {
                     title: 'Error',
                     text: error.reason,
                     icon: 'error',
-                    confirmButtonColor: '#3085d6',
+                    confirmButtonColor: '#FFAE00',
                     confirmButtonText: 'OK',
                 })
             }

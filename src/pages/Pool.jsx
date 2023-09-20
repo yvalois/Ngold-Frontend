@@ -11,8 +11,8 @@ const Pool = () => {
     <div className='auth'>
                                         <Tabs className="tf-tab">
                                         <TabList className="menu-tab ">
-                                            <Tab className="tab-title"><Link to="#">Pools activos</Link></Tab>
-                                            <Tab className="tab-title "><Link to="#">Mis pools</Link></Tab>
+                                            <Tab className="tab-title"><Link to="#">Staking Activos</Link></Tab>
+                                            <Tab className="tab-title "><Link to="#">Mis Stakings</Link></Tab>
                                         </TabList>
                                         <TabPanel>
                                             <div className='content'>

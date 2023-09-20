@@ -247,14 +247,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg coin">{busdBalance2}</div>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
-                                                <button onClick={retire2(1)}>
+                                                <button onClick={()=>retire2(1)}>
                                                     Retirar
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
-                                                <button  onClick={retire2(2)}>
+                                                <button  onClick={()=>retire2(2)}>
                                                     Retirar
                                                 </button>
 
@@ -269,14 +269,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg coin">{busdBalance3}</div>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
-                                                <button onClick={retire3(1)}>
+                                                <button onClick={()=>retire3(1)}>
                                                     Retirar
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
-                                                <button  onClick={retire3(2)}>
+                                                <button  onClick={()=>retire3(2)}>
                                                     Retirar
                                                 </button>
 
