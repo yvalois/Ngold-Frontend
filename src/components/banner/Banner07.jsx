@@ -343,7 +343,8 @@ function Banner06(props) {
                                         </div>
 
                                         {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? 'Comprar Ngold' : 'aprobar'}</button>}
-                                        {!isConnected && !loading && <ConnectKitButton.Custom>
+                                        {!isConnected && !loading && 
+                                        <ConnectKitButton.Custom>
                                             {({ isConnected, show, truncatedAddress, ensName }) => {
                                                 return (<button onClick={show}>Conectar</button>);
                                             }}

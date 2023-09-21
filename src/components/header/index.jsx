@@ -32,7 +32,7 @@ import { fetchProducts } from '../../redux/store/actions/productActions';
 import { fetchCategory } from '../../redux/store/actions/categoryAction';
 import { loadTokenPrice } from '../../redux/store/actions/tokenPriceActions';
 import { fetchSubCategory } from '../../redux/store/actions/subCategoryAction';
-import { ConnectKitButton, useModal, useSIWE } from "connectkit";
+import { ConnectKitButton, useModal} from "connectkit";
 
 // import Button from '../button';
 
@@ -192,13 +192,13 @@ const Header = () => {
     }
 
 
-    // useEffect(() => {
+      useEffect(() => {
 
-    //     if(address){
-    //         setOpen(false)
-    //     }
+          if(isConnected){
+              setOpen(false)
+          }
 
-    // }, [address]);
+      }, [isConnected]);
 
 
     return (

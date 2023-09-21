@@ -1,12 +1,22 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 
 import Pools from '../components/pools/publicpools/Pools'
 import MyPool from '../components/pools/mypools/MyPool';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Link } from 'react-router-dom';
+import {  useModal } from "connectkit";
+import { useAccount } from 'wagmi';
 
 
 const Pool = () => {
+    const {isConnected} = useAccount()
+    const { open, setOpen } = useModal();
+    useEffect(() => {
+        if(isConnected) {
+            setOpen(false)
+        }
+    }, [isConnected])
+    
   return (
     <div className='auth'>
                                         <Tabs className="tf-tab">

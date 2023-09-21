@@ -23,7 +23,7 @@ import { useWeb3Modal } from '@web3modal/react'
 import Swal from 'sweetalert2';
 import elfo from '../../assets/images/signo.jpeg'
 import logo_elf from '../../assets/images/logo/logo_elf.png';
-import { ConnectKitButton } from "connectkit";
+import { ConnectKitButton, useModal } from "connectkit";
 import ngold from '../../assets/images/icon/ngold.png'
 import usdt from '../../assets/images/icon/usdt.png'
 
@@ -46,7 +46,7 @@ function Banner05(props) {
     const { isConnected, isConnecting } = useAccount()
     const [token, setToken] = useState('NGOLD')
     const dispatch = useDispatch();
-
+    const {setOpen} = useModal()
     const manageCant = (type) => {
         switch (type) {
             case "+":
@@ -191,112 +191,126 @@ function Banner05(props) {
 
 
 
-
+    useEffect(() => {
+        if(isConnected) {
+            setOpen(false)
+        }
+    }, [isConnected])
+    
     return (
         <section className="tf-slider">
-
+            <div className="container-fluid">
             <div className="tf-container">
+                <div className='row'>
+                    <div className="col-md-12">
 
-                <div className="col-md-12">
+                        <div className="slider-home">
+                            <div className="tf-slider-item style-5">
 
-                    <div className="slider-home">
-                        <div class="tf-slider-item style-5">
+                                <div className="content-inner">
+                                    {/* <img src={img1} alt="Binasea" className="img-star star-1 ani4" />
+            <img src={img2} alt="Binasea" className="img-star star-2 ani5" />
+            <img src={img3} alt="Binasea" className="img-star star-3 ani4" />
+            <img src={img4} alt="Binasea" className="img-star star-4 ani5" /> */}
+                                    <h1 className="heading">
+                                        Compra tu <span className='palabra'>Golden ELF</span>
+                                    </h1>
 
-                            <div class="content-inner">
-                                {/* <img src={img1} alt="Binasea" class="img-star star-1 ani4" />
-                                <img src={img2} alt="Binasea" class="img-star star-2 ani5" />
-                                <img src={img3} alt="Binasea" class="img-star star-3 ani4" />
-                                <img src={img4} alt="Binasea" class="img-star star-4 ani5" /> */}
-                                <h1 className="heading">
-                                    Compra tu <span className='palabra'>Golden ELF</span>
-                                </h1>
+                                </div>
 
-                            </div>
-                            <div className="image">
-                                <div class="img-slider"><img src={elfo} alt="Binasea" /></div>
+                                <div className="image">
+                                    <div className="img-slider">
+                                    <img src={elfo} alt="Binasea"/>
+                                    </div>
 
-                                <div class="swiper-container slider-card-product">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="card-product ">
-                                                <h4>Golden ELF #???</h4>
-                                                <div class="infor-author">
-                                                    <img src={logo_elf} alt="Binasea" />
-                                                    <div class="infor">
-                                                        <p>creator</p>  
-                                                        <h6 class="name">@NGold</h6>
-                                                    </div>
-                                                </div>
-
-                                                <div className="form-select2" id="subject">
-                                                    <select
-                                                        value={token}
-                                                        onChange={(e) => {
-                                                            setToken(e.target.value);
-                                                        }}
-                                                    >
-                                                        <option value="NGOLD">
-                                                            NGOLD
-                                                        </option>
-                                                        <option value="USDT" >
-                                                            USDT
-                                                        </option>
-
-                                                    </select>
-                                                </div>
-
-
-
-
-
-
-
-                                                <div class="infor-price">
-
-                                                    <div class="curent-bid">
-                                                        <p>Price</p>
-                                                        <div class="price">
-                                                            {/* Ngold Logo */}
-                                                            {token === "NGOLD" && <div class="icon"><img src={ngold} /></div>}
-                                                            {token === "USDT" && <div class="icon"><img src={usdt} /></div>}
-
-                                                            <p>{parseFloat(precio * cant).toFixed(1)}</p>
+                                    <div className="swiper-container slider-card-product">
+                                        <div className="swiper-wrapper">
+                                            <div className="swiper-slide">
+                                                <div className="card-product">
+                                                
+                                                    <h4>Golden ELF #???</h4>
+                                                    <div className="infor-author">
+                                                        <img src={logo_elf} alt="Binasea" />
+                                                        <div className="infor">
+                                                            <p>creator</p>
+                                                            <h6 className="name">@NGold</h6>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="input-wrapper">
-                                                    <div onClick={() => manageCant("-")} class='cant' id="decrease-btn">-</div>
-                                                    <input type="number" id="amount-input" value={cant} />
-                                                    <div onClick={() => manageCant("+")} class='cant' id="increase-btn">+</div>
-                                                </div>
 
-                                                <div class="btn-button ">
-                                                    {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
-                                                    {!isConnected && !loading && <ConnectKitButton.Custom>
-                                                        {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                            return (<Link to="#" onClick={show} data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Conectar</Link>);
-                                                        }}
-                                                    </ConnectKitButton.Custom>}
-                                                    {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" class="tf-button style-3">Cargando</Link>}
-                                                    {/* <Link to="/item-details-v1" class="tf-button style-3">View Details</Link> */}
+                                                    <div className="form-select2" id="subject">
+                                                        <select
+                                                            value={token}
+                                                            onChange={(e) => {
+                                                                setToken(e.target.value);
+                                                            }}
+                                                        >
+                                                            <option value="NGOLD">
+                                                                NGOLD
+                                                            </option>
+                                                            <option value="USDT" >
+                                                                USDT
+                                                            </option>
+
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div className="infor-price">
+
+                                                        <div className="curent-bid">
+                                                            <p>Price</p>
+                                                            <div className="price">
+                                                                {/* Ngold Logo */}
+                                                                {token === "NGOLD" && <div className="icon"><img src={ngold} /></div>}
+                                                                {token === "USDT" && <div className="icon"><img src={usdt} /></div>}
+
+                                                                <p>{parseFloat(precio * cant).toFixed(1)}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="input-wrapper">
+                                                        <div onClick={() => manageCant("-")} className='cant' id="decrease-btn">-</div>
+                                                        <input 
+                                                        type="text" 
+                                                        placeholder='cantidad'
+                                                        value={cant} 
+ 
+                                                        />
+                                                        <div onClick={() => manageCant("+")} className='cant' id="increase-btn">+</div>
+                                                    </div>
+
+                                                    <div className="btn-button">
+                                                        {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
+                                                        {!isConnected && !loading && 
+                                                        <ConnectKitButton.Custom>
+                                                            {({ isConnected, show, truncatedAddress, ensName }) => {
+                                                                return (<Link to="#" onClick={() => { show() }} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">Conectar</Link>);
+                                                            }}
+                                                        </ConnectKitButton.Custom>
+                                                        }
+                                                        {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">Cargando</Link>}
+                                                        {/* <Link to="/item-details-v1" className="tf-button style-3">View Details</Link> */}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
 
                                 </div>
 
-                            </div>
 
+                            </div>
 
                         </div>
 
+
                     </div>
-
-
                 </div>
-            </div>
 
+            </div>
+            </div>
 
 
 

@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import Swal from 'sweetalert2'
 import { fetchData } from "../../../redux/blockchain/dataActions";
 import { ConnectKitButton, useModal } from "connectkit";
-
+import { useAccount } from 'wagmi';
 function Pools() {
   const dispatch = useDispatch();
   const stakin = useSelector(state => state.blockchain.poolContract);
@@ -34,20 +34,20 @@ function Pools() {
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cartLoading, setCartLoading] = useState(false);
-
+  const { isConnected } = useAccount()
   const changeLoadingCard = (is) => {
     setCartLoading(is);
   }
   const { open, setOpen } = useModal();
   const stake = async (poolId, amount, show) => {
     setIsLoading(true);
-    if(isConnect){
+    if (isConnect) {
       if (allowances > amount) {
         try {
           const value = amount * 10 ** 18
           const tx = await stakin.setUserStake(poolId, value.toString());
           stakin.on("Stake", (poolId, amount) => {
-  
+
             setStakeValue(0);
             dispatch(fetchBalance());
             dispatch(fetchData());
@@ -61,7 +61,7 @@ function Pools() {
             confirmButtonText: 'OK'
           });
           setIsLoading(false);
-  
+
         } catch (err) {
           console.log(err);
           Swal.fire({
@@ -83,7 +83,7 @@ function Pools() {
           const tx = await blockchain.ngoldContract.approve(blockchain.poolContract.address, value.toString());
           await tx.wait();
           dispatch(fetchData());
-  
+
           Swal.fire({
             title: 'Success',
             text: 'aprobadoi correctamente',
@@ -91,17 +91,17 @@ function Pools() {
             confirmButtonText: 'OK'
           });
           blockchain.ngoldContract.on('Approval', (owner, spender, value) => {
-  
+
             setAllowance(ethers.utils.formatEther(value));
             setIsLoading(false);
           })
-  
+
         }
         catch (err) {
           if (error.reason) {
             setErrorMsg(error.reason);
             setError(true);
-  
+
           }
           Swal.fire({
             title: 'Error',
@@ -113,7 +113,7 @@ function Pools() {
           setIsLoading(false);
         }
       }
-    }else{
+    } else {
       show()
     }
 
@@ -241,12 +241,17 @@ function Pools() {
     setIsLoading(false);
   }, [myStaked, pools]);
 
+  useEffect(() => {
+    if (isConnected) {
+      setOpen(false)
+    }
+  }, [isConnected])
 
   return (
     <div className='pools-container'>
 
-      {pools.map((item, index) =>
-        <div className='cardpool'>
+      {pools.map((item, index) => (
+        <div key={index} className='cardpool'>
           <div className='cardpool-info'>
             <span>
               {tokensPerPool[item.poolId] ?
@@ -276,32 +281,39 @@ function Pools() {
               >Pool llena
               </button>
               :
-              <ConnectKitButton.Custom>
+              !isConnected && <ConnectKitButton.Custom>
                 {({ show, isConnecting, hide }) => {
-                  return(
-                  <button
-                    className="bg-yellow-300 text-black cursor-pointer w-36 shadow-md rounded-lg"
-                    onClick={() => stake(item.poolId, stakeValue,show)}
-                  >
-                    {
-
-                      isConnect ?
-                        !isLoading || !isConnecting  ?
-                          allowances > stakeValue ?
-                            "Bloquear"
-                            :
-                            "Aprobar"
-                          : "Cargando"
-                        : "Conectar"
-                    }
-                  </button>)
+                  return (
+                    <button
+                      className="bg-yellow-300 text-black cursor-pointer w-36 shadow-md rounded-lg"
+                      onClick={show}
+                    >
+                      Conectar
+                    </button>)
                 }}
               </ConnectKitButton.Custom>
 
 
             }
+            {isConnected &&
+              <button
+                className="bg-yellow-300 text-black cursor-pointer w-36 shadow-md rounded-lg"
+                onClick={() => stake(item.poolId, stakeValue)}
+              >
+                {
+
+
+                  !isLoading ?
+                    allowances > stakeValue ?
+                      "Bloquear"
+                      :
+                      "Aprobar"
+                    : "Cargando"
+
+                }
+              </button>}
           </div>
-        </div>
+        </div>)
       )
       }
 
