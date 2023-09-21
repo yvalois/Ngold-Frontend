@@ -78,23 +78,26 @@ function Pools() {
           setIsLoading(false);
         }
       } else {
+    setIsLoading(true);
+
         try {
           const value = amount * 10 ** 18
           const tx = await blockchain.ngoldContract.approve(blockchain.poolContract.address, value.toString());
           await tx.wait();
-          dispatch(fetchData());
-
-          Swal.fire({
-            title: 'Success',
-            text: 'aprobadoi correctamente',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-          blockchain.ngoldContract.on('Approval', (owner, spender, value) => {
-
+          await blockchain.ngoldContract.on('Approval', (owner, spender, value) => {
             setAllowance(ethers.utils.formatEther(value));
             setIsLoading(false);
           })
+          dispatch(fetchData());
+          setIsLoading(false);
+
+          Swal.fire({
+            title: 'Success',
+            text: 'aprobado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+
 
         }
         catch (err) {
