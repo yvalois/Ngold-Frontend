@@ -11,11 +11,11 @@ import { fetchData } from "../../../redux/blockchain/dataActions";
 const MyPool = () => {
   const dispatch = useDispatch();
   const stakin = useSelector(state => state.blockchain.poolContract);
-  
-  const blockchain = useSelector(state => state.blockchain);
-  const {ngoldContract} = useSelector(state => state.blockchain);
 
-  
+  const blockchain = useSelector(state => state.blockchain);
+  const { ngoldContract } = useSelector(state => state.blockchain);
+
+
 
   const data = useSelector(state => state.data);
 
@@ -239,38 +239,38 @@ const MyPool = () => {
           <div className='my-cardpool-item'>
             {!isLoading ?
               pool.active ?
-              <>
-                <button
-                  onClick={() => claimReward(pool.poolId, pool.index)}
-                >Reclamar</button>
-                <button
-                  onClick={() => unstake(pool.poolId, pool.index)}
-                > Devolver </button>
-              </>
-              :
-              <>
-                <button
-                  onClick={() => claimReward(pool.poolId, pool.index)}
-
-                >reclamar</button>
-
-                {1 > 0 ?
+                <>
+                  <button
+                    onClick={() => claimReward(pool.poolId, pool.index)}
+                  >Reclamar</button>
                   <button
                     onClick={() => unstake(pool.poolId, pool.index)}
-                  > Retirar</button>
-                  :
-                  <button
                   > Devolver </button>
-                }
-              </>
+                </>
+                :
+                <>
+                  <button
+                    onClick={() => claimReward(pool.poolId, pool.index)}
+
+                  >reclamar</button>
+
+                  {1 > 0 ?
+                    <button
+                      onClick={() => unstake(pool.poolId, pool.index)}
+                    > Retirar</button>
+                    :
+                    <button
+                    > Devolver </button>
+                  }
+                </>
               :
               <>
-              <button>
-                Cargando....
-              </button>
-              <button>
-                Cargando....
-              </button>
+                <button>
+                  Cargando....
+                </button>
+                <button>
+                  Cargando....
+                </button>
               </>
 
             }

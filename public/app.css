@@ -3988,7 +3988,7 @@ body[data-magic-cursor=hide] .mouse-cursor {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 70px;
   }
 }
 .wallet-assets .content-tab::before {

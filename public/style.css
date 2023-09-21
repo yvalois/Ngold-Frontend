@@ -1143,6 +1143,17 @@ header #site-header-inner #main-nav {
   text-align: center;
 }
 
+@media (max-width: 1400px) {
+  #main-nav .menu {
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    margin-left: 0px;
+    margin-right: 10px; 
+    text-align: center;
+  }
+}
+
 #main-nav .menu li{
   padding: 2px;
 }
@@ -1155,12 +1166,10 @@ header #site-header-inner #main-nav {
   color:#FFAE00 ;
 }
 #site-header-inner .connect{
-
   display: none;
-
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 767px) {
   #site-header-inner .connect{
     width: 100%;
     display: flex;

@@ -24,9 +24,10 @@ function App() {
 
     const wagmiConfig = createConfig(
         getDefaultConfig({
-          appName: "Ngold",
-          alchemyId: "gS7apTrs7AzWt0gYkd2p9fikCNpPtvNR", // or infuraId
+          alchemyId: "gS7apTrs7AzWt0gYkd2p9fikCNpPtvNR",
           walletConnectProjectId: "022ab2b4b6b684c47db3d9b652065c92",
+          appName: "Ngold",
+
           chains,
         }),
       );

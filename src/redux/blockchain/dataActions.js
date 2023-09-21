@@ -91,15 +91,15 @@ export const fetchData = () => {
             const staking = new ethers.Contract(POOL_ADDRESS, Pool, provider);
             const exchange = new ethers.Contract(EXCHANGE_ADDRESS, Exchange, provider);
             const token = new ethers.Contract(NGOLD_ADDRESS, abiToken, provider);
-
+            const stakin = store.getState().blockchain.poolContract
 
             if (staking) {
 
-                const getPools = await staking.getAllPools();
+                const getPools = await stakin.getAllPools();
 
-                const data = await staking.getAllData();
+                const data = await stakin.getAllData();
 
-                const accountPools = await staking.getStakingPoolInfos();
+                const accountPools = await stakin.getStakingPoolInfos();
 
                 const address = await store.getState().blockchain.accountAddress;
                 let allow;
