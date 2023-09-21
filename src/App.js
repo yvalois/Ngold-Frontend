@@ -15,23 +15,21 @@ import { Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { mainnet, hardhat,polygon } from 'wagmi/chains'
 import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from "connectkit"
-const chains = [polygon]
 
-const wagmiConfig = createConfig(
-    getDefaultConfig({
-      alchemyId: "gS7apTrs7AzWt0gYkd2p9fikCNpPtvNR", // or infuraId
-      walletConnectProjectId: "022ab2b4b6b684c47db3d9b652065c92",
-      chains,
-      appName: "Ngold",
-
-    }),
-  );
 
 function App() {
 
 
+    const chains = [polygon]
 
-
+    const wagmiConfig = createConfig(
+        getDefaultConfig({
+          appName: "Ngold",
+          alchemyId: "gS7apTrs7AzWt0gYkd2p9fikCNpPtvNR", // or infuraId
+          walletConnectProjectId: "022ab2b4b6b684c47db3d9b652065c92",
+          chains,
+        }),
+      );
 
     useEffect(() => {
         AOS.init({
