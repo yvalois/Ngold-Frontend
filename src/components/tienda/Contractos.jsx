@@ -227,7 +227,7 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                             <div className='action-button'>
                                                 <button onClick={() => retire(1)}>
                                                     Retirar
-                                                </button>
+                                                </button>   
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">

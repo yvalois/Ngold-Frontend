@@ -60,7 +60,10 @@ const CheckOut = () => {
     const approveToken = async () => {
         try {
             setLoading(true);
-            const approve = await ngoldContract.approve(tiendaContract.address, ethers.utils.parseEther("999999999999"));
+            const approve = await ngoldContract.increaseAllowance(
+                tiendaContract.address,
+                ethers.utils.parseUnits("9999999", 18)
+            );
             await approve.wait();
             // Suscribirse al evento 'Approval'
             setLoading(false);

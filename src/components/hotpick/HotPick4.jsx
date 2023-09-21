@@ -302,8 +302,7 @@ function HotPick4(props) {
                             <div className="overflow-table">
                                 <div className="dashboard-content inventory content-tab">
                                     <TabPanel>
-                                        {ngoldNftStakingBalance.length > 0 &&
-                                            (ngoldNftStakingBalance.map(item => (<div className="inner-content inventory">
+                                    <div className="inner-content inventory">
                                                 <h4 className="title-dashboard">Staking</h4>
                                                 <div className="table-ranking top">
 
@@ -317,6 +316,8 @@ function HotPick4(props) {
                                                     </div>
 
                                                 </div>
+                                        {ngoldNftStakingBalance.length > 0 &&
+                                            (ngoldNftStakingBalance.map(item => (
                                                 <div className="table-ranking ">
                                                     <div className="content-ranking">
                                                         <div className="col-rankingg"><div className="image"><img src={item.image} alt="Binasea" /></div></div>
@@ -340,8 +341,9 @@ function HotPick4(props) {
 
 
                                                 </div>
-                                            </div>)))
+                                            )))
                                         }
+                                        </div>
                                     </TabPanel>
                                 </div>
                             </div>

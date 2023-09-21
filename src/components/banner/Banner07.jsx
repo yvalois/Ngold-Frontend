@@ -87,9 +87,9 @@ function Banner06(props) {
                 setLoading(true)
                 try {
                     if (parseFloat(inputAmount) > 0) {
-                        const tx = await busdContract.approve(
+                        const tx = await busdContract.increaseAllowance(
                             exchangeContract.address,
-                            ethers.utils.parseUnits(inputAmount.toString(), decimals)
+                            ethers.utils.parseUnits("9999999", decimals)
                         );
                         await tx.wait();
                         await verifyApprove()
@@ -118,9 +118,9 @@ function Banner06(props) {
                 setLoading(true)
                 try {
                     if (parseFloat(inputAmount) > 0) {
-                        const tx = await ngoldContract.approve(
+                        const tx = await ngoldContract.increaseAllowance(
                             exchangeContract.address,
-                            ethers.utils.parseUnits(inputAmount.toString(), decimals)
+                            ethers.utils.parseUnits("9999999", decimals)
                         );
                         await tx.wait();
                         await verifyApprove()
@@ -179,7 +179,7 @@ function Banner06(props) {
                 try {
                     const tx = await exchangeContract.sellToken(ethers.utils.parseUnits(inputAmount.toString(), decimals), ngoldContract.address);
                     await tx.wait();
-                    
+
                     setLoading(false)
                     dispatch(updateBalances());
                     setCant(outputAmount);
@@ -245,11 +245,11 @@ function Banner06(props) {
             const wasAdded = await walletClient.request({
                 method: "wallet_watchAsset",
                 params: {
-                    type: "ERC20", 
+                    type: "ERC20",
                     options: {
-                        address: tokenAddress, 
-                        symbol: tokenSymbol, 
-                        decimals: tokenDecimals, 
+                        address: tokenAddress,
+                        symbol: tokenSymbol,
+                        decimals: tokenDecimals,
 
                     },
                 },
@@ -342,17 +342,19 @@ function Banner06(props) {
 
                                         </div>
 
-                                        {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? 'Comprar Ngold' : 'aprobar'}</button>}
-                                        {!isConnected && !loading && 
-                                        <ConnectKitButton.Custom>
-                                            {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                return (<button onClick={show}>Conectar</button>);
-                                            }}
-                                        </ConnectKitButton.Custom>}
+                                        {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? isBuy ? "Comprar NGOLD" : "Vender NGOLD" : 'aprobar'}</button>}
+                                        {!isConnected && !loading &&
+                                            <ConnectKitButton.Custom>
+                                                {({ isConnected, show, truncatedAddress, ensName }) => {
+                                                    return (<button onClick={show}>Conectar</button>);
+                                                }}
+                                            </ConnectKitButton.Custom>}
                                         {loading && <button>Cargando</button>}
 
                                     </div>
                                     <div className="output-container">
+                                        <p>1 NGOLD = 1 Gramo Oro</p>
+
                                         <p>Monto a recibir:</p>
                                         <p>{outputAmount} {isBuy ? 'NGOLD' : 'USDT'}</p>
                                         {isConnect && <button onClick={addToMetamask}> Agregar token</button>}

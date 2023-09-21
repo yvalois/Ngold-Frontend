@@ -32,7 +32,7 @@ const StakingModal = (props) => {
             setLoading(false)
             Swal.fire({
                 title: 'Success',
-                text: 'aprobadoi correctamente',
+                text: 'aprobado correctamente',
                 icon: 'success',
                 confirmButtonText: 'OK'
               });
@@ -47,22 +47,26 @@ const StakingModal = (props) => {
             setLoading(false)
 
         }
+    }    
+    const funcion = async () => {
+        dispatch(updateBalances())
     }
 
     const stakeToken =async()=>{
         setLoading(true)
         try {
-            const tx = await stakingContract.stake(props.id);
+            const tx = await stakingContract.stake(props.id.toString());
             await tx.wait();
-            dispatch(updateBalances())
+            await funcion () 
             setLoading(false)
             Swal.fire({
                 title: 'Success',
                 text: 'Stakeado correctamente',
                 icon: 'success',
                 confirmButtonText: 'OK'
-              });
+              }).then(() => { props.onHide() })
         } catch (error) {
+            console.log(error.reason)
             Swal.fire({
                 title: 'Error',
                 text: error.reason,

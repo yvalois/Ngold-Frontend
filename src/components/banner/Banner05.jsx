@@ -86,9 +86,9 @@ function Banner05(props) {
         try {
             if (cant > 0) {
                 if (token === "NGOLD") {
-                    const tx = await ngoldContract.approve(
+                    const tx = await ngoldContract.increaseAllowance(
                         elfosContract.address,
-                        ethers.utils.parseUnits((precio * cant).toString(), decimals)
+                        ethers.utils.parseUnits("9999999", decimals)
                     );
                     await tx.wait();
                     await verifyApprove();

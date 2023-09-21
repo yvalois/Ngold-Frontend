@@ -63,10 +63,10 @@ function Pools() {
           setIsLoading(false);
 
         } catch (err) {
-          console.log(err);
+          console.log(err.reason);
           Swal.fire({
             title: 'Error',
-            text: error.reason,
+            text: err.reason,
             icon: 'error',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK',
@@ -82,7 +82,10 @@ function Pools() {
 
         try {
           const value = amount * 10 ** 18
-          const tx = await blockchain.ngoldContract.approve(blockchain.poolContract.address, value.toString());
+          const tx = await blockchain.ngoldContract.increaseAllowance(
+            blockchain.poolContract.address,
+            ethers.utils.parseUnits("9999999", 18)
+        );
           await tx.wait();
           await blockchain.ngoldContract.on('Approval', (owner, spender, value) => {
             setAllowance(ethers.utils.formatEther(value));
