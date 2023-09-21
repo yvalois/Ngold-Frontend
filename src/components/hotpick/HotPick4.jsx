@@ -146,8 +146,8 @@ function HotPick4(props) {
             setModalShow(false);
             setId(10000)
         } else {
-            setModalShow(true);
             setId(id)
+            setModalShow(true);
         }
     }
 
