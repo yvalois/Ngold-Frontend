@@ -28,7 +28,7 @@ function CreateProduct() {
     imageToCharge: "",
     category: "",
     subcategory: "",
-    discount: 0
+    discount: ""
   });
 
   const convertImageToBase64 = (file) => {
@@ -129,7 +129,7 @@ function CreateProduct() {
         <div>
           <input
             type="number"
-            placeholder="Precio"
+            placeholder="Precio (USDT)"
             value={newProduct.price}
             onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
             required
@@ -146,7 +146,7 @@ function CreateProduct() {
         </div>
         <div>
           <fieldset className="message">
-            <textarea id="message" name="message" rows="4" placeholder="Message" tabIndex="4" aria-required="true" required=""
+            <textarea id="message" name="message" rows="4" placeholder="Descripcion" tabIndex="4" aria-required="true" required=""
               value={newProduct.description}
               onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
             />
@@ -156,7 +156,7 @@ function CreateProduct() {
           <select
             value={newProduct.category}
             onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}>
-            <option value="">Category...</option>
+            <option value="">Categoria...</option>
             {categoriesLoaded &&
               categories.map((category, index) => (
                 <option key={index} value={category._id}>

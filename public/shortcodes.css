@@ -1234,6 +1234,14 @@ body > iframe {
   color: #fff;
 }
 
+.modal .modal-dialog .modal-content .modal-body .button-popup2 {
+  border-radius: 99px;
+  display: block;
+  text-align: center;
+  padding: 12px 10px 12px 10px;
+  color: #fff;
+}
+
 .modal .modal-dialog .modal-content .modal-body .button-popup:hover {
   opacity: 0.8;
 }
@@ -9626,8 +9634,13 @@ justify-content: center;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
 
-
+.checkout .checkout-container .products-information-container .money2 {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 .transfer-container{
   width: 100%;

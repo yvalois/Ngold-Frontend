@@ -31,7 +31,7 @@ const Pagos = () => {
             await tx.wait();
             Swal.fire({
                 title: 'Success',
-                text: 'aprobadoi correctamente',
+                text: 'aprobado correctamente',
                 icon: 'success',
                 confirmButtonText: 'OK'
             });

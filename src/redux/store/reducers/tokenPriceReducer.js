@@ -4,6 +4,7 @@ const INITIAL_STATE = {
     error: false,
     errorMsg: null,
     tokenPrice: 0,
+    tokenBPrice:0,
     priceLoaded: false,
 }
 
@@ -23,6 +24,8 @@ const tokenPriceReducer = (state = INITIAL_STATE, action) => {
                 error: false,
                 errorMsg: null,
                 tokenPrice: action.payload.tokenPrice,
+                tokenBPrice: action.payload.tokenBPrice,
+
                 priceLoaded: true,
             }
         case 'LOADING_TOKEN_PRICE_FAILURE':

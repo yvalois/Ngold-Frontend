@@ -10,6 +10,8 @@ import Swal from 'sweetalert2'
 import { fetchData } from "../../../redux/blockchain/dataActions";
 import { ConnectKitButton, useModal } from "connectkit";
 import { useAccount } from 'wagmi';
+import Connect from '../../layouts/Connect';
+
 function Pools() {
   const dispatch = useDispatch();
   const stakin = useSelector(state => state.blockchain.poolContract);
@@ -34,6 +36,7 @@ function Pools() {
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cartLoading, setCartLoading] = useState(false);
+  const [connectShow, setConnectShow] = useState(false);
   const { isConnected } = useAccount()
   const changeLoadingCard = (is) => {
     setCartLoading(is);
@@ -287,18 +290,13 @@ function Pools() {
               >Pool llena
               </button>
               :
-              !isConnected && <ConnectKitButton.Custom>
-                {({ show, isConnecting, hide }) => {
-                  return (
+              !isConnected && 
                     <button
                       className="bg-yellow-300 text-black cursor-pointer w-36 shadow-md rounded-lg"
-                      onClick={show}
+                      onClick={()=> setConnectShow(true)}
                     >
                       Conectar
-                    </button>)
-                }}
-              </ConnectKitButton.Custom>
-
+                    </button>
 
             }
             {isConnected &&
@@ -323,7 +321,10 @@ function Pools() {
       )
       }
 
-
+      <Connect
+                show={connectShow}
+                onHide={() => setConnectShow(false)}
+            />
     </div>
   )
 }

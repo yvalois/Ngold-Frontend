@@ -28,6 +28,7 @@ import ngold from '../../assets/images/icon/ngold.png'
 import usdt from '../../assets/images/icon/usdt.png'
 
 import MintNftModal from '../layouts/MintNftModal';
+import Connect from '../layouts/Connect';
 
 
 Banner05.propTypes = {
@@ -40,13 +41,17 @@ function Banner05(props) {
     const [precio, setPrecio] = useState(1);
     const [modalShow, setModalShow] = useState(false);
     const [allowance, setAllowance] = useState(0);
+    const [allowanceB, setAllowanceB] = useState(0);
+    const [connectShow, setConnectShow] = useState(false)
     const [loading, setLoading] = useState(false)
     const { elfosContract, ngoldContract, busdContract, accountAddress, ngoldNftBalance } = useSelector(state => state.blockchain);
     const decimals = 18;
     const { isConnected, isConnecting } = useAccount()
     const [token, setToken] = useState('NGOLD')
     const dispatch = useDispatch();
-    const {setOpen} = useModal()
+    const { setOpen } = useModal()
+    const { tokenBPrice } = useSelector((State) => State.tokenPrice);
+
     const manageCant = (type) => {
         switch (type) {
             case "+":
@@ -62,8 +67,13 @@ function Banner05(props) {
         }
     }
     const getPrice = async () => {
-        const price = await elfosContract.valor()
-        setPrecio(parseInt(price))
+        if (token === 'NGOLD') {
+            const price = await elfosContract.valor()
+            setPrecio(parseInt(price))
+        } else {
+            setPrecio(parseFloat(tokenBPrice).toFixed(3))
+
+        }
     }
     useEffect(() => {
         if (isConnected && elfosContract !== null) {
@@ -75,7 +85,10 @@ function Banner05(props) {
     const verifyApprove = async () => {
         try {
             const approvedNgoldAmount = await ngoldContract.allowance(accountAddress, elfosContract.address)
+            const approvedBusdAmount = await busdContract.allowance(accountAddress, elfosContract.address)
+
             setAllowance(parseFloat(ethers.utils.formatEther(approvedNgoldAmount)))
+            setAllowanceB(parseFloat(ethers.utils.formatEther(approvedBusdAmount)))
         } catch (error) {
             console.log(error)
         }
@@ -94,22 +107,22 @@ function Banner05(props) {
                     await verifyApprove();
                     Swal.fire({
                         title: 'Success',
-                        text: 'aprobadoi correctamente',
+                        text: 'aprobado correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
                     setLoading(false);
 
                 } else {
-                    const tx = await busdContract.approve(
+                    const tx = await busdContract.increaseAllowance(
                         elfosContract.address,
-                        ethers.utils.parseUnits((precio * cant).toString(), decimals)
+                        ethers.utils.parseUnits("9999999", decimals)
                     );
                     await tx.wait();
                     await verifyApprove();
                     Swal.fire({
                         title: 'Success',
-                        text: 'aprobadoi correctamente',
+                        text: 'aprobado correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
@@ -178,7 +191,7 @@ function Banner05(props) {
     }
 
     const callAction = () => {
-        if (allowance >= precio * cant) {
+        if ((token === 'NGOLD' && allowance >= precio * cant) || (token === 'USDT' && allowanceB >= precio * cant)) {
             mint()
         } else {
             Approve();
@@ -192,124 +205,129 @@ function Banner05(props) {
 
 
     useEffect(() => {
-        if(isConnected) {
+        if (isConnected) {
             setOpen(false)
         }
     }, [isConnected])
-    
+
     return (
         <section className="tf-slider">
             <div className="container-fluid">
-            <div className="tf-container">
-                <div className='row'>
-                    <div className="col-md-12">
+                <div className="tf-container">
+                    <div className='row'>
+                        <div className="col-md-12">
 
-                        <div className="slider-home">
-                            <div className="tf-slider-item style-5">
+                            <div className="slider-home">
+                                <div className="tf-slider-item style-5">
 
-                                <div className="content-inner">
-                                    {/* <img src={img1} alt="Binasea" className="img-star star-1 ani4" />
+                                    <div className="content-inner">
+                                        {/* <img src={img1} alt="Binasea" className="img-star star-1 ani4" />
             <img src={img2} alt="Binasea" className="img-star star-2 ani5" />
             <img src={img3} alt="Binasea" className="img-star star-3 ani4" />
             <img src={img4} alt="Binasea" className="img-star star-4 ani5" /> */}
-                                    <h1 className="heading">
-                                        Compra tu <span className='palabra'>Golden ELF</span>
-                                    </h1>
+                                        <h1 className="heading">
+                                            Compra tu <span className='palabra'>Golden ELF</span>
+                                        </h1>
 
-                                </div>
-
-                                <div className="image">
-                                    <div className="img-slider">
-                                    <img src={elfo} alt="Binasea"/>
                                     </div>
 
-                                    <div className="swiper-container slider-card-product">
-                                        <div className="swiper-wrapper">
-                                            <div className="swiper-slide">
-                                                <div className="card-product">
-                                                
-                                                    <h4>Golden ELF #???</h4>
-                                                    <div className="infor-author">
-                                                        <img src={logo_elf} alt="Binasea" />
-                                                        <div className="infor">
-                                                            <p>creator</p>
-                                                            <h6 className="name">@NGold</h6>
-                                                        </div>
-                                                    </div>
+                                    <div className="image">
+                                        <div className="img-slider">
+                                            <img src={elfo} alt="Binasea" />
+                                        </div>
 
-                                                    <div className="form-select2" id="subject">
-                                                        <select
-                                                            value={token}
-                                                            onChange={(e) => {
-                                                                setToken(e.target.value);
-                                                            }}
-                                                        >
-                                                            <option value="NGOLD">
-                                                                NGOLD
-                                                            </option>
-                                                            <option value="USDT" >
-                                                                USDT
-                                                            </option>
+                                        <div className="swiper-container slider-card-product">
+                                            <div className="swiper-wrapper">
+                                                <div className="swiper-slide">
+                                                    <div className="card-product">
 
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div className="infor-price">
-
-                                                        <div className="curent-bid">
-                                                            <p>Price</p>
-                                                            <div className="price">
-                                                                {/* Ngold Logo */}
-                                                                {token === "NGOLD" && <div className="icon"><img src={ngold} /></div>}
-                                                                {token === "USDT" && <div className="icon"><img src={usdt} /></div>}
-
-                                                                <p>{parseFloat(precio * cant).toFixed(1)}</p>
+                                                        <h4>Golden ELF #???</h4>
+                                                        <div className="infor-author">
+                                                            <img src={logo_elf} alt="Binasea" />
+                                                            <div className="infor">
+                                                                <p>creator</p>
+                                                                <h6 className="name">@NGold</h6>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div className="input-wrapper">
-                                                        <div onClick={() => manageCant("-")} className='cant' id="decrease-btn">-</div>
-                                                        <input 
-                                                        type="text" 
-                                                        placeholder='cantidad'
-                                                        value={cant} 
- 
-                                                        />
-                                                        <div onClick={() => manageCant("+")} className='cant' id="increase-btn">+</div>
-                                                    </div>
+                                                        <div className="form-select2" id="subject">
+                                                            <select
+                                                                value={token}
+                                                                onChange={(e) => {
+                                                                    setToken(e.target.value);
+                                                                }}
+                                                            >
+                                                                <option value="NGOLD">
+                                                                    NGOLD
+                                                                </option>
+                                                                <option value="USDT" >
+                                                                    USDT
+                                                                </option>
 
-                                                    <div className="btn-button">
-                                                        {isConnected && !loading && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">{allowance >= precio * cant ? 'Mint' : 'Aprobar'}</Link>}
-                                                        {!isConnected && !loading && 
-                                                        <ConnectKitButton.Custom>
-                                                            {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                                return (<Link to="#" onClick={() => { show() }} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">Conectar</Link>);
-                                                            }}
-                                                        </ConnectKitButton.Custom>
-                                                        }
-                                                        {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">Cargando</Link>}
-                                                        {/* <Link to="/item-details-v1" className="tf-button style-3">View Details</Link> */}
+                                                            </select>
+                                                        </div>
+
+
+                                                        <div className="infor-price">
+
+                                                            <div className="curent-bid">
+                                                                <p>Price</p>
+                                                                <div className="price">
+                                                                    {/* Ngold Logo */}
+                                                                    {token === "NGOLD" && <div className="icon"><img src={ngold} /></div>}
+                                                                    {token === "USDT" && <div className="icon"><img src={usdt} /></div>}
+
+                                                                    <p>{token === "NGOLD" ? parseFloat(precio * cant).toFixed(1) : parseFloat(tokenBPrice * cant).toFixed(3)}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="input-wrapper">
+                                                            <div onClick={() => manageCant("-")} className='cant' id="decrease-btn">-</div>
+                                                            <input
+                                                                type="text"
+                                                                placeholder='cantidad'
+                                                                value={cant}
+
+                                                            />
+                                                            <div onClick={() => manageCant("+")} className='cant' id="increase-btn">+</div>
+                                                        </div>
+
+                                                        <div className="btn-button">
+                                                            {isConnected && !loading && token === 'NGOLD' && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">{allowance >= precio * cant ?
+                                                                'Mint'
+                                                                :
+                                                                'Aprobar'}</Link>}
+                                                            {isConnected && !loading && token === 'USDT' && <Link to="#" onClick={callAction} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">{
+                                                                allowanceB > precio * cant
+                                                                    ?
+                                                                    'Mint'
+                                                                    :
+                                                                    'Aprobar'}</Link>}
+                                                            {!isConnected && !loading &&
+                                                                <Link to="#" onClick={()=>setConnectShow(true)} data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">Conectar</Link>}
+                                                                    
+                                                            {loading && <Link to="#" data-toggle="modal" data-target="#popup_bid" className="tf-button style-3">Cargando</Link>}
+                                                            {/* <Link to="/item-details-v1" className="tf-button style-3">View Details</Link> */}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                     </div>
 
-                                </div>
 
+                                </div>
 
                             </div>
 
+
                         </div>
-
-
                     </div>
-                </div>
 
-            </div>
+                </div>
             </div>
 
 
@@ -318,6 +336,10 @@ function Banner05(props) {
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 id={ngoldNftBalance[ngoldNftBalance.length - 1]?.id}
+            />
+            <Connect
+                show={connectShow}
+                onHide={() => setConnectShow(false)}
             />
         </section>
 

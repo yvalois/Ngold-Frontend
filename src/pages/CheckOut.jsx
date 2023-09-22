@@ -11,6 +11,7 @@ import { clearCart } from "../redux/store/actions/cartActions";
 import { useWeb3Modal } from '@web3modal/react'
 import { loadTokenPrice } from '../redux/store/actions/tokenPriceActions';
 import { ConnectKitButton } from "connectkit";
+import Connect from '../components/layouts/Connect';
 
 const CheckOut = () => {
     const userInfo = useSelector((State) => State.user.userDetails);
@@ -20,12 +21,11 @@ const CheckOut = () => {
     const { infoLoaded } = useSelector((State) => State.user);
     const { fullName, address, country, city, zipCode, state, phone, email, verificationCode } = userInfo;
 
-
     const [checkApprovedToken, setCheckApprovedToken] = useState(false);
     const [checkApprovedBusd, setCheckApprovedBusd] = useState(0);
     const [approvedUnits, setApprovedUnits] = useState(0);
     const [approvedUnitsBusd, setApprovedUnitsBusd] = useState(0);
-
+    const [connectShow, setConnectShow] = useState(false)
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -47,9 +47,9 @@ const CheckOut = () => {
         try {
             const approvedToken = await ngoldContract.allowance(accountAddress, tiendaContract.address);
             const approvedBusd = await busdContract.allowance(accountAddress, tiendaContract.address);
-            const approveToNumber = parseFloat(approvedToken) / 10 ** 18;
-            const approveToNumberBusd = ethers.utils.formatEther(approvedBusd);
 
+            const approveToNumber = parseFloat(approvedToken) / 10 ** 18;
+            const approveToNumberBusd = parseFloat(approvedBusd) / 10 ** 18;
             setApprovedUnits(approveToNumber);
             setApprovedUnitsBusd(approveToNumberBusd);
             setCheckApprovedBusd(approveToNumberBusd);
@@ -73,7 +73,7 @@ const CheckOut = () => {
                 text: 'Approved successfully',
                 icon: 'success',
                 confirmButtonText: 'OK'
-            });
+            }).then(()=>{checkApprove()});
         } catch (err) {
             setLoading(false);
             Swal.fire({
@@ -90,18 +90,21 @@ const CheckOut = () => {
     const approveBusd = async () => {
         try {
             setLoading(true);
-            const approve = await busdContract.approve(tiendaContract.address, ethers.utils.parseEther("999999999999"));
+            const approve = await busdContract.increaseAllowance(
+                tiendaContract.address,
+                ethers.utils.parseUnits("9999999", 18)
+            );
             await approve.wait();
             setLoading(false);
             checkApprove()
 
-            setCheckApprovedToken(false);
+
             Swal.fire({
                 title: 'Success',
                 text: 'Approved successfully',
                 icon: 'success',
                 confirmButtonText: 'OK'
-            })
+            }).then(()=>{checkApprove()});
 
 
         } catch (err) {
@@ -148,7 +151,7 @@ const CheckOut = () => {
     const [checkoutFull, setCheckoutFull] = useState(false);
 
 
-    const handleOrden = async (show) => {
+    const handleOrden = async () => {
         if (verificationCode === false) {
             Swal.fire({
                 title: 'Please Verify Your email',
@@ -170,7 +173,7 @@ const CheckOut = () => {
             accountAddress === ""
         ) {
             setLoading(true)
-            show()
+            setConnectShow(true)
         } else {
             if (checkoutFull) {
                 try {
@@ -178,7 +181,7 @@ const CheckOut = () => {
                     const total = token === "BUSD" ? getCartSubTotal() : getCartTotalToken();
                     let amountToPay = 0
                     if (token === "BUSD") {
-                        amountToPay = (total * 10 ** 18).toFixed(0);
+                        amountToPay = (total * 10 ** 18)    ;
                         if (checkApprovedBusd < getCartSubTotal()) {
                             approveBusd();
                             return;
@@ -186,18 +189,19 @@ const CheckOut = () => {
                     }
                     if (token === Api.TOKEN_NAME) {
                         amountToPay = total;
-                        if (approvedUnits < parseFloat(precio)
+                        if (approvedUnits < parseFloat(getCartTotalToken())
                         ) {
                             approveToken();
                             return;
                         }
                     }
                     const tokenAddress = token === "BUSD" ? busdContract.address : ngoldContract.address;
+
                     try {
 
                         const buy = await tiendaContract.buyProduct(
                             tokenAddress,
-                            amountToPay.toString()
+                            ethers.utils.parseUnits(total.toString(),18)
                         )
                         await buy.wait()
                         const Order = {
@@ -221,7 +225,7 @@ const CheckOut = () => {
                             text: 'orden realizada correctamente',
                             icon: 'success',
                             confirmButtonText: 'OK'
-                        });
+                        }).then(() => { navigate(`/tienda`) });
 
 
                     } catch (err) {
@@ -312,47 +316,36 @@ const CheckOut = () => {
         });
     };
 
-    const getCartSubTotal = async () => {
+    const getCartSubTotal = () => {
 
         return cartItems
-            .reduce((price, item) => price + item.price * item.qty, 0)
-            .toFixed(2);
-    };
-
-    const getCartSubTotalToken = () => {
+          .reduce((price, item) => price + item.price * item.qty, 0)
+          .toFixed(2);
+      };
+    
+      const getCartSubTotalToken = () => {
         return cartItems
-            .reduce((price, item) => price + item.price * item.qty / tokenPrice, 0)
-            .toFixed(2)
-    }
-
-
-
-    const getCartTotalToken = () => {
-
-
+          .reduce((price, item) => price + item.price * item.qty * tokenPrice, 0)
+          .toFixed(2)
+      }
+    
+    
+      const getCartTotalToken = () => {
         return cartItems
-            .reduce((price, item) => price + item.price * item.qty / tokenPrice, 0)
-    }
+          .reduce((price, item) => price + item.price * item.qty * tokenPrice *(1-item.discount/100), 0).toFixed(2)
+      }
+    
 
-    useEffect(() => {
-        if (tokenPrice > 0) {
-            const parsePrecio = getCartTotalToken().toString()
-            const parsePrecioBusd = (parseInt(getCartTotalToken() * tokenPrice).toString())
-
-            setPrecio(parseFloat(parsePrecio).toFixed(2))
-            setPrecioBusd(parseFloat(parsePrecioBusd).toFixed(2))
-
-        }
-
-
-    }, [tokenPrice, cartItems]);
 
 
     useEffect(() => {
         setLoading(false)
     }, [accountAddress])
 
-
+    useEffect(() => {
+        dispatch(loadTokenPrice())
+    }, [])
+    
 
     return (
         <div className='checkout'>
@@ -405,23 +398,21 @@ const CheckOut = () => {
                         </div>
 
                         <div >
-                            <ConnectKitButton.Custom>
-                                {({ isConnected, show, truncatedAddress, ensName }) => {
-                                    return (
+                            
                                         <button type="submit"
-                                            onClick={()=>handleOrden(show)}>
+                                            onClick={handleOrden}>
                                             {accountAddress && !loading ?
 
 
                                                 token === Api.TOKEN_NAME && !loading ?
 
-                                                    precio >= approvedUnits ?
+                                                    parseFloat(approvedUnits) < parseFloat(getCartTotalToken()) ?
                                                         'Approve '
                                                         : 'Buy '
 
                                                     : loading ?
                                                         'Cargando' :
-                                                        precioBusd >= approvedUnitsBusd ?
+                                                        parseFloat(approvedUnitsBusd) < parseFloat(getCartSubTotal()) ?
                                                             'Approve '
                                                             : 'Buy '
 
@@ -431,9 +422,7 @@ const CheckOut = () => {
                                                     : 'Connect '
                                             }
                                         </button>
-                                    );
-                                }}
-                            </ConnectKitButton.Custom>
+                                   
                         </div>
                     </div>
                 </div>
@@ -461,9 +450,12 @@ const CheckOut = () => {
 
 
 
-
                     <div className='money'>
-                        <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${precio}` : `USDT: ${getCartTotalToken() * tokenPrice}`}</p>
+                    <p>Subtotal:</p>
+                    <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${getCartSubTotalToken()}` : `USDT: ${getCartSubTotal() }`}</p>
+                    </div>
+                    <div className='money'>
+                        <p>Total:</p> <p>{token === Api.TOKEN_NAME ? `${Api.TOKEN_NAME}: ${getCartTotalToken()}` : `USDT: ${getCartSubTotal() }`}</p>
                     </div>
 
 
@@ -473,6 +465,10 @@ const CheckOut = () => {
 
 
             </div>
+            <Connect
+                show={connectShow}
+                onHide={() => setConnectShow(false)}
+            />
         </div>
 
     )

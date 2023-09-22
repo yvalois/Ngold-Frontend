@@ -201,7 +201,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     }
                     for (let i = 0; NgoldStakingBalance.length > i; i++) {
                         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
-                        const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 8)).toFixed(2);
+                        const valorConvertido = parseFloat(ethers.utils.formatUnits(reward.toString(), 18)).toFixed(2);
                         let info = {
                             id: parseInt(NgoldStakingBalance[i]),
                             currentReward: valorConvertido,

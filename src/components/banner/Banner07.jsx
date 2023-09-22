@@ -29,6 +29,8 @@ import { contract } from './../../redux/blockchain/blockchainRouter';
 import { getWalletClient } from '@wagmi/core'
 import { useNetwork } from 'wagmi';
 import ModalSwap from '../layouts/modalSwap';
+import Connect from '../layouts/Connect';
+
 Banner06.propTypes = {
 
 };
@@ -47,6 +49,7 @@ function Banner06(props) {
     const [showModal, setShowModal] = useState(false)
     const { exchangeContract, ngoldContract, busdContract, accountAddress, ngoldBalance, busdBalance, provider, isConnect } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
+    const [connectShow, setConnectShow] = useState(false)
     const decimals = 18;
 
     const dispatch = useDispatch();
@@ -72,8 +75,8 @@ function Banner06(props) {
             }
         } else {
             try {
-                const approvedNgoldAmount = await ngoldContract.allowance(accountAddress, exchangeContract.address)
-                setAllowance(parseFloat(ethers.utils.formatEther(approvedNgoldAmount)))
+                const approvedBusdAmount = await ngoldContract.allowance(accountAddress, exchangeContract.address)
+                setAllowance(parseFloat(ethers.utils.formatEther(approvedBusdAmount)))
             } catch (error) {
                 console.log(error)
             }
@@ -190,7 +193,7 @@ function Banner06(props) {
                 } catch (error) {
                     Swal.fire({
                         title: 'Success',
-                        text: 'aprobadoi correctamente',
+                        text: 'aprobado correctamente',
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
@@ -344,11 +347,8 @@ function Banner06(props) {
 
                                         {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? isBuy ? "Comprar NGOLD" : "Vender NGOLD" : 'aprobar'}</button>}
                                         {!isConnected && !loading &&
-                                            <ConnectKitButton.Custom>
-                                                {({ isConnected, show, truncatedAddress, ensName }) => {
-                                                    return (<button onClick={show}>Conectar</button>);
-                                                }}
-                                            </ConnectKitButton.Custom>}
+                                            
+                                                   <button onClick={()=>setConnectShow(true)}>Conectar</button>}
                                         {loading && <button>Cargando</button>}
 
                                     </div>
@@ -372,6 +372,10 @@ function Banner06(props) {
                 onHide={() => setShowModal(false)}
                 cant={cant}
                 token={isBuy}
+            />
+                        <Connect
+                show={connectShow}
+                onHide={() => setConnectShow(false)}
             />
         </section>
     );

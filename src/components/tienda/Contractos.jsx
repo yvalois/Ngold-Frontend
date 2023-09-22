@@ -29,19 +29,20 @@ function Contractos() {
 
     const [data, setData] = useState([]);
     const [totalBusd, setTotalBusd] = useState(0);
-
+    const [loading, setLoading] = useState(false)
     const exchangeBalanace = async () => {
         const busd = await busdContract.balanceOf(exchangeContract.address);
         const token = await ngoldContract.balanceOf(exchangeContract.address);
+
         setBusdBalance(ethers.utils.formatEther(busd));
-        setTokenBalance(parseFloat(token / 10 ** 8));
+        setTokenBalance(ethers.utils.formatEther(token));
     }
 
     const nftBalanace = async () => {
         const busd = await busdContract.balanceOf(elfosContract.address);
         const token = await ngoldContract.balanceOf(elfosContract.address);
         setBusdBalance3(ethers.utils.formatEther(busd));
-        setTokenBalance3(parseFloat(token / 10 ** 8));
+        setTokenBalance3(parseFloat(token / 10 ** 18));
     }
 
 
@@ -74,24 +75,63 @@ function Contractos() {
     }, [data])
 
     const retire = async (option) => {
-        if (accountAddress) {
+
             if (option === 1) {
-                const amount = (tokenAmount * 10 ** 8).toString();
-                const tx = await exchangeContract.retireTokenBalance(ngoldContract.address);
-                await tx.wait();
-                exchangeBalanace();
-                setTokenAmount(0);
+                setLoading(true)
+                try {
+                    const tx = await exchangeContract.retireTokenBalance(ngoldContract.address);
+                    await tx.wait();
+                    exchangeBalanace();
+                    setTokenAmount(0);
+                    await exchangeBalanace();
+
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'withdraw successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                    setLoading(false)
+                } catch (error) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: 'failed',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
             }
             if (option === 2) {
-                const amount = ethers.utils.parseEther(busdAmount.toString());
-                const tx = await exchangeContract.retireTokenBalance(busdContract.address);
-                await tx.wait();
-                exchangeBalanace();
-                setTokenAmount(0);
+                setLoading(true)
+                try {
+                    const tx = await exchangeContract.retireTokenBalance(busdContract.address);
+                    await tx.wait();
+                    exchangeBalanace();
+                    setTokenAmount(0);
+                    await exchangeBalanace();
+
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'withdraw successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                    setLoading(false)
+
+                } catch (error) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: 'failed',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+   
             }
-        } else {
-            alert('Connect wallet');
-        }
+        
     }
 
 
@@ -103,7 +143,7 @@ function Contractos() {
 
     const tokenStoreBalance = async () => {
         const balance = await ngoldContract.balanceOf(tiendaContract.address);
-        setTokenBalance2(ethers.utils.formatUnits(balance, 8));
+        setTokenBalance2(ethers.utils.formatEther(balance));
     }
 
     useEffect(() => {
@@ -113,81 +153,120 @@ function Contractos() {
         }
     }, [accountAddress]);
 
-    const retireTokenBalanace = async () => {
-        try{
-        const tx = await tiendaContract.retireTokenBalance(ngoldContract.address);
-        await tx.wait();
-        tokenStoreBalance();
-        Swal.fire({
-            icon: 'success',
-            title: 'Tokens retirados',
-            text: 'Los tokens han sido retirados del contrato',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        tokenBalance();
-        }catch(e){
-            console.log(e);
-            if(e.reason){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: e.reason,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Ha ocurrido un error',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        }
-    }
 
     const retire2 = async (option) => {
-        if (accountAddress) {
+
             if (option === 1) {
-                const amount = (tokenAmount * 10 ** 8).toString();
-                const tx = await tiendaContract.retireTokenBalance(ngoldContract.address);
-                await tx.wait();
-                exchangeBalanace();
-                setTokenAmount(0);
+                try {
+                    setLoading(true)
+                    const tx = await tiendaContract.retireTokenBalance(ngoldContract.address);
+                    await tx.wait();
+                    setLoading(false);
+                    await tokenStoreBalance()
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'withdraw successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                    setTokenAmount(0);
+                } catch (error) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: 'failed',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
             }
             if (option === 2) {
-                const amount = ethers.utils.parseEther(busdAmount.toString());
-                const tx = await tiendaContract.retireTokenBalance(busdContract.address);
-                await tx.wait();
-                exchangeBalanace();
-                setTokenAmount(0);
+                setLoading(true)
+
+                try {
+                    const tx = await tiendaContract.retireTokenBalance(busdContract.address);
+                    await tx.wait();
+                    exchangeBalanace();
+                    setTokenAmount(0);
+                    await busdStoreBalance()
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'withdraw successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                } catch (error) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: 'failed',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
             }
-        } else {
-            alert('Connect wallet');
-        }
+        
     }
 
     const retire3 = async (option) => {
-        if (accountAddress) {
+
             if (option === 1) {
-                const amount = (tokenAmount * 10 ** 8).toString();
-                const tx = await elfosContract.withdrawToken(ngoldContract.address);
-                await tx.wait();
-                exchangeBalanace();
-                setTokenAmount(0);
+                setLoading(true)
+                try {
+                    const tx = await elfosContract.withdrawToken(ngoldContract.address);
+                    await tx.wait();
+                    exchangeBalanace();
+                    setTokenAmount(0);
+                    await nftBalanace();
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'withdraw successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                    setLoading(false)
+                } catch (error) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: 'failed',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
             }
             if (option === 2) {
-                const amount = ethers.utils.parseEther(busdAmount.toString());
-                const tx = await elfosContract.withdrawToken(busdContract.address);
-                await tx.wait();
-                exchangeBalanace();
-                setTokenAmount(0);
+                setLoading(true)
+
+                try {
+                    const tx = await elfosContract.withdrawToken(busdContract.address);
+                    await tx.wait();
+                    exchangeBalanace();
+                    setTokenAmount(0);
+                    await nftBalanace();
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'withdraw successfully',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                    setLoading(false)
+                } catch (error) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: 'failed',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
+
             }
-        } else {
-            alert('Connect wallet');
-        }
+       
     }
 
 
@@ -226,14 +305,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
                                                 <button onClick={() => retire(1)}>
-                                                    Retirar
+                                                    {loading ? "Cargando" : "Retirar"}
                                                 </button>   
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
                                                 <button  onClick={() => retire(2)} >
-                                                    Retirar
+                                                    {loading ? "Cargando" : "Retirar"}
                                                 </button>
 
                                             </div>
@@ -248,14 +327,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
                                                 <button onClick={()=>retire2(1)}>
-                                                    Retirar
+                                                    {loading ? "Cargando" : "Retirar"}
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
                                                 <button  onClick={()=>retire2(2)}>
-                                                    Retirar
+                                                    {loading ? "Cargando" : "Retirar"}
                                                 </button>
 
                                             </div>
@@ -270,14 +349,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
                                                 <button onClick={()=>retire3(1)}>
-                                                    Retirar
+                                                    {loading ? "Cargando" : "Retirar"}
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
                                                 <button  onClick={()=>retire3(2)}>
-                                                    Retirar
+                                                    {loading ? "Cargando" : "Retirar"}
                                                 </button>
 
                                             </div>

@@ -7,12 +7,13 @@ import { useSelector, useDispatch } from "react-redux";
 import Swal from 'sweetalert2';
 import { ConnectKitButton, useModal } from "connectkit";
 import { updateBalances } from '../../redux/blockchain/blockchainAction';
+import Connect from './Connect';
 
 const StakingModal = (props) => {
     const [loading, setLoading] = useState(false);
     const [cant, setCant] = useState('')
     const [address, setAddress] = useState('')
-
+    const [connectShow, setConnectShow] = useState(false)
     const { ngoldContract } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
     const dispatch = useDispatch()
@@ -48,9 +49,7 @@ const StakingModal = (props) => {
                     confirmButtonText: 'OK',
                 })
             }
-        } else {
-            show()
-        }
+        } 
     }
 
     return (
@@ -77,18 +76,14 @@ const StakingModal = (props) => {
                         onChange={(e) => setAddress(e.target.value)}
 
                     />
-                    <ConnectKitButton.Custom>
-                        {({ isConnected, show, truncatedAddress, ensName }) => {
-                            return (
-                                <button onClick={() => transfer(show)}>
-                                    {isConnected ?
+
+                        
+                                <button onClick={transfer}>
+                                    {
                                         !loading ? "Transferir" : "Cargando"
-                                        :
-                                        "Conectar"
+
                                     }
-                                </button>);
-                        }}
-                    </ConnectKitButton.Custom>
+                                </button>
                 </div>
 
                 {/* input address */}
@@ -96,6 +91,11 @@ const StakingModal = (props) => {
 
 
             </div>
+
+            <Connect
+                show={connectShow}
+                onHide={() => setConnectShow(false)}
+            />
         </Modal>
 
     );

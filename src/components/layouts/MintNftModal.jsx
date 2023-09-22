@@ -25,9 +25,9 @@ const MintNftModal = (props) => {
                 <h3>GoldenElf #{props.id}</h3>
                 <p className="text-center sub-heading">Felicidades acabas de obtener el token con Id #{props.id}, ¿que deseas hacer?</p>
                 <div className='modal-buttons'>
-                    <button onClick={()=> redirect(1)}>
+                    {/* <button onClick={()=> redirect(1)}>
                         Ver mi GoldenElf.
-                    </button>
+                    </button> */}
 
                     <button onClick={()=> redirect(2)}>
                         Ver inventario.
