@@ -225,7 +225,7 @@ const CheckOut = () => {
                             text: 'orden realizada correctamente',
                             icon: 'success',
                             confirmButtonText: 'OK'
-                        }).then(() => { navigate(`/tienda`) });
+                        }).then(() => { navigate(`/ordenes`) });
 
 
                     } catch (err) {
@@ -355,15 +355,24 @@ const CheckOut = () => {
                 <div className='checkout-form-container'>
                     <div className='checkout-form'>
                         <div>
+                        <label> Nombre:</label>
+                        <br/>
+
                             <input type="text" placeholder="Nombre" value={Address.fullName}
                                 onChange={(e) => setAddress({ ...Address, fullName: e.target.value })} />
 
                         </div>
                         <div>
+                        <label> Telefono:</label>
+                        <br/>
+
                             <input type="text" placeholder="Telefono" value={Phone}
                                 onChange={(e) => { managePhone(e) }} />
                         </div>
                         <div>
+                        <label> Direccion:</label>
+                        <br/>
+
                             <input type="text" placeholder="Direccion" value={Address.address}
                                 onChange={(e) => setAddress({ ...Address, address: e.target.value })} />
                         </div>
@@ -372,19 +381,28 @@ const CheckOut = () => {
 
 
                         <div>
+                        <label> Pais:</label>
+
                             <input type="text" placeholder="Pais" value={Address.country}
                                 onChange={(e) => setAddress({ ...Address, country: e.target.value })} />
                         </div>
+
                         <div className='three-inputs'>
+                        <label> Ubicacion:</label>
+                            <div>
                             <input type="text" placeholder="Ciudad" value={Address.city}
                                 onChange={(e) => setAddress({ ...Address, city: e.target.value })} />
                             <input type="text" placeholder="Departamento" value={Address.state}
                                 onChange={(e) => setAddress({ ...Address, state: e.target.value })} />
                             <input type="text" placeholder="Codigo postal" value={Address.zipCode}
                                 onChange={(e) => setAddress({ ...Address, zipCode: e.target.value })} />
+                            </div>
+
                         </div>
 
                         <div className="form-select" id="subject">
+                        <label> Metodo de pago:</label>
+                        <br/>
                             <select
                                 value={token}
                                 onChange={(e) => {

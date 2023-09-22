@@ -9565,6 +9565,13 @@ justify-content: center;
 .checkout .checkout-container .checkout-form-container .three-inputs {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.checkout .checkout-container .checkout-form-container .three-inputs div{
+  width: 100%;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
