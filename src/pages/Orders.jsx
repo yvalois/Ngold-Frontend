@@ -91,7 +91,7 @@ const Carrito = ({ producto, eliminarProducto }) => {
                         <div className="col-rankingg"># {fiveDigit(order.orderNumber)}</div>
                         <div className="col-rankingg coin">{order.finalStatus}</div>
                         <div className="col-rankingg">
-                          <p>{ethers.utils.formatUnits(order.total.toString(),18)}</p>
+                          <p>{order.total}</p>
 
                         </div>
                         <div className="col-rankingg ">

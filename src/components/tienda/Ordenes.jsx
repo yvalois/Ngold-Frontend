@@ -94,7 +94,7 @@ function Ordenes() {
                                                         <div className="content-ranking">
                                                             <div className="col-rankingg">{index + 1}</div>
                                                             <div className="col-rankingg">{fiveDigit(order.orderNumber)}</div>
-                                                            <div className="col-rankingg coin">${ethers.utils.formatUnits(order.total.toString(), 18)}</div>
+                                                            <div className="col-rankingg coin">{order.total}</div>
                                                             <div className="col-rankingg">
                                                                 {order.finalStatus}
                                                             </div>
