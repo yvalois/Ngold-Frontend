@@ -7,6 +7,8 @@ import CreateCategoria from '../components/tienda/CreateCategoria'
 import Ordenes from '../components/tienda/Ordenes'
 import Contractos from '../components/tienda/Contractos'
 import Pools from '../components/tienda/Pool/Pools';
+import Apr from '../components/tienda/Apr';
+
 
 
 
@@ -22,6 +24,8 @@ const AdminProduct = () => {
                     <Tab className="tab-title "><Link to="#">Ordenes</Link></Tab>
                     <Tab className="tab-title "><Link to="#">Pools</Link></Tab>
                     <Tab className="tab-title "><Link to="#">Contractos</Link></Tab>
+                    <Tab className="tab-title "><Link to="#">Apr de Staking</Link></Tab>
+
 
                 </TabList>
                 <TabPanel>
@@ -51,6 +55,9 @@ const AdminProduct = () => {
                     <div className='content'>
                         <Contractos/>
                     </div>
+                </TabPanel>
+                <TabPanel>
+                        <Apr/>
                 </TabPanel>
 
             </Tabs>

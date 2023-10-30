@@ -177,7 +177,7 @@ const MyPool = () => {
           }
         })
         if (!found) {
-          filtered.push(pool);
+          filtered.push(pool);  
         }
       })
 
@@ -186,7 +186,15 @@ const MyPool = () => {
     setIsLoading(false);
   }, [myStaked, pools]);
 
+  const secondsToDays=(seconds)=>{
+      // Calcula la cantidad de días dividiendo los segundos por 86400 (60 segundos * 60 minutos * 24 horas)
+      const milisegundos = seconds * 1000; // Convertir segundos a milisegundos
+      const fecha = new Date(milisegundos);
+      const opciones = { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+      const fechaFormateada = new Intl.DateTimeFormat('es-ES', opciones).format(fecha);
 
+      return fechaFormateada;
+  }
   return (
     <div className='my-pools-container'>
       {myStaked.map((pool, index) => (
@@ -208,12 +216,12 @@ const MyPool = () => {
 
 
             <div>
-              <p><span>2</span></p>
-              <p><span>Acumulado</span></p>
+              <p><span>{pool.rewardedAmount}</span></p>
+              <p><span>Reclamado</span></p>
             </div>
 
             <div>
-              <p><span>{pool.stakeTime} </span></p>
+              <p><span>{secondsToDays(pool.tokenLockedTime)} </span></p>
               <p><span>Tiempo restante</span></p>
             </div>
 
@@ -224,12 +232,12 @@ const MyPool = () => {
 
 
             <div>
-              <p><span>                              {parseInt(tokensPerPool[pool.poolId])}/{getTokensLimit(pool.poolId)}
-                Cap</span></p>
+                                        {parseInt(tokensPerPool[pool.poolId])}/{getTokensLimit(pool.poolId)}
+
             </div>
 
             <div>
-              <p><span>{pool.stakeTime}</span></p>
+              <p><span>{secondsToDays(pool.stakeTime)}</span></p>
               <p><span>Bloqueados</span></p>
             </div>
 

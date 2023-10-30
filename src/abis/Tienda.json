@@ -142,6 +142,24 @@
         "internalType": "address",
         "name": "_token",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_cant",
+        "type": "uint256"
+      }
+    ],
+    "name": "retire",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
       }
     ],
     "name": "retireTokenBalance",

@@ -45,7 +45,8 @@ function Banner05(props) {
     const [connectShow, setConnectShow] = useState(false)
     const [loading, setLoading] = useState(false)
     const { elfosContract, ngoldContract, busdContract, accountAddress, ngoldNftBalance } = useSelector(state => state.blockchain);
-    const decimals = 18;
+    const Ndecimals = 18;
+    const Udecimals = 8;
     const { isConnected, isConnecting } = useAccount()
     const [token, setToken] = useState('NGOLD')
     const dispatch = useDispatch();
@@ -88,7 +89,7 @@ function Banner05(props) {
             const approvedBusdAmount = await busdContract.allowance(accountAddress, elfosContract.address)
 
             setAllowance(parseFloat(ethers.utils.formatEther(approvedNgoldAmount)))
-            setAllowanceB(parseFloat(ethers.utils.formatEther(approvedBusdAmount)))
+            setAllowanceB(parseFloat(ethers.utils.formatUnits(approvedBusdAmount, 8)))
         } catch (error) {
             console.log(error)
         }
@@ -101,7 +102,7 @@ function Banner05(props) {
                 if (token === "NGOLD") {
                     const tx = await ngoldContract.increaseAllowance(
                         elfosContract.address,
-                        ethers.utils.parseUnits("9999999", decimals)
+                        ethers.utils.parseUnits("9999999", Ndecimals)
                     );
                     await tx.wait();
                     await verifyApprove();
@@ -116,7 +117,7 @@ function Banner05(props) {
                 } else {
                     const tx = await busdContract.increaseAllowance(
                         elfosContract.address,
-                        ethers.utils.parseUnits("9999999", decimals)
+                        ethers.utils.parseUnits("9999999", Udecimals)
                     );
                     await tx.wait();
                     await verifyApprove();
@@ -277,7 +278,7 @@ function Banner05(props) {
                                                                     {token === "NGOLD" && <div className="icon"><img src={ngold} /></div>}
                                                                     {token === "USDT" && <div className="icon"><img src={usdt} /></div>}
 
-                                                                    <p>{token === "NGOLD" ? parseFloat(precio * cant).toFixed(1) : parseFloat(tokenBPrice * cant).toFixed(3)}</p>
+                                                                    <p>{token === "NGOLD" ? parseFloat(precio * cant).toFixed(1) : parseFloat(tokenBPrice * cant).toFixed(2)}</p>
                                                                 </div>
                                                             </div>
                                                         </div>

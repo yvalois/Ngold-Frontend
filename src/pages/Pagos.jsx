@@ -94,7 +94,7 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                     <div className="table-ranking " key={index}>
                                     <div className="content-ranking2">
                                         <div className="col-rankingg">{parseFloat((item.opcoAmount / 10 ** 18))}</div>
-                                        <div className="col-rankingg">{parseFloat(ethers.utils.formatEther(item.busdAmount))}</div>
+                                        <div className="col-rankingg">{parseFloat(item.busdAmount / 10 ** 8)}</div>
                                         <div className="col-rankingg">{timestampToDate(parseInt(item.unlockTime))}</div>
                                         <div className="col-rankingg ">
                                             <div>

@@ -50,10 +50,12 @@ function Banner06(props) {
     const { exchangeContract, ngoldContract, busdContract, accountAddress, ngoldBalance, busdBalance, provider, isConnect } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
     const [connectShow, setConnectShow] = useState(false)
-    const decimals = 18;
+    const Ndecimals = 18;
+    const Udecimals = 8;
 
     const dispatch = useDispatch();
     const handleSwap = (value) => {
+        setValue(0)
         setInputAmount(value)
         // Aquí podrías implementar la lógica real para el intercambio de criptomonedas.
         // Por simplicidad, solo calcularemos el monto de salida como el doble del monto de entrada.
@@ -69,7 +71,7 @@ function Banner06(props) {
         if (isBuy) {
             try {
                 const approvedNgoldAmount = await busdContract.allowance(accountAddress, exchangeContract.address)
-                setAllowance(parseFloat(ethers.utils.formatEther(approvedNgoldAmount)))
+                setAllowance(parseFloat(ethers.utils.formatUnits(approvedNgoldAmount, Udecimals)))
             } catch (error) {
                 console.log(error)
             }
@@ -92,10 +94,12 @@ function Banner06(props) {
                     if (parseFloat(inputAmount) > 0) {
                         const tx = await busdContract.increaseAllowance(
                             exchangeContract.address,
-                            ethers.utils.parseUnits("9999999", decimals)
+                            ethers.utils.parseUnits("9999999", Udecimals)
                         );
                         await tx.wait();
                         await verifyApprove()
+                        setLoading(false)
+
                         Swal.fire({
                             title: 'Success',
                             text: 'Aprobado correctamente',
@@ -104,7 +108,6 @@ function Banner06(props) {
 
                             confirmButtonText: 'OK'
                         });
-                        setLoading(false)
                     }
                 } catch (error) {
                     setLoading(false)
@@ -123,10 +126,12 @@ function Banner06(props) {
                     if (parseFloat(inputAmount) > 0) {
                         const tx = await ngoldContract.increaseAllowance(
                             exchangeContract.address,
-                            ethers.utils.parseUnits("9999999", decimals)
+                            ethers.utils.parseUnits("9999999", Ndecimals)
                         );
                         await tx.wait();
                         await verifyApprove()
+                        setLoading(false)
+
                         Swal.fire({
                             title: 'Success',
                             text: 'Aprobado correctamente',
@@ -134,7 +139,6 @@ function Banner06(props) {
 
                             confirmButtonText: 'OK'
                         });
-                        setLoading(false)
                     }
                 } catch (error) {
                     setLoading(false)
@@ -153,12 +157,12 @@ function Banner06(props) {
     }
 
     const swap = async () => {
-
+        //alert(ethers.utils.parseUnits(inputAmount.toString(), decimals))
         if (parseFloat(inputAmount).toFixed(2) > 0) {
             if (isBuy) {
                 setLoading(true)
                 try {
-                    const tx = await exchangeContract.buyToken(ethers.utils.parseUnits(inputAmount.toString(), decimals), busdContract.address);
+                    const tx = await exchangeContract.buyToken(ethers.utils.parseUnits(inputAmount.toString(), Udecimals), busdContract.address);
                     await tx.wait();
                     setLoading(false);
                     dispatch(updateBalances());
@@ -167,6 +171,7 @@ function Banner06(props) {
                     setOutputAmount('');
                     setInputAmount('');
                 } catch (error) {
+                    setLoading(false)
                     Swal.fire({
                         title: 'Error',
                         text: error.reason,
@@ -180,7 +185,8 @@ function Banner06(props) {
             else {
                 setLoading(true)
                 try {
-                    const tx = await exchangeContract.sellToken(ethers.utils.parseUnits(inputAmount.toString(), decimals), ngoldContract.address);
+
+                    const tx = await exchangeContract.sellToken(ethers.utils.parseUnits(inputAmount.toString(), Ndecimals), ngoldContract.address);
                     await tx.wait();
 
                     setLoading(false)
@@ -191,12 +197,14 @@ function Banner06(props) {
                     setInputAmount('');
 
                 } catch (error) {
+                    setLoading(false)
                     Swal.fire({
-                        title: 'Success',
-                        text: 'aprobado correctamente',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
+                        title: 'Error',
+                        text: error.reason,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK',
+                    })
                     console.log(error)
                 }
             }
@@ -215,11 +223,11 @@ function Banner06(props) {
     const setearOutput = async (value) => {
         if (accountAddress) {
             if (isBuy) {
-                const valor = await exchangeContract.calculatePriceU(ethers.utils.parseUnits(value.toString(), decimals));
+                const valor = await exchangeContract.calculatePriceU(ethers.utils.parseUnits(value.toString(), Udecimals));
                 setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
             } else {
-                const valor = await exchangeContract.calculatePriceN(ethers.utils.parseUnits(value.toString(), decimals));
-                setOutputAmount(parseFloat(ethers.utils.formatEther(valor)))
+                const valor = await exchangeContract.calculatePriceN(ethers.utils.parseUnits(value.toString(), Ndecimals));
+                setOutputAmount(parseFloat(ethers.utils.formatUnits(valor, Udecimals)))
             }
         }
 
@@ -269,6 +277,58 @@ function Banner06(props) {
 
     }
 
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event) => {
+        setInputAmount('')
+        let fra
+        if (isBuy) {
+            fra = (busdBalance * event.target.value) / 100
+        }else{
+            fra = (ngoldBalance * event.target.value) / 100
+            
+        }
+        handleSwap(fra)
+        setValue(event.target.value);
+
+    };
+
+    const setPer = (valor) => {
+        setInputAmount('')
+        let fra
+        if (isBuy) {
+            fra = (busdBalance * valor) / 100
+        }else{
+            fra = (ngoldBalance * valor) / 100
+            
+        }
+        handleSwap(fra)
+        setValue(valor)
+
+    }
+
+    const maxBalance = () => {
+        let maxValue = ngoldBalance;
+
+        if (isBuy) {
+            maxValue = busdBalance 
+        }else{
+            maxValue = ngoldBalance 
+        }
+
+        setValue(0)
+        handleSwap(maxValue)
+
+    }
+
+
+    const switchT = () => {
+        setIsBuy(!isBuy)
+        let valor;
+        setValue(0)
+
+    }
+
     return (
         <section className="tf-slider">
             <div className="container-fluid">
@@ -309,54 +369,146 @@ function Banner06(props) {
                                         {isBuy ?
                                             (<div className='tokens'>
                                                 <img src={usdt} alt='token1' />
-                                                <div className='icon' onClick={() => setIsBuy(false)}> <FaExchangeAlt /> </div>
+                                                <div className='icon' onClick={switchT}> <FaExchangeAlt /> </div>
                                                 <img src={ngold} alt='token2' />
                                             </div>)
                                             : (<div className='tokens'>
                                                 <img src={ngold} alt='token2' />
-                                                <div className='icon' onClick={() => setIsBuy(true)}> <FaExchangeAlt /> </div>
+                                                <div className='icon' onClick={switchT}> <FaExchangeAlt /> </div>
                                                 <img src={usdt} alt='token1' />
                                             </div>)
                                         }
 
 
                                     </div>
+                                    <div className='ex-contenedor'>
+                                        <div className="input-container">
+                                            <div className='balance'>
+                                                <div>
+                                                    <h6>Swap - intercambio</h6>
+                                                </div>
+                                                <div className='swap-input'>
+                                                    <div className='swap-input-info'>
 
-                                    <div className="input-container">
-                                        <div className='balance'>
-                                            <input
-                                                type="text"
-                                                placeholder="Monto"
-                                                value={inputAmount}
-                                                onChange={(e) => handleSwap(e.target.value)}
-                                            />
+                                                        <div className='balances-item'>
+                                                            <p>Desde</p>
 
-                                            <div className='balances-item'>
-                                                <img src={ngold} alt='token2' />
+                                                            {isBuy ?
+                                                                <img src={usdt} alt='token1' />
+                                                                :
+                                                                <img src={ngold} alt='token2' />
+                                                            }
 
-                                                <p>Balance: {ngoldBalance !== undefined ? parseFloat(ngoldBalance).toFixed(2) : 0} NGOLD'S  </p>
+                                                            <p> {!isBuy ? "NGOLD" : "USDT"}
+                                                            </p>
+                                                        </div>
+
+                                                        <div className='balances'>
+                                                            <p>Balances:  {isBuy ? parseFloat(busdBalance).toFixed(2) : parseFloat(ngoldBalance).toFixed(2)}</p>
+                                                            <div className='balances-btn' onClick={maxBalance}>
+                                                                Max
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='input-cant'>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Monto"
+                                                            value={inputAmount}
+                                                            onChange={(e) => handleSwap(e.target.value)}
+                                                        />
+
+                                                        <div className='token'>
+                                                            {isBuy ? "NGOLD" : "USDT"}
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div className='swap-input'>
+                                                    <div className='swap-input-info'>
+                                                        <div className='balances-item'>
+                                                            <p>A</p>
+                                                            {!isBuy ?
+                                                                <img src={usdt} alt='token1' />
+                                                                :
+                                                                <img src={ngold} alt='token2' />
+                                                            }
+
+                                                            <p> {isBuy ? "NGOLD" : "USDT"}
+                                                            </p>
+
+                                                        </div>
+                                                        <div className='balances'>
+                                                            <p>Balances: {!isBuy ? parseFloat(busdBalance).toFixed(2) : parseFloat(ngoldBalance).toFixed(2)}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className='input-cant'>
+                                                        <input
+                                                            type="text"
+                                                            placeholder={parseFloat(inputAmount) > 0 ? outputAmount : "Monto a recibir"}
+                                                            disabled
+                                                        />
+
+                                                        <div className='token'>
+                                                            {!isBuy ? "NGOLD" : "USDT"}
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "center", marginTop: "10px" }}>
+                                                    <p>{value}%</p>
+                                                </div>
+                                                <div className="progress-container">
+
+                                                    <div className="cont-progress">
+                                                        <div className="progress" style={{ width: `${value}%` }}>
+                                                        </div>
+                                                    </div>
+                                                    <div className='porcentage-points'>
+                                                        <div className='porcentage-point' onClick={() => setPer(25)}>
+
+                                                        </div>
+                                                        <div className='porcentage-point1' onClick={() => setPer(50)}>
+
+                                                        </div>
+                                                        <div className='porcentage-point2' onClick={() => setPer(75)}>
+
+                                                        </div>
+                                                    </div>
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={value}
+                                                        onChange={handleChange}
+                                                        className="progress-slider"
+                                                    />
+
+
+                                                </div>
+
+
+
                                             </div>
-                                            <div className='balances-item'>
-                                                <img src={usdt} alt='token1' />
 
-                                                <p>Balance: {busdBalance !== undefined ? parseFloat(busdBalance).toFixed(2) : 0} USDT</p>
+                                            {!loading && isConnected && <button onClick={callAction} style={{marginTop:"12px"}}>{inputAmount <= allowance ? isBuy ? "Comprar NGOLD" : "Vender NGOLD" : 'aprobar'}</button>}
+                                            {!isConnected && !loading &&
 
-                                            </div>
+                                                <button onClick={() => setConnectShow(true)}>Conectar</button>}
+                                            {loading && <button>Cargando</button>}
 
                                         </div>
-
-                                        {!loading && isConnected && <button onClick={callAction}>{inputAmount <= allowance ? isBuy ? "Comprar NGOLD" : "Vender NGOLD" : 'aprobar'}</button>}
-                                        {!isConnected && !loading &&
-                                            
-                                                   <button onClick={()=>setConnectShow(true)}>Conectar</button>}
-                                        {loading && <button>Cargando</button>}
-
                                     </div>
+
+
+
+
                                     <div className="output-container">
                                         <p>1 NGOLD = 1 Gramo Oro</p>
-
-                                        <p>Monto a recibir:</p>
-                                        <p>{outputAmount} {isBuy ? 'NGOLD' : 'USDT'}</p>
                                         {isConnect && <button onClick={addToMetamask}> Agregar token</button>}
                                     </div>
                                 </div>
@@ -373,7 +525,7 @@ function Banner06(props) {
                 cant={cant}
                 token={isBuy}
             />
-                        <Connect
+            <Connect
                 show={connectShow}
                 onHide={() => setConnectShow(false)}
             />

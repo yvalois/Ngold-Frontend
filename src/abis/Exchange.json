@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_OPCO",
+        "name": "_NGOLD",
         "type": "address"
       },
       {
@@ -312,7 +312,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "opcoAmount",
+            "name": "ngoldAmount",
             "type": "uint256"
           },
           {
@@ -350,32 +350,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getTime",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_date",
-        "type": "uint256"
-      }
-    ],
-    "name": "modifyDate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -405,7 +379,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "opcoAmount",
+        "name": "ngoldAmount",
         "type": "uint256"
       },
       {
@@ -511,6 +485,24 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_cant",
+        "type": "uint256"
+      }
+    ],
+    "name": "retire",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

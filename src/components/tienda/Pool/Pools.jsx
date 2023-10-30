@@ -490,7 +490,8 @@ const Pools = () => {
                 )}
 
 
-                {edit && <div className='content'>
+                {edit && 
+                <div className='content'>
                     <form onSubmit={(e)=>editPool(e)}>
                         <div className='create-pool'>
                             <div className='close-edit' >

@@ -5214,7 +5214,7 @@ body > iframe {
   font-size: 40px;
 }
 .crypto-swap {
-  min-width: 550px;
+  min-width: 500px;
   min-height: 450px;
   text-align: center;
   margin-left: 60px;
@@ -5282,6 +5282,271 @@ body > iframe {
   height: 40px;
 }
 
+.r-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.r-container .r-balances{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.r-container .r-button-max{
+  padding: 10px;
+  background-color: #FFAE00;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  align-items: center;
+}
+
+.r-container .r-button{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.r-container .r-slide .progress-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.r-container .r-slide .progress-container input {
+  appearance: none;
+}
+
+.r-container .r-slide .progress-slider {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  position: absolute;
+  border: none;
+}
+
+.r-container .r-slide .porcentage-points {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  position: absolute;
+  display: flex;
+}
+
+.r-container .r-slide .porcentage-point{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #565660;
+  margin-left: calc(25% + 4px);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.r-container .r-slide .porcentage-point1{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #565660;
+  margin-left: calc(25% - 34px) ;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.r-container .r-slide .porcentage-point2{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #565660;
+  margin-left:  calc(25% - 35px);
+  z-index: 1;
+  cursor: pointer;
+}
+
+
+.r-container .r-slide .progress-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 19px;
+  height: 19px;
+  background: #FFAE00;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+}
+.r-container .r-slide .progress-container .cont-progress{
+  width: 95%;
+  margin-left: 9px;
+}
+
+.r-container .r-slide .progress-container .cont-progress .progress {
+  background-color: gray;
+  height: 8px;
+  width: 80%;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 0;
+}
+
+.ex-contenedor{
+  width: 95%;
+  border: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 8px;
+  padding-bottom: 10px;
+}
+
+
+
+.swap-input{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  margin-top: 8px;
+}
+
+.swap-input-info{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.balances{
+  display: flex;
+  flex-direction: row;
+}
+
+.balances-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFAE00;
+  border-radius: 2px;
+  padding: 4px;
+  margin-left: 12px;
+  cursor: pointer;
+}
+.progress-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.progress-slider {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  position: absolute;
+}
+
+.porcentage-points {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  position: absolute;
+  display: flex;
+}
+
+.porcentage-point{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #565660;
+  margin-left: calc(25% - 2px);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.porcentage-point1{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #565660;
+  margin-left: calc(25% - 28px) ;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.porcentage-point2{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:1px solid #565660;
+  margin-left:  calc(25% - 28px);
+  z-index: 1;
+  cursor: pointer;
+}
+
+
+.progress-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 19px;
+  height: 19px;
+  background: #FFAE00;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+}
+.cont-progress{
+  width: 95%;
+  margin-left: 9px;
+}
+
+.cont-progress .progress {
+  background-color: gray;
+  height: 8px;
+  width: 90%;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 0;
+}
+
+
+.balance .input-cant{
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.balance .input-cant input{
+  width: 70%;
+  margin-top: 12px;
+}
+
+.balance .input-cant .token{
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background-color: #FFAE00;
+  border-radius: 6px;
+  height: 50px;
+  margin-left: 5%;
+}
 
 .input-container {
   margin-top: 20px;
@@ -5295,11 +5560,60 @@ body > iframe {
   align-items: center;
   margin-top: 4px;
 }
+@media (max-width:800px) {
+  .ex-contenedor{
+    width: 100%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 8px;
+    padding-bottom: 10px;
+  }
+
+  .swap-input-info{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  
+  .balance .input-cant .token{
+    width: 25%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    background-color: #FFAE00;
+    border-radius: 6px;
+    height: 50px;
+    margin-left: 5%;
+  }
+
+  .balance .input-cant input{
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .balances{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  .input-container .balance .balances-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin-top: 4px;
+  }
+}
 .input-container .balance .balances-item img{
-  margin-right: 10px;
-  margin-left: 10px;
-  width: 40px;
-  height: 40px;
+  margin-left: 5px;
+  width: 30px;
+  height: 30px;
 }
 
 .input-container .balance{
@@ -8517,6 +8831,8 @@ body > iframe {
   align-items: center;
 }
 
+
+
 .create-pool{
   margin-top: 30px;
   padding: 20px;
@@ -8525,7 +8841,7 @@ body > iframe {
   border: 1px solid white;
   text-align: center;
   min-width: 500px;
-  min-height: 400px;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: start;

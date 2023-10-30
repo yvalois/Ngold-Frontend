@@ -5,8 +5,12 @@ import { ethers } from 'ethers';
 import moment from 'moment';
 import { contract } from '../../redux/blockchain/blockchainRouter';
 import Swal from 'sweetalert2';
- 
+import RetireModal from '../layouts/RetireModal';
+import { updateBalances } from '../../redux/blockchain/blockchainAction';
+
 function Contractos() {
+    const [showModal, setShowModal] = useState(false)
+
     const router = contract();
     const timestampToDate = (timestamp) => {
         return moment.unix(timestamp).format("DD MMM, YYYY");
@@ -15,9 +19,9 @@ function Contractos() {
         return address.slice(0, 4) + "..." + address.slice(address.length - 4);
     }
 
-    const { ngoldContract, busdContract, accountAddress, exchangeContract, tiendaContract,elfosContract  } = useSelector(state => state.blockchain);
+    const { ngoldContract, busdContract, accountAddress, exchangeContract, tiendaContract, elfosContract } = useSelector(state => state.blockchain);
     const dispatch = useDispatch();
-    
+
     const [busdBalance, setBusdBalance] = useState(0);
     const [tokenBalance, setTokenBalance] = useState(0);
     const [tokenAmount, setTokenAmount] = useState(0);
@@ -34,14 +38,14 @@ function Contractos() {
         const busd = await busdContract.balanceOf(exchangeContract.address);
         const token = await ngoldContract.balanceOf(exchangeContract.address);
 
-        setBusdBalance(ethers.utils.formatEther(busd));
+        setBusdBalance(ethers.utils.formatUnits(busd, 8));
         setTokenBalance(ethers.utils.formatEther(token));
     }
 
     const nftBalanace = async () => {
         const busd = await busdContract.balanceOf(elfosContract.address);
         const token = await ngoldContract.balanceOf(elfosContract.address);
-        setBusdBalance3(ethers.utils.formatEther(busd));
+        setBusdBalance3(parseFloat(busd / 10**8));
         setTokenBalance3(parseFloat(token / 10 ** 18));
     }
 
@@ -76,69 +80,69 @@ function Contractos() {
 
     const retire = async (option) => {
 
-            if (option === 1) {
-                setLoading(true)
-                try {
-                    const tx = await exchangeContract.retireTokenBalance(ngoldContract.address);
-                    await tx.wait();
-                    exchangeBalanace();
-                    setTokenAmount(0);
-                    await exchangeBalanace();
+        if (option === 1) {
+            setLoading(true)
+            try {
+                const tx = await exchangeContract.retireTokenBalance(ngoldContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+                await exchangeBalanace();
 
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'withdraw successfully',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
-                    setLoading(false)
-                } catch (error) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: 'failed',
-                        text: error.reason,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-
+                Swal.fire({
+                    title: 'Success',
+                    text: 'withdraw successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+                setLoading(false)
+            } catch (error) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'failed',
+                    text: error.reason,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
-            if (option === 2) {
-                setLoading(true)
-                try {
-                    const tx = await exchangeContract.retireTokenBalance(busdContract.address);
-                    await tx.wait();
-                    exchangeBalanace();
-                    setTokenAmount(0);
-                    await exchangeBalanace();
 
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'withdraw successfully',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
-                    setLoading(false)
+        }
+        if (option === 2) {
+            setLoading(true)
+            try {
+                const tx = await exchangeContract.retireTokenBalance(busdContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+                await exchangeBalanace();
 
-                } catch (error) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: 'failed',
-                        text: error.reason,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-   
+                Swal.fire({
+                    title: 'Success',
+                    text: 'withdraw successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+                setLoading(false)
+
+            } catch (error) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'failed',
+                    text: error.reason,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
-        
+
+        }
+
     }
 
 
 
     const busdStoreBalance = async () => {
         const balance = await busdContract.balanceOf(tiendaContract.address);
-        setBusdBalance2(ethers.utils.formatEther(balance));
+        setBusdBalance2(ethers.utils.formatUnits(balance,8));
     }
 
     const tokenStoreBalance = async () => {
@@ -147,128 +151,143 @@ function Contractos() {
     }
 
     useEffect(() => {
-        if(accountAddress){
-        busdStoreBalance();
-        tokenStoreBalance();
+        if (accountAddress) {
+            busdStoreBalance();
+            tokenStoreBalance();
         }
     }, [accountAddress]);
 
 
     const retire2 = async (option) => {
 
-            if (option === 1) {
-                try {
-                    setLoading(true)
-                    const tx = await tiendaContract.retireTokenBalance(ngoldContract.address);
-                    await tx.wait();
-                    setLoading(false);
-                    await tokenStoreBalance()
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'withdraw successfully',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
-                    setTokenAmount(0);
-                } catch (error) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: 'failed',
-                        text: error.reason,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-
-            }
-            if (option === 2) {
+        if (option === 1) {
+            try {
                 setLoading(true)
-
-                try {
-                    const tx = await tiendaContract.retireTokenBalance(busdContract.address);
-                    await tx.wait();
-                    exchangeBalanace();
-                    setTokenAmount(0);
-                    await busdStoreBalance()
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'withdraw successfully',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
-                } catch (error) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: 'failed',
-                        text: error.reason,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-
+                const tx = await tiendaContract.retireTokenBalance(ngoldContract.address);
+                await tx.wait();
+                setLoading(false);
+                await tokenStoreBalance()
+                Swal.fire({
+                    title: 'Success',
+                    text: 'withdraw successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+                setTokenAmount(0);
+            } catch (error) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'failed',
+                    text: error.reason,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
-        
+
+        }
+        if (option === 2) {
+            setLoading(true)
+
+            try {
+                const tx = await tiendaContract.retireTokenBalance(busdContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+                await busdStoreBalance()
+                Swal.fire({
+                    title: 'Success',
+                    text: 'withdraw successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+            } catch (error) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'failed',
+                    text: error.reason,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+
+        }
+
     }
 
     const retire3 = async (option) => {
 
-            if (option === 1) {
-                setLoading(true)
-                try {
-                    const tx = await elfosContract.withdrawToken(ngoldContract.address);
-                    await tx.wait();
-                    exchangeBalanace();
-                    setTokenAmount(0);
-                    await nftBalanace();
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'withdraw successfully',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
-                    setLoading(false)
-                } catch (error) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: 'failed',
-                        text: error.reason,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-
+        if (option === 1) {
+            setLoading(true)
+            try {
+                const tx = await elfosContract.withdrawToken(ngoldContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+                await nftBalanace();
+                Swal.fire({
+                    title: 'Success',
+                    text: 'withdraw successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+                setLoading(false)
+            } catch (error) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'failed',
+                    text: error.reason,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
-            if (option === 2) {
-                setLoading(true)
 
-                try {
-                    const tx = await elfosContract.withdrawToken(busdContract.address);
-                    await tx.wait();
-                    exchangeBalanace();
-                    setTokenAmount(0);
-                    await nftBalanace();
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'withdraw successfully',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
-                    setLoading(false)
-                } catch (error) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: 'failed',
-                        text: error.reason,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
+        }
+        if (option === 2) {
+            setLoading(true)
 
-
+            try {
+                const tx = await elfosContract.withdrawToken(busdContract.address);
+                await tx.wait();
+                exchangeBalanace();
+                setTokenAmount(0);
+                await nftBalanace();
+                Swal.fire({
+                    title: 'Success',
+                    text: 'withdraw successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+                setLoading(false)
+            } catch (error) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'failed',
+                    text: error.reason,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
-       
+
+
+        }
+
     }
 
+    const [contracto, setContracto] = useState('')
+    const [token, setToken] = useState('')
+
+
+    const manageModal = (token, contracto) =>{
+        setToken(token)
+        setContracto(contracto)
+        setShowModal(true)
+    }
+
+    
+    useEffect(() => {
+        dispatch(updateBalances())
+    }, [showModal])
+    
 
     return (
         <div className='contracts'>
@@ -285,7 +304,7 @@ function Contractos() {
                                     <div className="col-rankingg">Balance Ngold</div>
                                     <div className="col-rankingg">Balance USDT</div>
                                     <div className="col-rankingg">Retirar Ngold</div>
-                                    <div className="col-rankingg">Balance USDT</div>
+                                    <div className="col-rankingg">Retirar USDT</div>
 
                                 </div>
                             </div>
@@ -304,14 +323,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg coin"> {busdBalance}</div>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
-                                                <button onClick={() => retire(1)}>
+                                                <button onClick={() =>  manageModal("NGOLD", "Exchange")}>
                                                     {loading ? "Cargando" : "Retirar"}
-                                                </button>   
+                                                </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
-                                                <button  onClick={() => retire(2)} >
+                                                <button onClick={() =>manageModal("USDT", "Exchange")} >
                                                     {loading ? "Cargando" : "Retirar"}
                                                 </button>
 
@@ -326,14 +345,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg coin">{busdBalance2}</div>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
-                                                <button onClick={()=>retire2(1)}>
+                                                <button onClick={() => manageModal("NGOLD", "Tienda")}>
                                                     {loading ? "Cargando" : "Retirar"}
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
-                                                <button  onClick={()=>retire2(2)}>
+                                                <button onClick={() => manageModal("USDT", "Tienda")}>
                                                     {loading ? "Cargando" : "Retirar"}
                                                 </button>
 
@@ -348,14 +367,14 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                                         <div className="col-rankingg coin">{busdBalance3}</div>
                                         <div className="col-rankingg">
                                             <div className='action-button'>
-                                                <button onClick={()=>retire3(1)}>
+                                                <button onClick={() => manageModal("NGOLD", "NFts")}>
                                                     {loading ? "Cargando" : "Retirar"}
                                                 </button>
                                             </div>
                                         </div>
                                         <div className="col-rankingg ">
                                             <div className='action-button'>
-                                                <button  onClick={()=>retire3(2)}>
+                                                <button onClick={() => manageModal("USDT", "Nfts")}>
                                                     {loading ? "Cargando" : "Retirar"}
                                                 </button>
 
@@ -370,64 +389,69 @@ Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
                 </div>
             </div>
 
-          
+
             <div className='create-category-2'>
-                        <div className='car-contenedor'>
-                            <div className="overflow-table">
-                                <div className='dashboard-content inventory content-tab'>
-                                    <div className="inner-content inventory">
-                                        <h4 className="title-dashboard">Retiros pendientes (Exchange)</h4>
+                <div className='car-contenedor'>
+                    <div className="overflow-table">
+                        <div className='dashboard-content inventory content-tab'>
+                            <div className="inner-content inventory">
+                                <h4 className="title-dashboard">Retiros pendientes (Exchange)</h4>
 
-                                        <div className="table-ranking top">
+                                <div className="table-ranking top">
 
-                                            <div className="title-ranking2">
-                                                <div className="col-rankingg">Wallet</div>
-                                                <div className="col-rankingg">Ngold</div>
-                                                <div className="col-rankingg">USDT</div>
-                                                <div className="col-rankingg">Tiempo restante</div>
-                                                <div className="col-rankingg"></div>
-                                                <div className="col-rankingg"></div>
-                                                <div className="col-rankingg"></div>
-                                            </div>
+                                    <div className="title-ranking2">
+                                        <div className="col-rankingg">Wallet</div>
+                                        <div className="col-rankingg">Ngold</div>
+                                        <div className="col-rankingg">USDT</div>
+                                        <div className="col-rankingg">Tiempo restante</div>
+                                        <div className="col-rankingg"></div>
+                                        <div className="col-rankingg"></div>
+                                        <div className="col-rankingg"></div>
+                                    </div>
 
-                                        </div>
-                                        {/* {
+                                </div>
+                                {/* {
                   products.length == 0 &&
                   <div>
                     Your Cart Is Empty <Link to="tienda" className="text-blue-500">Go Back</Link>
 
                   </div>
                 } */}
-                {accountAddress && data.map((data, index) => (<>
-                                            <div className="table-ranking ">
-                                                <div className="content-ranking2">
-                                                    <div className="col-rankingg">{sliceAddress(data.owner)} </div>
-                                                    <div className="col-rankingg">{parseFloat(data.opcoAmount / 10 ** 8)}</div>
-                                                    <div className="col-rankingg">{parseFloat(data.opcoAmount / 10 ** 8)}</div>
-                                                    <div className="col-rankingg ">
-                                                    {timestampToDate(parseInt(data.unlockTime))}
-                                                    </div>
-                                                    <div className="col-rankingg ">
-                                                    </div>
-                                                    <div className="col-rankingg ">
-                                                    </div>
-                                                    <div className="col-rankingg ">
-                                                    </div>  
-                                                    <div className="col-rankingg ">
-                                                    </div>  
-                                                </div>
-
-
+                                {accountAddress && data.map((data, index) => (<>
+                                    <div className="table-ranking ">
+                                        <div className="content-ranking2">
+                                            <div className="col-rankingg">{sliceAddress(data.owner)} </div>
+                                            <div className="col-rankingg">{parseFloat(data.opcoAmount / 10 ** 8)}</div>
+                                            <div className="col-rankingg">{parseFloat(data.opcoAmount / 10 ** 8)}</div>
+                                            <div className="col-rankingg ">
+                                                {timestampToDate(parseInt(data.unlockTime))}
                                             </div>
-                                            
-                                        </>))}
+                                            <div className="col-rankingg ">
+                                            </div>
+                                            <div className="col-rankingg ">
+                                            </div>
+                                            <div className="col-rankingg ">
+                                            </div>
+                                            <div className="col-rankingg ">
+                                            </div>
+                                        </div>
+
 
                                     </div>
-                                </div>
+
+                                </>))}
+
                             </div>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <RetireModal
+                show={showModal}
+                token={token}
+                contract={contracto}
+                onHide={() => setShowModal(false)}
+            />
         </div>
     )
 }

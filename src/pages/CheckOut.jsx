@@ -49,7 +49,7 @@ const CheckOut = () => {
             const approvedBusd = await busdContract.allowance(accountAddress, tiendaContract.address);
 
             const approveToNumber = parseFloat(approvedToken) / 10 ** 18;
-            const approveToNumberBusd = parseFloat(approvedBusd) / 10 ** 18;
+            const approveToNumberBusd = parseFloat(approvedBusd) / 10 ** 8;
             setApprovedUnits(approveToNumber);
             setApprovedUnitsBusd(approveToNumberBusd);
             setCheckApprovedBusd(approveToNumberBusd);
@@ -92,7 +92,7 @@ const CheckOut = () => {
             setLoading(true);
             const approve = await busdContract.increaseAllowance(
                 tiendaContract.address,
-                ethers.utils.parseUnits("9999999", 18)
+                ethers.utils.parseUnits("9999999", 8)
             );
             await approve.wait();
             setLoading(false);
@@ -179,9 +179,10 @@ const CheckOut = () => {
                 try {
                     setLoading(true);
                     const total = token === "BUSD" ? getCartSubTotal() : getCartTotalToken();
+                    let decimals = token === "BUSD" ? 8 : 18
                     let amountToPay = 0
                     if (token === "BUSD") {
-                        amountToPay = (total * 10 ** 18)    ;
+                        amountToPay = (total * 10 ** decimals)    ;
                         if (checkApprovedBusd < getCartSubTotal()) {
                             approveBusd();
                             return;
@@ -201,7 +202,7 @@ const CheckOut = () => {
 
                         const buy = await tiendaContract.buyProduct(
                             tokenAddress,
-                            ethers.utils.parseUnits(total.toString(),18)
+                            ethers.utils.parseUnits(total.toString(), decimals)
                         )
                         await buy.wait()
                         const Order = {
@@ -324,6 +325,7 @@ const CheckOut = () => {
       };
     
       const getCartSubTotalToken = () => {
+
         return cartItems
           .reduce((price, item) => price + item.price * item.qty * tokenPrice, 0)
           .toFixed(2)

@@ -116,9 +116,9 @@ export const updateStakingTokens = (inversioneStakingContract, accountAddress) =
 export const updateBalances = () => async (dispatch, getState) => {
     const { ngoldContract, busdContract, elfosContract, stakingContract, cobroContract, accountAddress } = getState().blockchain;
     const ngoldBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
-    const exchangeBusdBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
+    const exchangeBusdBalance = parseFloat(await busdContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 8;
     const exchangeNgoldBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
-    const busdBalance = parseFloat(await busdContract.balanceOf(accountAddress)) / 10 ** 18;
+    const busdBalance = parseFloat(await busdContract.balanceOf(accountAddress)) / 10 ** 8;
     const cobroBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
 
     //8 decimals token
@@ -137,7 +137,7 @@ export const updateBalances = () => async (dispatch, getState) => {
     }
     for (let i = 0; NgoldStakingBalance.length > i; i++) {
         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
-        const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 8)).toFixed(2);
+        const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 18)).toFixed(5);
         let info = {
             id: parseInt(NgoldStakingBalance[i]),
             currentReward: valorConvertido,
@@ -178,9 +178,9 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
 
 
                     const ngoldBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
-                    const exchangeBusdBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
+                    const exchangeBusdBalance = parseFloat(await busdContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 8;
                     const exchangeNgoldBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
-                    const busdBalance = parseFloat(await busdContract.balanceOf(accountAddress)) / 10 ** 18;
+                    const busdBalance = parseFloat(await busdContract.balanceOf(accountAddress)) / 10 ** 8;
                     const cobroBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
 
                     //8 decimals token
@@ -201,7 +201,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     }
                     for (let i = 0; NgoldStakingBalance.length > i; i++) {
                         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
-                        const valorConvertido = parseFloat(ethers.utils.formatUnits(reward.toString(), 18)).toFixed(2);
+                        const valorConvertido = parseFloat(ethers.utils.formatUnits(reward.toString(), 18)).toFixed(5);
                         let info = {
                             id: parseInt(NgoldStakingBalance[i]),
                             currentReward: valorConvertido,
@@ -299,7 +299,7 @@ export const fetchBalance = () => {
         const tokenBalance = await ngoldContract.balanceOf(accountAddress)
         const busdBalance = await busdContract.balanceOf(accountAddress)
         const tokenBalanceFormatted = parseFloat(tokenBalance) / 10 ** 18
-        const busdBalanceFormatted = parseFloat(ethers.utils.formatEther(busdBalance))
+        const busdBalanceFormatted = parseFloat(busdBalance) / 10**8
         dispatch(updateBalance(tokenBalanceFormatted, busdBalanceFormatted, 0))
     }
 }

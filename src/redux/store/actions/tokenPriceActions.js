@@ -32,10 +32,12 @@ export const loadTokenPrice = () => async dispatch => {
     const Elfos = new  ethers.Contract(elfos, elfosAbi, provider);
 
 
-    const tokenInWei = await contract.calculatePriceU(ethers.utils.parseUnits("1", 18));
+    const tokenInWei = await contract.calculatePriceU(ethers.utils.parseUnits("1", 8));
     const tokenBInWei = await Elfos.getNftPrice();
+    
     const token = ethers.utils.formatEther(tokenInWei);
-    const tokenB = ethers.utils.formatEther(tokenBInWei);
+    const tokenB = ethers.utils.formatUnits(tokenBInWei, 8);
+
 
 
     dispatch(loadingTokenPriceSuccess({ tokenPrice: token, tokenBPrice: tokenB }));

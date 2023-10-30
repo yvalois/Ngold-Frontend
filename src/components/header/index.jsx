@@ -151,6 +151,7 @@ const Header = () => {
     useEffect(() => {
 
         if (chain?.unsupported !== undefined && chain.unsupported === false) {
+
             setTimeout(() => {
                 getSign();
                 setIs(true)
@@ -162,7 +163,6 @@ const Header = () => {
             }, 2000);
         } else {
             window.localStorage.removeItem("wc@2:core:0.3//keychain")
-
         }
     }, [chain, errorMsg])
 

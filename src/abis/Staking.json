@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "contract IMarketStaking",
-        "name": "_pandorax",
+        "name": "_goldenelf",
         "type": "address"
       },
       {
@@ -35,7 +35,13 @@
     "type": "event"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "Apr",
     "outputs": [
       {
@@ -171,11 +177,6 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
-      },
-      {
-        "internalType": "contract IERC20",
-        "name": "_token",
-        "type": "address"
       }
     ],
     "name": "claimReward",
@@ -344,6 +345,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "goldenelf",
+    "outputs": [
+      {
+        "internalType": "contract IMarketStaking",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -492,19 +506,6 @@
   },
   {
     "inputs": [],
-    "name": "pandorax",
-    "outputs": [
-      {
-        "internalType": "contract IMarketStaking",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "percentageR",
     "outputs": [
       {
@@ -519,6 +520,24 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_cant",
+        "type": "uint256"
+      }
+    ],
+    "name": "retire",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -567,6 +586,11 @@
         "internalType": "uint256",
         "name": "_apr",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_type",
+        "type": "uint256"
       }
     ],
     "name": "setApr",
@@ -592,6 +616,11 @@
       {
         "internalType": "uint256",
         "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_apr",
         "type": "uint256"
       }
     ],
@@ -646,6 +675,19 @@
       }
     ],
     "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawP",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
