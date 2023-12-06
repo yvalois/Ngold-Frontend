@@ -2,9 +2,9 @@ import axios from 'axios';
 import {getToken, setToken} from './localstorage'
 
 
-const API = "https://plankton-app-it5jy.ondigitalocean.app/api"
+//const API = "https://plankton-app-xbeak.ondigitalocean.app/api"
 //const API = "http://localhost:3000/api"
-
+const API = process.env.REACT_APP_ENDPOINT
 export const STORE_ID = "62f8d7884c3b4800136678c8"
 
 export const TOKEN_NAME = 'Ngold';
