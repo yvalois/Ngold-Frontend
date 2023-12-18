@@ -280,7 +280,7 @@ function HotPick4(props) {
                                                     </div>
                                                     <div className="features">
                                                         <div className="product-media" onClick={()=>{setToken(idx.id)}}>
-                                                            <img src={idx.image} alt="images" />
+                                                            <img src={`https://silver-technical-koi-106.mypinata.cloud/ipfs/QmfHjwZUMgd4AxLMNMCdb9Q6VE1zybSeX3wtdJZ6AvaPjc/${idx.id + 1}.png`} alt="images" />
                                                         </div>
                                                         <div className="rain-drop1"><img src={icon1} alt="images" /></div>
                                                         <div className="rain-drop2"><img src={icon2} alt="images" /></div>

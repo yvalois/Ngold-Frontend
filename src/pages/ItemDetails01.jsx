@@ -57,7 +57,7 @@ function ItemDetails01(props) {
                         <div className="col-md-12">
                             <div className="tf-item-detail-inner">  
                                 <div className="image">
-                                    <img src={nft.image} alt="Binasea" />
+                                    <img width={"700px"} src={`https://silver-technical-koi-106.mypinata.cloud/ipfs/QmfHjwZUMgd4AxLMNMCdb9Q6VE1zybSeX3wtdJZ6AvaPjc/${nft.id + 1}.png`} alt="Binasea" />
                                 </div>
                                 <div className="content">
                                     <h2 className="title-detail">{nft.nombre} #{nft.id}</h2>

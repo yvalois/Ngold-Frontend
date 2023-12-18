@@ -135,6 +135,7 @@ export const updateBalances = () => async (dispatch, getState) => {
         }
         ngoldNftBalance.push(info)
     }
+
     for (let i = 0; NgoldStakingBalance.length > i; i++) {
         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward, 18)).toFixed(5);
@@ -199,6 +200,8 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         }
                         ngoldNftBalance.push(info)
                     }
+    console.log(NgoldNftBalance)
+                    
                     for (let i = 0; NgoldStakingBalance.length > i; i++) {
                         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
                         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward.toString(), 18)).toFixed(5);
