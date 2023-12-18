@@ -320,7 +320,7 @@ function HotPick4(props) {
                                             (ngoldNftStakingBalance.map(item => (
                                                 <div className="table-ranking ">
                                                     <div className="content-ranking">
-                                                        <div className="col-rankingg"><div className="image"><img src={item.image} alt="Binasea" /></div></div>
+                                                        <div className="col-rankingg"><div className="image"><img src={`https://silver-technical-koi-106.mypinata.cloud/ipfs/QmfHjwZUMgd4AxLMNMCdb9Q6VE1zybSeX3wtdJZ6AvaPjc/${item.id + 1}.png`} alt="Binasea" /></div></div>
                                                         <div className="col-rankingg">{item.id}</div>
                                                         <div className="col-rankingg coin">
                                                             Polygon</div>
