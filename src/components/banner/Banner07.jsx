@@ -419,7 +419,7 @@ function Banner06(props) {
                                                         />
 
                                                         <div className='token'>
-                                                            {isBuy ? "NGOLD" : "USDT"}
+                                                            {!isBuy ? "NGOLD" : "USDT"}
                                                         </div>
                                                     </div>
 
@@ -452,7 +452,7 @@ function Banner06(props) {
                                                         />
 
                                                         <div className='token'>
-                                                            {!isBuy ? "NGOLD" : "USDT"}
+                                                            {isBuy ? "NGOLD" : "USDT"}
 
                                                         </div>
                                                     </div>
