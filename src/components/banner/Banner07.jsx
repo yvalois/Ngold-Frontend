@@ -400,7 +400,7 @@ function Banner06(props) {
                                     </div>
                                     <div className="output-container">
                                                     <p>1 NGOLD = 1 GRAMO DE ORO 24K</p>
-                                                    <p>1 GRAMO DE ORO 24K = {goldPrice} USD</p>
+                                                    <p>1 NGOLD = {goldPrice} USD</p>
                                                 </div>
                                     <div className='ex-contenedor'>
                                         <div className="input-container">
