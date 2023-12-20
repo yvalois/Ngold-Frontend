@@ -30,6 +30,7 @@ import { getWalletClient } from '@wagmi/core'
 import { useNetwork } from 'wagmi';
 import ModalSwap from '../layouts/modalSwap';
 import Connect from '../layouts/Connect';
+import Exchange from '../../abis/Exchange.json';
 
 Banner06.propTypes = {
 
@@ -50,9 +51,24 @@ function Banner06(props) {
     const { exchangeContract, ngoldContract, busdContract, accountAddress, ngoldBalance, busdBalance, provider, isConnect } = useSelector(state => state.blockchain);
     const { isConnected } = useAccount();
     const [connectShow, setConnectShow] = useState(false)
+    const [goldPrice, setGoldPrice] = useState(0)
     const Ndecimals = 18;
     const Udecimals = 8;
+    const EXCHANGE_ADDRESS = "0x53BE3630d2188C43D8dfa81991281aadcd7F223a"
+    const rpc_ETH =
+        'https://polygon-mainnet.g.alchemy.com/v2/XVy5Duyf5VwZzcxJaIlxyQEehwKzosov';
+    const provider_ETH = new ethers.providers.JsonRpcProvider(rpc_ETH);
 
+    const exchangeContractP = new ethers.Contract(
+        EXCHANGE_ADDRESS,
+        Exchange,
+        provider_ETH
+    );
+    const getGoldPrice = async () => {
+        const precioC = await exchangeContractP.tokenPrice()
+        const calculo = parseFloat(ethers.utils.formatUnits(precioC, 18)) / 31
+        setGoldPrice(parseFloat(calculo + 1).toFixed(2) )
+    }
     const dispatch = useDispatch();
     const handleSwap = (value) => {
         setValue(0)
@@ -243,6 +259,7 @@ function Banner06(props) {
     useEffect(() => {
         setOutputAmount('')
         setInputAmount('')
+        getGoldPrice()
     }, [isBuy])
 
 
@@ -284,9 +301,9 @@ function Banner06(props) {
         let fra
         if (isBuy) {
             fra = (busdBalance * event.target.value) / 100
-        }else{
+        } else {
             fra = (ngoldBalance * event.target.value) / 100
-            
+
         }
         handleSwap(fra)
         setValue(event.target.value);
@@ -298,9 +315,9 @@ function Banner06(props) {
         let fra
         if (isBuy) {
             fra = (busdBalance * valor) / 100
-        }else{
+        } else {
             fra = (ngoldBalance * valor) / 100
-            
+
         }
         handleSwap(fra)
         setValue(valor)
@@ -311,9 +328,9 @@ function Banner06(props) {
         let maxValue = ngoldBalance;
 
         if (isBuy) {
-            maxValue = busdBalance 
-        }else{
-            maxValue = ngoldBalance 
+            maxValue = busdBalance
+        } else {
+            maxValue = ngoldBalance
         }
 
         setValue(0)
@@ -381,9 +398,14 @@ function Banner06(props) {
 
 
                                     </div>
+                                    <div className="output-container">
+                                                    <p>1 NGOLD = 1 GRAMO DE ORO 24K</p>
+                                                    <p>1 GRAMO DE ORO 24K = {goldPrice} USD</p>
+                                                </div>
                                     <div className='ex-contenedor'>
                                         <div className="input-container">
                                             <div className='balance'>
+
                                                 <div>
                                                     <h6>Swap - intercambio</h6>
                                                 </div>
@@ -418,9 +440,7 @@ function Banner06(props) {
                                                             onChange={(e) => handleSwap(e.target.value)}
                                                         />
 
-                                                        <div className='token'>
-                                                            {!isBuy ? "NGOLD" : "USDT"}
-                                                        </div>
+
                                                     </div>
 
 
@@ -451,10 +471,6 @@ function Banner06(props) {
                                                             disabled
                                                         />
 
-                                                        <div className='token'>
-                                                            {isBuy ? "NGOLD" : "USDT"}
-
-                                                        </div>
                                                     </div>
 
 
@@ -495,7 +511,7 @@ function Banner06(props) {
 
                                             </div>
 
-                                            {!loading && isConnected && <button onClick={callAction} style={{marginTop:"12px"}}>{inputAmount <= allowance ? isBuy ? "Comprar NGOLD" : "Vender NGOLD" : 'aprobar'}</button>}
+                                            {!loading && isConnected && <button onClick={callAction} style={{ marginTop: "12px" }}>{inputAmount <= allowance ? isBuy ? "Comprar NGOLD" : "Vender NGOLD" : 'aprobar'}</button>}
                                             {!isConnected && !loading &&
 
                                                 <button onClick={() => setConnectShow(true)}>Conectar</button>}
@@ -508,7 +524,8 @@ function Banner06(props) {
 
 
                                     <div className="output-container">
-                                        <p>1 NGOLD = 1 Gramo Oro</p>
+
+
                                         {isConnect && <button onClick={addToMetamask}> Agregar token</button>}
                                     </div>
                                 </div>

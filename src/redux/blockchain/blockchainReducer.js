@@ -15,6 +15,7 @@ const initialState = {
     poolContract:null,
     accountAddress: null,  
     exchangeContract: null,  
+    exchangeContractP: null,
     tiendaContract: null,
     networkID: null,
     exchangeBusdBalance: null,

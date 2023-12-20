@@ -1,4 +1,6 @@
-import { ethers } from "ethers";
+import {
+    ethers
+} from "ethers";
 import Web3Modal from "web3modal";
 import abiToken from '../../abis/abiERC20.json';
 import Cobro from '../../abis/Cobro.json';
@@ -14,8 +16,12 @@ import elfo from '../../assets/images/elf_6.jpg'
 
 
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
-import { contract } from './blockchainRouter';
-import { Alert } from "react-bootstrap";
+import {
+    contract
+} from './blockchainRouter';
+import {
+    Alert
+} from "react-bootstrap";
 
 const router = contract();
 
@@ -114,7 +120,14 @@ export const updateStakingTokens = (inversioneStakingContract, accountAddress) =
 }
 
 export const updateBalances = () => async (dispatch, getState) => {
-    const { ngoldContract, busdContract, elfosContract, stakingContract, cobroContract, accountAddress } = getState().blockchain;
+    const {
+        ngoldContract,
+        busdContract,
+        elfosContract,
+        stakingContract,
+        cobroContract,
+        accountAddress
+    } = getState().blockchain;
     const ngoldBalance = parseFloat(await ngoldContract.balanceOf(accountAddress)) / 10 ** 18;
     const exchangeBusdBalance = parseFloat(await busdContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 8;
     const exchangeNgoldBalance = parseFloat(await ngoldContract.balanceOf(EXCHANGE_ADDRESS)) / 10 ** 18;
@@ -171,6 +184,9 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                     const ngoldContract = new ethers.Contract(NGOLD_ADDRESS, abiToken, signer);
                     const busdContract = new ethers.Contract(BUSD_ADDRESS, abiToken, signer);
                     const exchangeContract = new ethers.Contract(EXCHANGE_ADDRESS, Exchange, signer);
+
+
+
                     const stakingContract = new ethers.Contract(STAKING_ADDRESS, Staking, signer);
                     const cobroContract = new ethers.Contract(COBRO_ADDRESS, Cobro, signer);
                     const elfosContract = new ethers.Contract(ELFOS_ADDRESS, Elfos, signer);
@@ -200,8 +216,7 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         }
                         ngoldNftBalance.push(info)
                     }
-    console.log(NgoldNftBalance)
-                    
+
                     for (let i = 0; NgoldStakingBalance.length > i; i++) {
                         const reward = await stakingContract.rewardPerToken(parseInt(NgoldStakingBalance[i]));
                         const valorConvertido = parseFloat(ethers.utils.formatUnits(reward.toString(), 18)).toFixed(5);
@@ -234,13 +249,14 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         cobroBalance,
                         isOwner
                     }))
-                }
-                else {
+                } else {
                     if (process.env.REACT_APP_PRODUCTION === 'production') {
                         try {
                             await provider.provider.request({
                                 method: 'wallet_switchEthereumChain',
-                                params: [{ chainId: `0x${Number(56).toString(16)}` }],
+                                params: [{
+                                    chainId: `0x${Number(56).toString(16)}`
+                                }],
                             })
                         } catch (switchError) {
                             if (switchError.code === 4902) {
@@ -273,7 +289,9 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
                         try {
                             await provider.provider.request({
                                 method: 'wallet_switchEthereumChain',
-                                params: [{ chainId: `0x${Number(97).toString(16)}` }],
+                                params: [{
+                                    chainId: `0x${Number(97).toString(16)}`
+                                }],
                             })
 
                         } catch (error) {
@@ -298,11 +316,15 @@ export const fetchBlockchain = (accountAddress, signer, provider) => {
 
 export const fetchBalance = () => {
     return async (dispatch, getState) => {
-        const { ngoldContract, busdContract, accountAddress } = getState().blockchain
+        const {
+            ngoldContract,
+            busdContract,
+            accountAddress
+        } = getState().blockchain
         const tokenBalance = await ngoldContract.balanceOf(accountAddress)
         const busdBalance = await busdContract.balanceOf(accountAddress)
         const tokenBalanceFormatted = parseFloat(tokenBalance) / 10 ** 18
-        const busdBalanceFormatted = parseFloat(busdBalance) / 10**8
+        const busdBalanceFormatted = parseFloat(busdBalance) / 10 ** 8
         dispatch(updateBalance(tokenBalanceFormatted, busdBalanceFormatted, 0))
     }
 }
@@ -313,5 +335,3 @@ export const disconnectBlockchainAction = () => {
         dispatch(disconnectBlockchain())
     }
 };
-
-
